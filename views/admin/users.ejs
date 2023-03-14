@@ -82,7 +82,12 @@
                                     </td>
                                     
                                     <td><template class="__cf_email__" data-cfemail="2c4940494d42435e1e1c1e1c6c49544d415c4049024f4341">[email&#160;protected]</template><%=locals.email%></td>
+                                    <% if(!locals.status){ %>
+                                    <td><span class="badge rounded-pill alert-danger">Not Active</span></td>
+                                    <% }
+                                    else{ %>
                                     <td><span class="badge rounded-pill alert-success">Active</span></td>
+                                    <%   } %> 
                                     <td><%=locals.phoneNumber%></td>
                                     <td class="text-end">
                                         <% if(!locals.status){ %>

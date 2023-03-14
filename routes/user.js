@@ -7,29 +7,30 @@ const auth=require("../controller/auth")
 
 
 const { body, validationResult } = require('express-validator');
+const adminController = require("../controller/adminController");
 
-router.post('/login',
-    body('email').isEmail().normalizeEmail(),
-    body('password').isLength({
-        min: 6
-    }),
-    (req, res) => {
-        const errors = validationResult(req);
+// router.post('/login',
+//     body('email').isEmail().normalizeEmail(),
+//     body('password').isLength({
+//         min: 6
+//     }),
+//     (req, res) => {
+//         const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                success: false,
-                errors: errors.array()
-            });
-        }
+//         if (!errors.isEmpty()) {
+//             return res.status(400).json({
+//                 success: false,
+//                 errors: errors.array()
+//             });
+//         }
 
-        res.render("admin/admin-dashboard")
-        res.status(200).json({
-            success: true,
-            message: 'Login successful',
+//         res.render("admin/admin-dashboard")
+//         res.status(200).json({
+//             success: true,
+//             message: 'Login successful',
 
-        })
-    });
+//         })
+//     });
 
 
 
@@ -50,7 +51,7 @@ router.get("/login",userController.getUsersLogin)
 
 //POST LOGIN//
 
-// router.post("/login",userController.postUserSignin)
+router.post("/login",userController.postUserSignin)
 //LOGOUT//
 router.get("/logout",userController.getUserlogout)
 //SHOP//

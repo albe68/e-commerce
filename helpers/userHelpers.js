@@ -30,7 +30,7 @@ module.exports={
                     }
                      }
                 else{
-                    
+                  return Promise.reject('Username already in use');
                     response.status=false;
                     resolve(response);
                     // console.log("ayila:",response)

@@ -2,7 +2,7 @@ const db=require("../model/connection")
 const productHelpers = require("../helpers/productHelpers")
 const userHelpers=require("../helpers/userHelpers")
 // const fileupload=require("express-fileupload")
-const { admin, category,products } = require("../Model/connection");
+const { admin, category,products, user } = require("../Model/connection");
 const session=require('express-session')
 const {response}=require("../app")
 const mongoose = require("mongoose");
@@ -47,7 +47,8 @@ module.exports={
         { if(req.session.adminIn)
           {
             console.log(req.session.adminIn)
-     res.render("admin/admin-dashboard",{layout:"adminLayout"})          }
+     res.render("admin/admin-dashboard",{layout:"adminLayout"})
+    }
           else{
             res.render("admin/login",{layout:"adminLayout"}) 
           }
@@ -219,6 +220,7 @@ getAddProducts: (req, res) => {
     })
     .catch((err) => console.log(err));}
     catch(error){
+      
       console.log(error)
 
     }
@@ -345,9 +347,12 @@ getAddProducts: (req, res) => {
 
   blockUser: (req, res) => {
     let userId = req.params.id;
+    
     userHelpers
       .blockUser(userId)
       .then(() => {
+
+       
         res.redirect("/admin/users");
       })
       .catch((err) => console.log(err));
@@ -361,11 +366,14 @@ getAddProducts: (req, res) => {
     userHelpers
       .unblockUser(userId)
       .then(() => {
+        
         res.redirect("/admin/users");
       })
       .catch((err) => console.log(err));
   },
     } 
+
+   
     
     
 
