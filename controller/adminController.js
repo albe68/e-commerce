@@ -46,10 +46,11 @@ module.exports={
          try
         { if(req.session.adminIn)
           {
-            console.log(req.session.adminIn)
+            console.log(req.session.adminIn,"222222222222222222")
      res.render("admin/admin-dashboard",{layout:"adminLayout"})
     }
           else{
+            console.log(req.session.adminIn,"11111111111111111111111111111111111")
             res.render("admin/login",{layout:"adminLayout"}) 
           }
         }
@@ -371,6 +372,10 @@ getAddProducts: (req, res) => {
       })
       .catch((err) => console.log(err));
   },
+  Orders(req,res){
+    res.render("admin/orders",{layout:"adminLayout"})
+    console.log("a~~b")
+  }
     } 
 
    

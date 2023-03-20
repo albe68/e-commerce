@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const db = mongoose.createConnection(
   "mongodb://0.0.0.0:27017/store" 
 );
-const {ObjectID}=require('bson')
+const {ObjectID}=require("bson")
 const {ObjectId}=require("mongodb");
 
 
@@ -53,11 +53,22 @@ const adminSchema=new mongoose.Schema({
   email:{type:String},
   password:{type:String}
 })
+const cartSchema=new mongoose.Schema({
+  user:ObjectId,
+  cartProducts:[
+    {
+      item:mongoose.Types.ObjectId,
+      quantity:Number,
+    }
+
+  ],
+
+});
 
 module.exports={
   user:db.model("user",userSchema),
   admin:db.model("admin",adminSchema),
   products:db.model("products",productSchema),
   category:db.model("category",categorySchema),
-
-}
+  cart:db.model("cart",cartSchema),
+  }

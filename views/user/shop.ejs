@@ -561,16 +561,21 @@
                       </span>
                     </div>
                     <div class="product-price">
-                      <span>$138.85 </span>
-                      <span class="old-price">$255.8</span>
+                      <span>₹<%=locals.price%></span>
+                      <span class="old-price">₹255</span>
                     </div>
                     <div class="product-action-1 show">
+                      <!--quantites instead of quantity-->
                       <a
+                        
                         aria-label="Add To Cart"
                         class="action-btn hover-up"
-                        href="shop-cart.html"
+                        onclick="addTocart('<%= locals._id %>','<%= locals.quantity %>')" 
+                        
+                        
                         ><i class="fi-rs-shopping-bag-add"></i
                       ></a>
+                      <!--quantites instead of quantity-->
                     </div>
                   </div>
                 </div>
@@ -970,3 +975,24 @@
 <!-- Vendor JS-->
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-grid-left.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:43 GMT -->
+
+
+<script>
+  function addTocart(proId,stock){
+    console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+    $.ajax({
+      url:'/add-to-cart/'+proId,
+      method:'get',
+      success:(response)=>{
+        console.log(response)
+        if(response.status){
+          let count=$('#cart-count').html();
+          count=parseInt(count)+1
+          $("#cart-count").html(count)
+          alert(response)
+
+        }
+      }
+    })
+  }
+</script>

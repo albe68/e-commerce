@@ -52,15 +52,18 @@ router.get("/login",userController.getUsersLogin)
 //POST LOGIN//
 
 router.post("/login",userController.postUserSignin)
-//LOGOUT//
+//LOGOUT//  
 router.get("/logout",userController.getUserlogout)
 //SHOP//
 router.get("/shop",userController.shopPage)
 //VIEW-PRODUCT//
 router.get('/view-product',userController.getProductPage)
 //CART//
-router.get("/cart",auth.verifyLogin,userController.Cart)
-//ADD TO CART//
-router.post("add-to-cart"/userController.addToCart)
+router.get("/cart",userController.Cart)
+//get Cart//
+router.get("/add-to-cart/:id",userController.getAddToCart)
+//post Cart//
+router.post("/delete_cart/:id",userController.deleteCartProduct)
+
 
 module.exports = router;

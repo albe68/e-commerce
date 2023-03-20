@@ -74,6 +74,8 @@ router.get('/category/edit_categories/:id',auth.verifyAdmin,adminController.edit
 // Edit Category Router//
 
 router.post('/category/edit_categories/:id',adminController.updateCategory);
+//Order management 
+router.get('/orders',adminController.Orders)
 
 
 module.exports = router;

@@ -4,18 +4,30 @@ const session = require("express-session");
 const { response } = require("../app");
 const mongoose = require("mongoose");
 const productHelpers = require("../helpers/productHelpers");
+const cartHelpers=require("../helpers/cartHelpers")
 const { body, validationResult } = require('express-validator');
 
 module.exports = {
-  
-  home: (req, res) => {
+  //(newly added next and async while doing cart COUNT)
+  home:async (req, res,next) => { 
     // // app.get('/:id', function (req, res) {
     //     console.log(req.params['id']);
     //     res.send();
     //   // });
     let user = req?.session?.user;
     console.log("mone", user);
-    res.render("user/user", { user });
+    let cartCount= await cartHelpers?.getCartCount(user)
+    //CHANGED THE STRUCTURE OF THIS CODE NORMAL RENDER VS PRODUCTS COMING
+    productHelpers.getAllProducts().then((product)=>{
+      console.log(cartCount,"cartCount")
+      res.render("user/user", { 
+        user,
+        cartCount
+       });
+    })
+    .catch((err)=>{
+      console.log(err,"ERROR")
+    })
   },
 
 
@@ -112,16 +124,17 @@ module.exports = {
     }
   },
   //List Product
-  shopPage: (req, res, err) => {
+  shopPage: async (req, res, err) => {
     try {
       let proId = req.params.id;
       let user = req?.session?.user;
+      let cartCount= await cartHelpers.getCartCount(user)
       console.log("proId");
       productHelpers
         .getAllProducts()
         .then((products) => {
           console.log("WORKING");
-          res.render("user/shop", { products,user });
+          res.render("user/shop", { products,user,cartCount });
         })
         .catch((err) => {
           console.log("ERROR HAPPENED");
@@ -132,8 +145,11 @@ module.exports = {
   },
   getProductPage: (req, res) => {
     try{
-      let proId = req.params.id;
-      console.log("kalaaaaaaaaaaaaaa",proId)
+      //cartCOunt is lagging to get it from database
+      
+      let proId =  req.params.id;
+      console.log(proId)//proId is sus
+      
       productHelpers
     .getProduct(proId)
     .then((products) => {
@@ -144,11 +160,74 @@ module.exports = {
       }
     
   },
-  Cart:(req,res)=>{
-    res.render("user/cart")
+  
+  getAddToCart:async(req,res)=>{
+    
+    try{
+      req.session.returnUrl = req.originalUrl;
+      console.log(req.params.id,"===req.params.id")
+      console.log(req.session.user,"===req.session.user")
+      cartHelpers.addToCart(req.params.id,req.session.user)
+      .then(()=>{
+        console.log("ADDED TO CART AND RIDIRECTING")
+        
+        res.json({status:true});
+        
+      })
+      .catch((err)=>{
+        
+        console.log("catch error in .then()")
+      })
+    }
+    catch(error){
+     
+      console.log("error in getADDToCart")
+    }
+  
+},
+  Cart:async (req,res)=>{
+   try {
+    let user=req.session.user;
+    console.log("USERRRR",user);
+    cartHelpers.getCartProduct(req.session.user)
+    .then((cartItems)=>{
+      console.log(cartItems._id,"desturcturing ITEM")
+      if(1==1){
+        res.render("user/cart",{
+          user,cartItems
+         
+        });
+      }
+      else{
+        console.log("MTTT CARTY")
+      }
+    })
+    .catch((err)=>{
+      console.log("pettuuu",err)
+    })
+   } catch (error) {
+    console.log(error,"ERRoR")
+    
+   }
+   
 
   },
-  addToCart:(req,res)=>{
-    
+  deleteCartProduct: (req, res) => {
+    try {
+      
+      cartHelpers
+        .deleteCartProduct(req.body, req.session.user._id)
+        .then((response) => {
+          res.json(response);
+        })
+        .catch((err) => {
+          res.render("user/500Page");
+          console.log(err);
+        });
+    } catch (error) {
+      res.render("user/500Page");
+    }
+  
   }
+  
 };
