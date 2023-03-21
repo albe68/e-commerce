@@ -60,10 +60,15 @@ router.get("/shop",userController.shopPage)
 router.get('/view-product',userController.getProductPage)
 //CART//
 router.get("/cart",userController.Cart)
-//get Cart//
+//EMPTY CART
+router.get("/emptyCart",userController.EmptyCart)
+//add To Cart//
 router.get("/add-to-cart/:id",userController.getAddToCart)
-//post Cart//
-router.post("/delete_cart/:id",userController.deleteCartProduct)
+//delete  Cart//
+// router.post("/delete_cart/:id",userController.deleteCartProduct)
+
+//change Product quantity
+router.post("/change-product-quantity",userController.changeProductQuantity)
 
 
 module.exports = router;

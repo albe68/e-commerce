@@ -6,7 +6,7 @@ verifyLogin:(req,res,next)=>{
     
 }
 else{
-    console.log("HAHHHHHHHHHHHHHHHHHHHHHHAA")
+    console.log("Login with user")
     res.render("user/login")
 }
 },

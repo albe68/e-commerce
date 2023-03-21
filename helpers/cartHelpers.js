@@ -25,7 +25,7 @@ module.exports={
             }
                 )
                 .then(()=>{
-                    console.log("CART HAVE BEEN UPDATED ")
+                    // console.log("CART HAVE BEEN UPDATED ")
                     resolve();
                 })
                 .catch((err)=>reject({error:"Unauthorized 1"}));
@@ -121,6 +121,51 @@ module.exports={
           .catch((err)=>{
             console.log("ERROR IN CART COUNT")
           })  
+        })
+    },
+    changeProductQuantity:(details,user)=>{
+        console.log(details,"details",user,"user")
+        const id=details.product;
+        const cartId=details.cart;
+        count=parseInt(details.count);
+        quantity=parseInt(details.quantity);
+        return new Promise((resolve,reject)=>{
+            
+            if (details.count == -1 && details.quantity == 1) {
+                db.cart
+                  .updateOne(
+                    { user: user },
+                    {
+                      $pull: {
+                        cartProducts: { item: id },
+                      },
+                    }
+                  )
+                  .then((e) => {
+                    resolve({ removeProduct: true });
+                  })
+                  .catch((err) => {
+                    reject({ error: "Unauthorized Action" });
+                    console.log(err);
+                  });
+              }
+              db.cart
+                .updateOne(
+                  { _id: cartId, "cartProducts.item": id },
+                  {
+                    $inc: {
+                      "cartProducts.$.quantity": details.count,
+                    },
+                  }
+                )
+                .then(() => {
+                  resolve({ status: true });
+                })
+                .catch((err) => {
+                  reject({ error: "Unauthorized Action" });
+                  console.log(err);
+                });
+           
         })
     },
  // Delete Cart Product //

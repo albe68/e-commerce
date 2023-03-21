@@ -10,16 +10,16 @@ const { body, validationResult } = require('express-validator');
 module.exports = {
   //(newly added next and async while doing cart COUNT)
   home:async (req, res,next) => { 
-    // // app.get('/:id', function (req, res) {
-    //     console.log(req.params['id']);
-    //     res.send();
-    //   // });
     let user = req?.session?.user;
-    console.log("mone", user);
-    let cartCount= await cartHelpers?.getCartCount(user)
+    console.log("User In", user);
+    //if user load this code
+    
+      let cartCount= await cartHelpers?.getCartCount(user)
+    
     //CHANGED THE STRUCTURE OF THIS CODE NORMAL RENDER VS PRODUCTS COMING
     productHelpers.getAllProducts().then((product)=>{
-      console.log(cartCount,"cartCount")
+      console.log(product,"resolved products")
+      
       res.render("user/user", { 
         user,
         cartCount
@@ -146,15 +146,15 @@ module.exports = {
   getProductPage: (req, res) => {
     try{
       //cartCOunt is lagging to get it from database
-      
+      let user=req.session.user
       let proId =  req.params.id;
       console.log(proId)//proId is sus
       
       productHelpers
     .getProduct(proId)
     .then((products) => {
-      console.log("WORKING");
-      res.render("user/view-product",{products}); })}
+      console.log(products,"PRODUCTS");
+      res.render("user/view-product",{products,user}); })}
       catch(error){
 
       }
@@ -164,9 +164,9 @@ module.exports = {
   getAddToCart:async(req,res)=>{
     
     try{
-      req.session.returnUrl = req.originalUrl;
-      console.log(req.params.id,"===req.params.id")
-      console.log(req.session.user,"===req.session.user")
+      // req.session.returnUrl = req.originalUrl;
+      // console.log(req.params.id,"===req.params.id")
+      // console.log(req.session.user,"===req.session.user")
       cartHelpers.addToCart(req.params.id,req.session.user)
       .then(()=>{
         console.log("ADDED TO CART AND RIDIRECTING")
@@ -212,22 +212,26 @@ module.exports = {
    
 
   },
-  deleteCartProduct: (req, res) => {
-    try {
+  EmptyCart:(req,res)=>{
+    res.render('user/emptyCart')
+  },
+  changeProductQuantity:async(req,res,next)=>{
+    try{
+      console.log("req.body",req.body)
       
-      cartHelpers
-        .deleteCartProduct(req.body, req.session.user._id)
-        .then((response) => {
-          res.json(response);
-        })
-        .catch((err) => {
-          res.render("user/500Page");
-          console.log(err);
-        });
-    } catch (error) {
-      res.render("user/500Page");
+     cartHelpers.changeProductQuantity(req.body, req.session.user._id).then((response)=>{
+      res.json({status:true})
+     })
+     .catch((err)=>{
+      console.log(err)
+
+     })
     }
-  
-  }
+    catch(error){
+      console.log(error)
+    }
+
+  },
+
   
 };

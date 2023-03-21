@@ -60,16 +60,23 @@
                                         </td>
                                         <td class="price" data-title="Price"><span><%=locals.Products.price%>> </span></td>
                                         <td class="text-center" data-title="Stock">
+
+<!--CHANGE PRODUCT QUANTITY -------------------------------------------------------------------------------------->
+
                                             <div class="detail-qty border radius  m-auto">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                <!--DECREASE-->
+                                                <a href="#" class="qty-down" id='down' onclick="changeQuantity('<%= locals?._id %>','<%=locals?.Products?._id%>',-1,this.parentElement.querySelector('input'))"><i class="fi-rs-angle-small-down"></i></a>
                                                 <span class="qty-val"><%=locals.quantity%></span>
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                <a href="#" class="qty-up" id='up' onclick="changeQuantity('<%= locals?._id %>','<%= locals?.Products?._id %>',1,this.parentElement.querySelector('input'))"><i class="fi-rs-angle-small-up"></i></a>
+                                                <!--INCREASE-->
                                             </div>
+<!--CHANGE PRODUCT QUANTITY -------------------------------------------------------------------------------------->
+                                       
                                         </td>
                                         <td class="text-right" data-title="Cart">
                                             <span>$65.00 </span>
                                         </td>
-                                        <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="deleteCart('<%= element?.id %>','<%= element?.Product?._id %>',)"><i class="fi-rs-trash"></i></a></td>
+                                        <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="deleteCart('<%= locals?._id %>','<%= locals?.Product?._id %>',)"><i class="fi-rs-trash"></i></a></td>
                                     </tr>
                                    
                                    
@@ -568,6 +575,26 @@
     <script src="assets/js/shop.js"></script>
 </body>
 
-
+ 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 </html>
+
+<script>
+  function  changeQuantity(cartId,proId,count){
+    count=parseInt(count);
+    // let quantity=input.value
+    $.ajax({
+        url:"/change-product-quantity",
+        data:{
+            cart:cartId,
+            product:proId,
+            count:count,
+            // quantity:quantity
+        },
+        method:'post',
+        success:(response)=>{
+            alert(response)
+        }
+    }) 
+    }
+</script>

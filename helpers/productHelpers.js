@@ -15,7 +15,7 @@ var mongoose = require('mongoose')
 module.exports = {
   // Get All Product
 
-  getAllProducts: () => {
+   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
   try{ 
     let products=await db.products.find({});
@@ -45,7 +45,7 @@ module.exports = {
 
    addProduct: (products) => {
     
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
       try {
         
         
