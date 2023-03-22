@@ -172,8 +172,10 @@ module.exports={
 
  deleteCartProduct: (data, user) => {
     return new Promise((resolve, reject) => {
+      console.log("dataaaaaaaaaaaaaaaa",data,user)
       try {
         const id = data.product;
+        console.log("helper",id)
         db.cart
           .updateOne(
             { user: user },
@@ -184,10 +186,15 @@ module.exports={
             }
           )
           .then((e) => {
+            console.log('qwertyu')
             resolve({ removeProduct: true });
           })
           .catch((err) => reject({ error: "Unauthorized Action" }));
-      } catch (error) {
+          console.log("dfghj");
+        } 
+      
+      catch (error) {
+        console.log("op")
         reject({ error: "Unauthorized Action" });
       }
     });

@@ -76,15 +76,11 @@
                                         <td class="text-right" data-title="Cart">
                                             <span>$65.00 </span>
                                         </td>
-                                        <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="deleteCart('<%= locals?._id %>','<%= locals?.Product?._id %>',)"><i class="fi-rs-trash"></i></a></td>
+                                        <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="deleteCart('<%= locals?._id %>','<%= locals?.Products?._id %>',)"><i class="fi-rs-trash"></i></a></td>
                                     </tr>
                                    
                                    
-                                    <tr>
-                                        <td colspan="6" class="text-end">
-                                            <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
-                                        </td>
-                                    </tr>
+                                    
                                 </tbody>
                                 <%});%> 
                             </table>
@@ -286,5 +282,21 @@ if (count > 0) {
 $('#cart-count').html(number)
         }
     }) 
+    }
+
+    function deleteCart(cartId,proId){
+        console.log("HTMLLLLLLLLLLLL REMOVE CART")  
+        $.ajax({
+            url:'/remove-cart',
+            method:"DELETE",
+            data:{
+                cart:cartId,
+                product:proId
+            },
+            success:(response)=>{
+                location.reload()
+            }
+        })
+        console>log("CARTID::::::",cartId,"PROID::::",proId)
     }
 </script>

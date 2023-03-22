@@ -195,7 +195,7 @@ module.exports = {
     console.log("USERRRR",user);
     cartHelpers.getCartProduct(req.session.user)
     .then((cartItems)=>{
-      console.log(cartItems.item,"desturcturing ITEM")
+     
       if(cartCount){
         res.render("user/cart",{
           user,cartItems,cartCount
@@ -236,6 +236,22 @@ module.exports = {
     }
 
   },
+  removeCart:async (req,res)=>{
+   try{
+    console.log("HEEEEEEEEEREREERERERER")
+    console.log(req.body,req.session.user._id)
+    cartHelpers.deleteCartProduct(req.body,req.session.user._id)
+    .then((response)=>{
+      res.json(response);
+    })
+    .catch((err)=>{
+      console.log("ERROR IN REMOVE CART")
+    })
+   }
+   catch(error){
+    console.log("error is remove cart catch");
+   }
+  }
 
   
 };

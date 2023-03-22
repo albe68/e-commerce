@@ -69,6 +69,8 @@ router.get("/add-to-cart/:id",userController.getAddToCart)
 
 //change Product quantity
 router.post("/change-product-quantity",userController.changeProductQuantity)
+//remove from Cart
+router.delete('/remove-cart',userController.removeCart)
 
 
 module.exports = router;
