@@ -143,18 +143,20 @@ module.exports = {
       console.log("error");
     }
   },
-  getProductPage: (req, res) => {
+  getProductPage:async (req, res) => {
     try{
       //cartCOunt is lagging to get it from database
       let user=req.session.user
       let proId =  req.params.id;
+      let cartCount= await cartHelpers.getCartCount(user)
+
       console.log(proId)//proId is sus
       
       productHelpers
     .getProduct(proId)
     .then((products) => {
       console.log(products,"PRODUCTS");
-      res.render("user/view-product",{products,user}); })}
+      res.render("user/view-product",{products,user,cartCount}); })}
       catch(error){
 
       }
@@ -188,13 +190,15 @@ module.exports = {
   Cart:async (req,res)=>{
    try {
     let user=req.session.user;
+    let cartCount= await cartHelpers.getCartCount(user)
+
     console.log("USERRRR",user);
     cartHelpers.getCartProduct(req.session.user)
     .then((cartItems)=>{
       console.log(cartItems._id,"desturcturing ITEM")
       if(1==1){
         res.render("user/cart",{
-          user,cartItems
+          user,cartItems,cartCount
          
         });
       }
