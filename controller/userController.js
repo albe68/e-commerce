@@ -195,15 +195,15 @@ module.exports = {
     console.log("USERRRR",user);
     cartHelpers.getCartProduct(req.session.user)
     .then((cartItems)=>{
-      console.log(cartItems._id,"desturcturing ITEM")
-      if(1==1){
+      console.log(cartItems.item,"desturcturing ITEM")
+      if(cartCount){
         res.render("user/cart",{
           user,cartItems,cartCount
          
         });
       }
       else{
-        console.log("MTTT CARTY")
+        res.render('user/emptyCart',{cartCount,user})
       }
     })
     .catch((err)=>{
