@@ -71,6 +71,8 @@ router.get("/add-to-cart/:id",userController.getAddToCart)
 router.post("/change-product-quantity",userController.changeProductQuantity)
 //remove from Cart
 router.delete('/remove-cart',userController.removeCart)
+//order page
+router.get('/order',userController.Order)
 
 
 module.exports = router;
