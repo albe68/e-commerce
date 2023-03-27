@@ -36,11 +36,15 @@ const productSchema = new mongoose.Schema({
   price: {type:String},
 
   // brand: {type:String},
-  // quantity: {type:Number},
+  quantity: {type:Number},
   category:{type:String},
   image:{
     data:Buffer,
     contentType:String
+  },//changed for list and unlist
+  status:{
+    type:Boolean,
+    default:true
   }
 });
 
