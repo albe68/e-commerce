@@ -43,6 +43,7 @@ app.use(
     },
   })
 );
+//user and admin route
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
 
