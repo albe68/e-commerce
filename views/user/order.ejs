@@ -106,7 +106,8 @@
                       <div class="form-group">
                           <input type="text" required="" name="lname" id="lName" placeholder="Last name *">
                           <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
-                      </div> <!--SELECT A COUNTRY-->
+                      </div> 
+                      <!--SELECT A COUNTRY-->
                       <!-- <div class="form-group">
                           <div class="custom_select">
 
@@ -236,7 +237,7 @@
 
                           </div>
                       </div>
-                      <button href="/order-success" type="submit"   class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                      <a  onclick="validation(this)"   class="btn btn-fill-out btn-block mt-30">Place Order</a>
                   </div>
               </div>
           </div>
@@ -250,13 +251,10 @@
 <script>
     
 
-        $("#checkout-form").submit((e)=>{
-            e.preventDefault();
-            validator()
-          
-        })
+      
 
-function validator() {
+function validation(e) {
+    
   
     //getting id of every data
       const fName = document.getElementById('fName')
@@ -279,16 +277,105 @@ function validator() {
         const emailValue = email.value.trim()
         const codValue = cod.value.trim()
 
-      console.log("hahahahah")
-      console.log(fNameValue)
-          
-    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue,codValue)
-          
+        const error1= fName.parentElement.querySelector('p');
+        const error2= lName.parentElement.querySelector('p')
+        const error3= street.parentElement.querySelector('p')
+        const error4= apartment.parentElement.querySelector('p')
+        const error5= town.parentElement.querySelector('p')
+        const error6= postcode.parentElement.querySelector('p')
+        const error7= mobile.parentElement.querySelector('p')
+        const error8= email.parentElement.querySelector('p')
+      
+        let arr = [fName, lName, street, apartment, town,  postcode, mobile, email]
+        arr.forEach((element) => {
+            console.log(element)
+            element.addEventListener("keyup", () => {
+                element.parentElement.querySelector('p').innerText = ""
+            })
+        })
+
+        let flag=1;
+
+        error1.innerText = ""
+        error2.innerText = ""
+        error3.innerText = ""
+        error4.innerText = ""
+        error5.innerText = ""
+        error6.innerText = ""
+        error7.innerText = ""
+        error8.innerText = ""
+       
+        //First Name
+        if (fNameValue == "") {
+            error1.innerText = 'This field is required'
+            flag = 2
+        }
+        else if(fNameValue.length<=2){
+            error1.innerText='First name should contain minimum of 2 characters'
+        }
+        else if (!fNameValue.match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
+            error1.innerText = "Enter valid details"
+            flag = 2
+        } 
+
+          //Last Name
+          if (lNameValue == "") {
+            error2.innerText = 'This field is required'
+        } else if (lNameValue.length < 2) {
+            error2.innerText = "Last name must be minimum 1 characters"
+            flag = 2
+        } else if (!lNameValue.match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
+            error2.innerText = "Enter valid details"
+            flag = 2
+        }
+         //Street Value
+         if (streeValue == "") {
+            error3.innerText = 'This field is required'
+            flag = 2
+        }
+        //Apartment Value
+        if (apartmentValue == "") {
+            error4.innerText = 'This field is required'
+            flag = 2
+        }
+        //Town Value
+        if (townValue == "") {
+            error5.innerText = 'This field is required'
+            flag = 2
+        }
+        //Postcode Value
+        if (postcodeValue == "") {
+            error6.innerText = 'This field is required'
+            flag = 2
+        } else if (postcodeValue.match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
+            error6.innerText = 'Enter valid Pincode '
+            flag = 2
+        }
+        //Phone Number
+        if (mobileValue == "") {
+            error7.innerText = "This field is required"
+            flag = 2
+        } else if (!mobileValue.match(/^(\+\d{1,3}[- ]?)?\d{10}$/)) {
+            error7.innerText = 'Enter valid phone number'
+            flag = 2
+        }
+        //Email Valued
+        if (emailValue == "") {
+            error8.innerText = "This field is required"
+            flag = 2
+        } else if (!emailValue.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            error8.innerText = "Enter a valid email"
+            flag = 2
+        }
+
+        if(flag==1)
+{    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue,codValue)
+}          
   }
 
 
 
-  
+
       //ADD COUNTRY BEFORE POSTCODE AND AFTER TOWN 
   function submit(fName, lName, address, landmark, town, postcode, mobile, email,codValue) {
     $.ajax({
