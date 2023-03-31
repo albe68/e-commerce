@@ -252,16 +252,8 @@
 
         $("#checkout-form").submit((e)=>{
             e.preventDefault();
-
-            $.ajax({
-                url:'/order',
-                method:'post',
-                data:$('#checkout-form').serialize(),
-                success:(response)=>{
-                    console.log("OKAYYYYYYY")
-                    validator()
-                }
-            })
+            validator()
+          
         })
 
 function validator() {
@@ -275,7 +267,7 @@ function validator() {
       const postcode = document.getElementById('postcode')
       const mobile = document.getElementById('mobile')
       const email = document.getElementById('email')
-      
+      const cod=document.getElementById('cod')
       
       const fNameValue = fName.value.trim()
         const lNameValue = lName.value.trim()
@@ -285,15 +277,20 @@ function validator() {
         const postcodeValue = postcode.value.trim()
         const mobileValue = mobile.value.trim()
         const emailValue = email.value.trim()
+        const codValue = cod.value.trim()
+
       console.log("hahahahah")
       console.log(fNameValue)
           
-    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue)
+    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue,codValue)
           
   }
 
+
+
+  
       //ADD COUNTRY BEFORE POSTCODE AND AFTER TOWN 
-  function submit(fName, lName, address, landmark, town, postcode, mobile, email) {
+  function submit(fName, lName, address, landmark, town, postcode, mobile, email,codValue) {
     $.ajax({
           url: '/order',
           method: 'post',
@@ -306,12 +303,19 @@ function validator() {
               postcode: postcode,
               mobile: mobile,
               email: email,
+              paymentMethod:codValue
               
               
           },
           success: (response) => {
-            console.log(response)
-            window.location.href = '/order-success'
+            Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'Order Successfull,Redirecting',
+    showConfirmButton: false,
+    timer: 1500
+    })
+            if(response.statusCod){window.location.href = '/order-success'}
 
             
           }
