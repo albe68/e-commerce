@@ -1,0 +1,279 @@
+  <!-- Modal -->
+  <div class="modal fade custom-modal" id="onloadModal" tabindex="-1" aria-labelledby="onloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">              
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+            <div class="modal-body">
+                <div class="deal" style="background-image: url('assets/imgs/cart/order-placed-sucess.png')">
+                   
+                   
+                    <div class="deal-bottom">
+                        
+                        <a href="shop-grid-right.html" data-bs-dismiss="modal" class="btn hover-up">View Order <i class="fi-rs-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>        
+    </div>
+    </div>
+</div>
+
+
+<section class="container-fluid" style="background-image: url('/assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h2 class="pt-4"><b>Dashboard</b></h2>
+      <p class="pb-4" style="text-transform: capitalize;">Dashboard </p>
+    </div>
+  </section>
+  
+  <section class="container mb-5">
+    <div class="row">
+      <div class="col-3 d-none d-md-block">
+        <ul style="list-style: none;" class="list_features">
+          <li class="p-3 card d-flex" onclick="window.location.href='/dashboard'">
+            <div>
+              <i class="fa-solid fa-user"></i>
+              <span class="ml-2">Account</span>
+            </div>
+          </li>
+          <li class="p-3 card mt-2 d-flex bg-light" onclick="window.location.href='/dashboard/orders'">
+            <div>
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="ml-2">Orders</span>
+            </div>
+          </li>
+          <li class="p-3 card mt-2 d-flex " onclick="window.location.href='/dashboard/address'">
+            <div>
+              <i class="fa-solid fa-address-book"></i>
+              <span class="ml-2">Address</span>
+            </div>
+          </li>
+          <li class="p-3 card mt-2 d-flex " onclick="window.location.href='/dashboard/wallet'">
+            <div>
+              <i class="fa-solid fa-wallet"> </i>
+              <span class="ml-2">Wallets</span>
+            </div>
+          </li>
+          <li class="p-3 card mt-2 d-flex " onclick="window.location.href='/dashboard/security'">
+            <div>
+              <i class="fa-solid fa-lock"></i>
+              <span class="ml-2">Security</span>
+            </div>
+          </li>
+          <li class="p-3 card mt-2 d-flex " onclick="logout()">
+            <div>
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span class="ml-2">Logout</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-9 col-12">
+        <div class="border rounded h-100 p-3 p-md-4">
+  
+          <!-- Selection for account page -->
+          <section class="account_dash">
+            <!-- <div style="position: absolute ; top: 20px; right:30px; cursor: pointer;">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </div> -->
+  
+            
+            <div class=" mt-2 p-0">
+              <div class="row">
+                <div class="col-12 col-md-2 mb-md-0 mb-4">
+                  <img class="img-fluid"  alt="">
+                </div>
+                <div class="col-10">
+                  <h6 class="mb-0 d-md-flex d-block justify-content-between">
+                   
+                    <div>
+                      <small>
+                       
+                      </small>
+                    </div>
+                  </h6>
+                  <p>Order ID : 
+                    <span style="text-transform: capitalize;" class="d-flex align-items-center">
+                      Order Status :
+                      
+                     
+                      <!-- <div class="spinner-grow spinner-grow-sm text-secondary"></div> -->
+
+                      <!-- <div class="spinner-grow spinner-grow-sm text-danger"></div> -->
+                     
+                    </span>
+                    <span class="order_status_info" style="text-transform: capitalize;">Payment Status : </span> <br>
+                    <span style="text-transform: capitalize ;">
+                     
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center" 
+                  <!-- <i class="fa-solid fa-circle-info"></i> -->
+                  <span class="mx-2"> View Product</span>
+                </button>
+                <button class="btn btn-dark rounded w-100 d-md-none py-3" 
+                  <!-- <i class="fa-solid fa-circle-info"></i> -->
+                  View Product
+                </button>
+  
+               
+                <button class="btn btn-dark rounded w-100 d-md-none py-3 mt-2" >Cancel Order</button>
+                <button class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center" >Cancel Order</button>
+                <button class="btn btn-dark rounded w-100 d-md-none py-3 mt-2" >Return order</button>
+                <button class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center" >Return order</button>
+               
+  
+               
+                <button class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center"  >
+                  <i class="fa-solid fa-download"></i>
+                  <span class="mx-2">Download invoice</span>
+                </button>
+                <button class="btn btn-dark rounded w-100 d-md-none mt-2 py-3" >
+                  <i class="fa-solid fa-download"></i>
+                  <span>Download invoice</span>
+                </button>
+               
+  
+              </div>
+  
+            </div>
+            <hr>
+           
+  
+  
+            
+            <div class="h-100 w-100 text-center">
+              <h5>Your orders will be here once you orderd</h5>
+            </div>
+           
+            <!-- edit button -->
+            <div class="row w-100">
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <p><span class="text-info">NOTE : </span>A reload is required to reflect changes all across the page</p>
+              </div>
+            </div>
+           
+  
+            <script>
+              // orders scripts here
+            </script>
+            <script src="/js/user/dashboard.js"></script>
+          </section>
+          <!-- account page selection end -->
+  
+        </div>
+      </div>
+    </div>
+    <script>
+      function logout() {
+  
+        fetch('/user_logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: "log me out"
+            })
+          })
+          .then(res => res.json())
+          .then(res => {
+            if (res.status == 'error') {
+              disp({
+                message: res.message,
+                isGood: false
+              })
+            } else {
+              window.location.href = res.action;
+            };
+          })
+          .catch(error => {
+            disp({
+              message: error,
+              isGood: false
+            });
+          });
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/easyinvoice/dist/easyinvoice.min.js"></script>
+    <script>
+      const generateReport = async (orderID) => {
+        try {
+  
+          // getting order details from server
+          const dataFromServer = await fetch(`/order/invoice/${orderID}`, {
+            method: 'GET'
+          });
+          // parsing response
+          const res = await dataFromServer.json();
+  
+          if (res.status == 'error') throw res.message;
+  
+          const orderData = res.message;
+          const productsData = [];
+  
+          for (const {
+              order: {
+                products: product
+              }
+            } of orderData) {
+  
+            productsData.push({
+              quantity: product.quantity,
+              description: product.title,
+              'tax-rate': 0,
+              price: product.price - product?.offer
+            });
+  
+          };
+  
+          const data = {
+            "images": {
+              "logo": "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"
+            },
+            "sender": {
+              "company": "Nester",
+              "address": "Nester, India",
+              "zip": "000-000",
+              "city": "Kochi",
+              "country": "India"
+            },
+            "client": {
+              "company": "-",
+              "address": orderData[0].order.address.name + ", " + orderData[0].order.address.houseNumber,
+              "zip": orderData[0].order.address.postalCode,
+              "city": orderData[0].order.address.town,
+              "country": orderData[0].order.address.country
+            },
+            "information": {
+              "number": orderData[0]?.order?.orderID,
+             
+            },
+            "products": productsData,
+            "bottom-notice": "Thank you for puchasing from Nester",
+            "settings": {
+              "currency": "INR",
+              "tax-notation": "vat",
+              "margin-top": 25,
+              "margin-right": 25,
+              "margin-left": 25,
+              "margin-bottom": 25
+            }
+          };
+  
+  
+          easyinvoice.createInvoice(data, function(result) {
+            easyinvoice.download('orderInvoice.pdf', result.pdf);
+            //	you can download like this as well:
+            //	easyinvoice.download();
+            //	easyinvoice.download('myInvoice.pdf');   
+          });
+  
+        } catch (error) {
+          notify(error);
+        };
+      }
+    </script>
+  </section>
