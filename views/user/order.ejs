@@ -1,0 +1,325 @@
+<main class="main">
+  <div class="page-header breadcrumb-wrap">
+      <div class="container">
+          <div class="breadcrumb">
+              <a href="index.html" rel="nofollow">Home</a>
+              <span></span> Shop
+              <span></span> Checkout
+          </div>
+      </div>
+  </div>
+  <section class="mt-50 mb-50">
+      <div class="container">
+          <div class="row">
+
+              <div class="col-lg-6 mb-sm-15 py-2"
+                  style="border:1px solid #e2e9e1; background-color:#f7f8f9; border-radius: 10px;">
+                
+
+
+                      <!-- <div class="custome-radio">
+                          <input class="form-check-input"  required=""
+                              type="radio" role="button" name="addressRadio" data-toggle="collapse" href="#collapse-3"
+                              aria-expanded="true" aria-controls="collapse-3" id="addressRadio" checked=""
+                              value="">
+                          <label class="form-check-label" for= data-bs-toggle="collapse"
+                              data-target="#bankTranfer" aria-controls="bankTranfer">
+                             
+                          </label>
+                      </div>
+
+                     
+                          <div class="row">
+                              <span class="text-info addAddress" onclick="clearAll()">Add new address</span>
+                          </div> -->
+                          <div class="panel-collapse collapse login_form" id="loginform">
+                              <div class="panel-body">
+                                  <p class="mb-30 font-sm">If you have shopped with us before, please enter your
+                                      details
+                                      below. If you are a new customer, please proceed to the Billing &amp; Shipping
+                                      section.
+                                  </p>
+                                  <form method="">
+                                      <div class="form-group">
+                                          <input type="text" name="email" placeholder="Username Or Email">
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="password" name="password" placeholder="Password">
+                                      </div>
+                                      <div class="login_footer form-group">
+                                          <div class="chek-form">
+                                              <div class="custome-checkbox">
+                                                  <input class="form-check-input" type="checkbox" name="checkbox"
+                                                      id="remember" value="">
+                                                  <label class="form-check-label" for="remember"><span>Remember
+                                                          me</span></label>
+                                              </div>
+                                          </div>
+                                          <a href="#">Forgot password?</a>
+                                      </div>
+                                      <div class="form-group">
+                                          <button class="btn btn-md" name="login">Log in</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+
+
+              </div>
+              <div class="col-lg-6">
+                  <div class="toggle_info">
+                      <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
+                              href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click
+                              here to enter your code</a></span>
+                  </div>
+                  <div class="panel-collapse collapse coupon_form " id="coupon">
+                      <div class="panel-body">
+                          <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                          <p class="mx-auto" id="errorCoupon"></p>
+                              <div class="form-group">
+                                  <input type="text" placeholder="Enter Coupon Code..." id="couponId">
+                              </div>
+                              <div class="form-group">
+                                  <button class="btn  btn-md" type="button" onclick="" name="login">Apply
+                                      Coupon</button>
+                              </div>
+                  
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                  <div class="divider mt-50 mb-50"></div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="mb-25">
+                      <h4>Billing Details</h4>
+                  </div>
+                  <form action="/order" method="post" id="checkout-form">
+                      <div class="form-group">
+                          <input type="text" required="" name="fname" id="fName" placeholder="First name *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input type="text" required="" name="lname" id="lName" placeholder="Last name *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div> <!--SELECT A COUNTRY-->
+                      <!-- <div class="form-group">
+                          <div class="custom_select">
+
+                              <select class="form-control select-active" id="country">
+                                  <option value="">Select an option...</option>
+                                 
+                                      <option>
+                                        
+                                      </option>
+                                      
+                              </select>
+                              <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                          </div>
+                      </div> -->
+                      <div class="form-group">
+                          <input type="text" name="billing_address" id="address" required="" placeholder="Address *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input required="" type="text" name="city" id="town" placeholder="City / Town *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input required="" type="text" name="landmark" id="landmark"
+                              placeholder="Appartments, suite, unit etc ... *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input required="" type="text" name="zipcode" id="postcode" placeholder="Postcode / ZIP *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input required="" type="text" name="phone" id="mobile" placeholder="Phone *">
+                          <!-- <input name="user"  id="user" value=" <%=user._id%> " type="hidden" /> ////hidden user -->
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+                      <div class="form-group">
+                          <input required="" type="text" name="email" id="email" placeholder="Email address *">
+                          <p class="d-flex w-75 justify-content-start" style="color: rgb(230, 43, 40);"></p>
+                      </div>
+
+                      <!-- <button type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button> -->
+                        
+                 
+                        </div>
+                            <div class="col-md-6">
+                     <div class="order_review">
+                      <div class="mb-20">
+                          <h4>Your Orders</h4>
+                      </div>
+                      <div class="table-responsive order_table text-center">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th colspan="2">Product</th>
+                                      <th>Total</th>
+                                  </tr>
+                              </thead>
+
+                              <tbody>
+                                 
+                                      <!-- <tr>
+                                          <td class="image product-thumbnail"><img
+                                                  src="/productImages/ " alt="#">
+                                          </td>
+                                          <td>
+                                              <h5><a href="shop-product-full.html">
+                                                      
+                                                  </a></h5> <span class="product-qty"> <%=cartItems[0].quantity%>x <%=cartItems[0].quantity%>
+                                              </span>
+                                          </td>
+                                          <td>₹<%=totalPrice%>
+                                          </td>
+                                      </tr> -->
+                                      
+                                          <tr>
+                                              <th>SubTotal</th>
+                                              <td class="product-subtotal" colspan="2">₹<%=totalPrice%>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <th>Coupon Discount</th>
+                                              <td id="discPrice" colspan="2">₹ 0
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <th>Shipping</th>
+                                              <td colspan="2"><em>Free Shipping</em></td>
+                                          </tr>
+                                          <tr>
+                                              <th>Total</th>
+                                              <td colspan="2" class="product-subtotal"><span
+                                                      class="font-xl text-brand fw-900" id="totalCartPrice">₹<%=totalPrice%> </span></td>
+                                          </tr>
+                              </tbody>
+
+                          </table>
+                      </div>
+                      <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+
+                      <div class="payment_method">
+                          <div class="mb-25">
+                              <h5>Payment Method</h5>
+                          </div>
+                          <div class="payment_option">
+                              <div class="custome-radio" id="paymentMethod">
+                                  <input class="form-check-input" required="" type="radio" id="cod" value="COD"
+                                      name="paymentMethod" checked="" />
+                                  <label class="form-check-label" name="paymentMethod" for="cod"
+                                      aria-controls="bankTranfer">Cash on Delivery</label>
+                              </div>
+                              <!-- <div class="custome-radio">
+                                  <input class="form-check-input" required="" type="radio" name="paymentMethod"
+                                      id="razorpay" value="razorpay" checked="" />
+                                  <label class="form-check-label" name="paymentMethod" for="razorpay"
+                                      aria-controls="checkPayment">Razorpay</label>
+                              </div>
+                              <div class="custome-radio">
+                                  <input class="form-check-input" required="" name="paymentMethod" type="radio"
+                                      id="paypal" value="paypal" checked="" />
+                                  <label class="form-check-label" for="paypal" name="paymentMethod"
+                                      aria-controls="paypal">Paypal</label>
+                                  <div id="paypal1"></div>
+                              </div> -->
+                              
+                              
+
+                          </div>
+                      </div>
+                      <button href="/order-success" type="submit"   class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                  </div>
+              </div>
+          </div>
+        </form>
+      </div>
+  </section>
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script>
+    
+
+        $("#checkout-form").submit((e)=>{
+            e.preventDefault();
+
+            $.ajax({
+                url:'/order',
+                method:'post',
+                data:$('#checkout-form').serialize(),
+                success:(response)=>{
+                    console.log("OKAYYYYYYY")
+                    validator()
+                }
+            })
+        })
+
+function validator() {
+  
+    //getting id of every data
+      const fName = document.getElementById('fName')
+      const lName = document.getElementById('lName')
+      const street = document.getElementById('address')
+      const apartment = document.getElementById('landmark')
+      const town = document.getElementById('town')
+      const postcode = document.getElementById('postcode')
+      const mobile = document.getElementById('mobile')
+      const email = document.getElementById('email')
+      
+      
+      const fNameValue = fName.value.trim()
+        const lNameValue = lName.value.trim()
+        const streeValue = street.value.trim()
+        const apartmentValue = apartment.value.trim()
+        const townValue = town.value.trim()
+        const postcodeValue = postcode.value.trim()
+        const mobileValue = mobile.value.trim()
+        const emailValue = email.value.trim()
+      console.log("hahahahah")
+      console.log(fNameValue)
+          
+    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue)
+          
+  }
+
+      //ADD COUNTRY BEFORE POSTCODE AND AFTER TOWN 
+  function submit(fName, lName, address, landmark, town, postcode, mobile, email) {
+    $.ajax({
+          url: '/order',
+          method: 'post',
+          data: {
+              fName: fName,
+              lName: lName,
+              address: address,
+              landmark: landmark,
+              town: town,
+              postcode: postcode,
+              mobile: mobile,
+              email: email,
+              
+              
+          },
+          success: (response) => {
+            console.log(response)
+            window.location.href = '/order-success'
+
+            
+          }
+      })
+  }
+
+
+  
+
+
+</script>
