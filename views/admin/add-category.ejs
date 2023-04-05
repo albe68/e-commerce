@@ -39,19 +39,20 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/category/add-categories" method="post">
+                            <form action="">
+                                <p id="error" class="text-center"></p>
+
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="category" />
+                                    <input required name="categories" type="text" placeholder="Type here" class="form-control" id="cate"  />
+                                    <p class='d-flex justify-content-center' style="color: rgb(400, 90, 32);">
+                                    </p>
                                 </div>
                                
                              
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control"></textarea>
-                                </div> -->
+                               
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Create category</button>
+                                    <button type="button" class="btn btn-primary" onclick="add()">Create category</button>
                                 </div>
                             </form>
                         </div>
@@ -69,7 +70,7 @@
                                             <th>Description</th>
                                             <th></th>
                                             
-                                            <th class="text-end">Action</th>
+                                            <th >Action</th>
                                         </tr>
                                         
                                     </thead>
@@ -82,7 +83,7 @@
                                             <td><b>Interiors</b></td>
                                             
                                            
-                                                <td class="text-center"></td> <%= element.category %> </td>
+                                                <!-- <td class="text-center"></td> <%= element.category %> </td> -->
                                                 <!-- <td class="text-center"></td>><%= element.description %></td> -->
                                               
                                                 <td class="text-end">
@@ -91,11 +92,12 @@
                                                   <a href="/admin/category/edit_categories/<%=element?._id %>"
                                                     class="btn btn-sm font-sm rounded btn-brand">
                                                     <i class="material-icons md-edit"></i> Edit
-                                                </a>
-                                                <a href="/admin/category/delete_categories/<%=element?._id %>"
+                                                </a>  
+                                                <a href="/admin/category/kutta/<%=element?._id %>"
                                                     class="btn btn-sm font-sm btn-danger rounded" >
                                                     <i class="material-icons md-delete_forever "></i> Delete
                                                 </a>
+                                               
                                                 </td>
                                             
                                             
@@ -127,16 +129,88 @@
             </div>
         </footer>
     </main>
-    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <!-- <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="assets/js/vendors/select2.min.js"></script>
     <script src="assets/js/vendors/perfect-scrollbar.js"></script>
-    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script> -->
     <!-- Main Script -->
-    <script src="assets/js/main.js" type="text/javascript"></script>
+    <!-- <script src="assets/js/main.js" type="text/javascript"></script> -->
+
+    <!--TURN THIS ON I JUST TESTED ALL SCRIPTS FROM JQUERY TO MAIN SCRIPT--> 
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 </html>
+
+<script>
+    function add(){
+        console.log("12")
+        let cate=document.getElementById('cate')
+        
+
+        cateval = cate.value.trim();
+        
+
+        let error1 = cate.parentElement.querySelector('p');
+       
+  
+        
+        error1.innerText = "";
+        
+  
+  
+        const arr = [cate];
+
+        arr.forEach((e) => {
+            e.addEventListener("keyup", () => {
+                e.parentElement.querySelector('p').innerText = ""
+            })
+        })
+  
+        let flag=1;
+        if (cateval == "") {
+            error1.innerText = "Category field is required"
+            flag = 2;
+        }
+        if(flag==1){
+            submit(cateval)
+        }
+
+        function submit(cate){
+            fetch('/admin/category/add-categories/',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    category: cate.toLowerCase(),
+                    
+                })
+            }).then((res)=>res.json())
+            .then((res)=>{
+                if (res.value == "error") {
+                        var error = document.getElementById('error')
+                        error.style.color = 'rgb(500,0,0)'
+                        error.innerText = 'Category already exist'
+                    }
+                    else {
+                        var error = document.getElementById('error')
+                        error.innerText = 'Category added Succesfully'
+                        error.style.color = "rgb(53,200,0)"
+                        setTimeout(() => {
+                            window.location.href = "/admin/category"
+                        }, 1000)
+
+                    }
+            }
+            
+            
+            )
+        }
+
+
+  }
+</script>
 
