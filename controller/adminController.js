@@ -2,7 +2,7 @@ const db=require("../model/connection")
 const productHelpers = require("../helpers/productHelpers")
 const userHelpers=require("../helpers/userHelpers")
 // const fileupload=require("express-fileupload")
-const { admin, category,products, user } = require("../Model/connection");
+const { admin, category,products, user,order } = require("../model/connection");  //changed Model to model
 const session=require('express-session')
 const {response}=require("../app")
 const mongoose = require("mongoose");
@@ -14,7 +14,7 @@ var bodyParser = require('body-parser');
 const auth=require("../controller/auth")
 const adminHelpers = require("../helpers/adminHelpers");
 
-const multer  = require('multer')
+const orderHelpers = require("../helpers/orderHelpers");
 
 
 // let adminData={
@@ -22,7 +22,26 @@ const multer  = require('multer')
 //     password:"admin",
 //     name:"Albert"
 // }
+
+//add product with multer
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + file.originalname
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+})
+const upload = multer({ storage: storage })
+const add_image = upload.array('image', 12)
+
+
 module.exports={
+
+  
   getAdminPanel:(req,res)=>{
     try{
       if(req.session.adminIn){
@@ -111,50 +130,49 @@ module.exports={
  
   },
 //ADD PRODUCTS
-getAddProducts: (req, res) => {
-      
-        productHelpers
-          // .getAllProducts()
-          // .then((products) => {
-            res.render("admin/add-product", {
-              layout: "adminLayout",products})
-              
-            // });
-          // })
-      },
-      postProducts:(req,res)=>{
-        console.log(req.body);
+getAddProducts: async(req, res) => {
+    await productHelpers.getAllcategory().then((category)=>{
+      console.log("jksajsklajsklajkasjkaljs",category,"asjkajkskajskajsklajska")
+
+      productHelpers.getAllProducts()
+      .then((products) => {
         
-       
-        productHelpers.postAddProduct(req.body, req.file.filename).then((response)=>{
-          res.redirect('/admin/add-product')
-      })
-    },
-  postAddProduct: (req, res) => {
-  productHelpers.addProduct(req.body).then((insertedId) => {
-      //  console.log(req.body)
-        var obj={
-          image: {
-           data: fs.readFileSync(path.join('public/uploads/'+ req.file.filename)),
-            contentType: 'image/png'
-            }
-        }
-        products.create(obj, (err, products) => {
-          if (err) {
-            
-          console.log(err);
-          }
-          else {
-          products.save();
-          console.log("IMAGE ADDED")
+        res.render("admin/add-product", {
+          layout: "adminLayout",products,category})
           
-          res.redirect('/admin/add-product');
-          }
-          });
+        });
+
+
+     })
+     
+      // console.log("jasajkshjashajkhsakjshajkshakjshkas",category)
+       
         
-        
-      })
-      .catch((err) => console.log(err));
+      },
+
+
+// postProducts:(req,res)=>{
+//         console.log(req.body);
+//         console.log(req.file.filename)
+       
+//         productHelpers.postAddProduct(req.body, req.file.filename).then((response)=>{
+//           res.redirect('/admin/add-product')
+//       })
+//     },
+
+    
+
+postAddProduct: async (req, res) => {
+console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
+  try{
+    productHelpers.addProduct(req.body).then((insertedId)=>{
+      console.log("product added");
+      res.redirect('/admin/add-product')
+    })
+  }
+  catch(error){
+    console.log(error)
+  }
   },
 
   Products:(req,res)=>{
@@ -164,21 +182,11 @@ getAddProducts: (req, res) => {
     })
  
   },
-  // editProduct: (req, res) => {
-  //   let proId = req.params.id;
-  //   productHelpers
-  //     .getProduct(proId)
-  //     .then((product) => {
-  //       res.render("admin/edit-product", {
-  //         layout: "admin-layout",
-  //         product,
-  //       });
-  //     })
-  //     .catch((err) => console.log(err));
-  // },
+
   getEditProducts:(req,res)=>{
    let proId = req.params.id;
    console.log("get:",proId)
+   
   productHelpers.getProduct(proId).then((products) => {
         res.render("admin/edit-product", {
           products,
@@ -216,6 +224,7 @@ getAddProducts: (req, res) => {
     productHelpers.deleteProduct(proId)
     
     .then(() => {
+      
       console.log("hiiiii")
       res.redirect("/admin/products");
     })
@@ -262,10 +271,12 @@ getAddProducts: (req, res) => {
         .addCategory(req.body).then((response) => {
           
           if (response == false) {
+            res.send({ value: "error" });
             console.log("ALREADY EXSISTS")
             res.redirect("/admin/category")
           } 
           else {
+            res.send({ value: "good" });
             console.log("responseeeeeeeeeeeeeeeeeeeeeee",response)
             res.redirect("/admin/category")
           }
@@ -280,9 +291,10 @@ getAddProducts: (req, res) => {
   },
 
   deleteCategory: (req, res) => {
-    console.log("HEYY")
+    try{
+      console.log("HEYY")
     let cateId = req.params.id;
-    console.log("Moneeeeeeeeeeeeeeee")
+    console.log(cateId)
     productHelpers.deleteCategory(cateId)
       .then(() => {
         console.log("hiiiii")
@@ -290,8 +302,13 @@ getAddProducts: (req, res) => {
         res.redirect("/admin/category");
       })
       .catch((err) => console.log("ERROR"));
+    }catch(error){
+      console.log(error)
+    }
   },
-  
+  ud:(req,res)=>{
+console.log(req.params.id)  }
+  ,
   
   // Edit Category
 
@@ -372,9 +389,21 @@ getAddProducts: (req, res) => {
       })
       .catch((err) => console.log(err));
   },
-  Orders(req,res){
-    res.render("admin/orders",{layout:"adminLayout"})
-    console.log("a~~b")
+  getAdminOrders:(req,res)=>{
+    
+   try{
+   
+    orderHelpers.getAdminOrders()
+    .then((data)=>{
+      console.log("WORKING",data)
+      
+      res.render("admin/orders",{layout:"adminLayout",data})
+
+    })}
+    catch(error){
+      console.log("errrorr")
+    }
+    
   }
     } 
 
