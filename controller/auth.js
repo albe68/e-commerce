@@ -1,5 +1,9 @@
+
+
 module.exports={
-verifyLogin:(req,res,next)=>{
+verifyLogin:async(req,res,next)=>{
+   
+    console.log("USER VERIFIED")
     if(req.session.user)
 {
     next()
