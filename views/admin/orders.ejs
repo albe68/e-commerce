@@ -71,27 +71,40 @@
                                     <th scope="col" class="text-end"> Action </th>
                                 </tr>
                             </thead>
+                          
                             <tbody>
-                                <tr>
-                                    <td>0901</td>
-                                    <td><b>Marvin McKinney</b></td>
-                                    <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td>
-                                    <td>$9.00</td>
-                                    <td><span class="badge rounded-pill alert-warning">Pending</span></td>
-                                    <td>03.12.2020</td>
+                                <% data.forEach(element => { %>
+                                
+
+                                <tr>  
+                                    <td><%= element?._id  %></td>
+                                    <td><b><%= element?.orders.fName%></b></td>
+                                    <td><%= element?.orders.email %> </td>
+                                    <td><%= element?.orders.totalPrice %></td>
+                                    <td><span class="badge rounded-pill alert-warning"><%= element?.orders.paymentStatus %></span></td>
+                                    <td><%= element?.orders.createdAt %></td>
                                     <td class="text-end">
-                                        <a href="#" class="btn btn-md rounded font-sm">Cancel</a>
-                                        <div class="dropdown">
+                                        <%if(element?.orders.paymentStatus=='placed'){%>
+
+                                        <button onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')" class="btn btn-md rounded font-sm">Cancel</button>
+                                     
+                                        <%}else{%>
+                                        <p href="#" class=" btn-md rounded font-md btn-danger">Product Canceled</p>
+                                        <%}%>
+                                        <!-- <div class="dropdown">
                                             <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#">View detail</a>
                                                 <a class="dropdown-item" href="#">Edit info</a>
                                                 <a class="dropdown-item text-danger" href="#">Delete</a>
                                             </div>
-                                        </div> <!-- dropdown //end -->
+                                        </div>  -->
+                                        <!-- dropdown //end -->
                                     </td>
                                 </tr>
+                                <%  }); %> 
                             </tbody>
+                            
                         </table>
                     </div> <!-- table-responsive //end -->
                 </div> <!-- card-body end// -->
@@ -125,3 +138,25 @@
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
 </html>
+
+<script>
+   function cancelOrder(proId,ordId) {
+    console.log( proId,ordId);
+    $.ajax({
+      url: "/cancel-order",
+      data: {
+        proId:proId,
+        orderId: ordId,
+      },
+      method: "post",
+      success: (response) => {
+        console.log("HELLOOO");
+        if(response){
+          location.reload()
+        }
+        
+      },
+    });
+    Swal.fire('Canceled')
+  }
+</script>
