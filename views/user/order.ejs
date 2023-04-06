@@ -208,7 +208,7 @@
                       </div>
                       <div class="bt-1 border-color-1 mt-30 mb-30"></div>
 
-                      <div class="payment_method">
+                      <div class="payment_metho">
                           <div class="mb-25">
                               <h5>Payment Method</h5>
                           </div>
@@ -219,13 +219,15 @@
                                   <label class="form-check-label" name="paymentMethod" for="cod"
                                       aria-controls="bankTranfer">Cash on Delivery</label>
                               </div>
-                              <!-- <div class="custome-radio">
+                              <div class="custome-radio">
                                   <input class="form-check-input" required="" type="radio" name="paymentMethod"
                                       id="razorpay" value="razorpay" checked="" />
                                   <label class="form-check-label" name="paymentMethod" for="razorpay"
                                       aria-controls="checkPayment">Razorpay</label>
                               </div>
-                              <div class="custome-radio">
+
+                              
+                              <!-- <div class="custome-radio">
                                   <input class="form-check-input" required="" name="paymentMethod" type="radio"
                                       id="paypal" value="paypal" checked="" />
                                   <label class="form-check-label" for="paypal" name="paymentMethod"
@@ -266,6 +268,8 @@ function validation(e) {
       const mobile = document.getElementById('mobile')
       const email = document.getElementById('email')
       const cod=document.getElementById('cod')
+      const payment_method=document.getElementbyId('paymentMethod')
+      
       
       const fNameValue = fName.value.trim()
         const lNameValue = lName.value.trim()
@@ -321,7 +325,7 @@ function validation(e) {
           //Last Name
           if (lNameValue == "") {
             error2.innerText = 'This field is required'
-        } else if (lNameValue.length < 2) {
+        } else if (lNameValue.length < 1) {
             error2.innerText = "Last name must be minimum 1 characters"
             flag = 2
         } else if (!lNameValue.match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
