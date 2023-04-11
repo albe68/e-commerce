@@ -1,20 +1,21 @@
 var express = require("express");
 var router = express.Router();
 var auth=require("../controller/auth")
+// 30-03-23 commented
+// const multer  = require('multer')
 
-const multer  = require('multer')
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//       cb(null, 'public/uploads/') 
+//       //  had put ./ before public
+//   },
+//   filename: function (req, file, cb) {            //file name of the image uploaded file
+//       const uniqueSuffix = Date.now() + '-' + file.originalname 
+//       cb(null, file.fieldname + '-' + uniqueSuffix)
+//   }
+// })
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      cb(null, 'public/uploads/')
-  },
-  filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + file.originalname
-      cb(null, file.fieldname + '-' + uniqueSuffix)
-  }
-})
-
-const upload = multer({ storage: storage })
+// const upload = multer({ storage: storage })
 
 
 
@@ -23,7 +24,7 @@ const { admin } = require("../model/connection");
 
 router.get("/",adminController.getAdminPanel);
 /* GET users listing. */
-router.get("/login",adminController.getAdminLogin)
+-router.get("/login",adminController.getAdminLogin)
 
 
 // Post Admin Login Router//
@@ -35,17 +36,16 @@ router.get('/products',auth.verifyAdmin,adminController.Products)
 //add product//
 router.get("/add-product",auth.verifyAdmin,adminController.getAddProducts);
 
-
-router.post("/add-products",upload.single('image'),adminController.postProducts);
+// ,upload.single('image')
+router.post("/add-products",adminController.postAddProduct);
 
 
 //edit product//
 router.get("/products/edit-product/:id",auth.verifyAdmin,adminController.getEditProducts);
 router.post("/products/edit_product/:id",adminController.postEditProducts);
 
-// router.post("/edit-products/:id",adminController.postEditProducts);
 //delete product//
-router.post("/products/delete_product/:id",adminController.getdeleteProducts)
+router.get("/products/delete_product/:id",adminController.getdeleteProducts)
 
 
 
@@ -65,7 +65,7 @@ router.post('/category/add-categories',auth.verifyAdmin,adminController.addCateg
 
 // Delete Category Router//
 
-router.post('/category/delete_categories/:id',adminController.deleteCategory);
+router.get('/category/kutta/:id',adminController.deleteCategory);
 
 // Edit Category Router//
 
@@ -74,8 +74,8 @@ router.get('/category/edit_categories/:id',auth.verifyAdmin,adminController.edit
 // Edit Category Router//
 
 router.post('/category/edit_categories/:id',adminController.updateCategory);
-//Order management 
-router.get('/orders',adminController.Orders)
+//Order Management //
+router.get('/orders',adminController.getAdminOrders)
 
 
 module.exports = router;
