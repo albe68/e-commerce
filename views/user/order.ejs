@@ -208,20 +208,20 @@
                       </div>
                       <div class="bt-1 border-color-1 mt-30 mb-30"></div>
 
-                      <div class="payment_metho">
+                      <div class="payment_method">
                           <div class="mb-25">
                               <h5>Payment Method</h5>
                           </div>
                           <div class="payment_option">
-                              <div class="custome-radio" id="paymentMethod">
+                              <div class="custome-radio" id="paymentMethod" >
                                   <input class="form-check-input" required="" type="radio" id="cod" value="COD"
                                       name="paymentMethod" checked="" />
                                   <label class="form-check-label" name="paymentMethod" for="cod"
                                       aria-controls="bankTranfer">Cash on Delivery</label>
                               </div>
                               <div class="custome-radio">
-                                  <input class="form-check-input" required="" type="radio" name="paymentMethod"
-                                      id="razorpay" value="razorpay" checked="" />
+                                  <input class="form-check-input" required="" type="radio"  id="razorpay" value="razorpay"
+                                   name="paymentMethod" value="razorpay" checked="" />
                                   <label class="form-check-label" name="paymentMethod" for="razorpay"
                                       aria-controls="checkPayment">Razorpay</label>
                               </div>
@@ -268,7 +268,7 @@ function validation(e) {
       const mobile = document.getElementById('mobile')
       const email = document.getElementById('email')
       const cod=document.getElementById('cod')
-      const payment_method=document.getElementbyId('paymentMethod')
+        const payment_method=document.getElementById('paymentMethod')
       
       
       const fNameValue = fName.value.trim()
@@ -279,8 +279,8 @@ function validation(e) {
         const postcodeValue = postcode.value.trim()
         const mobileValue = mobile.value.trim()
         const emailValue = email.value.trim()
-        const codValue = cod.value.trim()
-
+        const paymentMethod = e.parentElement.querySelector('input[name="paymentMethod"]:checked').value
+       
         const error1= fName.parentElement.querySelector('p');
         const error2= lName.parentElement.querySelector('p')
         const error3= street.parentElement.querySelector('p')
@@ -373,7 +373,7 @@ function validation(e) {
         }
 
         if(flag==1)
-{    submit(fNameValue, fNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue,codValue)
+{    submit(fNameValue, lNameValue, streeValue, apartmentValue, townValue,  postcodeValue, mobileValue, emailValue,paymentMethod)
 }          
   }
 
@@ -381,7 +381,8 @@ function validation(e) {
 
 
       //ADD COUNTRY BEFORE POSTCODE AND AFTER TOWN 
-  function submit(fName, lName, address, landmark, town, postcode, mobile, email,codValue) {
+  function submit(fName, lName, address, landmark, town, postcode, mobile, email,pmValue) {
+    console.log(fName,lName)
     $.ajax({
           url: '/order',
           method: 'post',
@@ -394,7 +395,7 @@ function validation(e) {
               postcode: postcode,
               mobile: mobile,
               email: email,
-              paymentMethod:codValue
+              paymentMethod:pmValue
               
               
           },
@@ -407,6 +408,10 @@ function validation(e) {
     timer: 1500
     })
             if(response.statusCod){window.location.href = '/order-success'}
+            else{
+                console.log("RAZOR PAY RESPONSE WORKING IN EJS PAGE")
+                razorpay(response)
+            }
 
             
           }
@@ -414,7 +419,88 @@ function validation(e) {
   }
 
 
-  
-
+  function razorpay(data){
+    console.log("ty",data)
+   var options={
+    "key":"rzp_test_HzJZCWFkUXcuQj",
+    "amount":data.amount,
+    "currency":"INR",
+    "name":"Evara",
+    "description":"Test Transaction",
+    "order_id":data._id,
+    "handler":function (response){
+        verifyPayment(response,data)
+    },
+    "modal":{
+        "ondismiss":function(){
+            console.log("checkout form closed")
+        }
+    },
+    "prefill": {
+                "name": data.userName,
+                "email": data.email,
+                "contact": data.mobile
+            },
+            "notes": {
+                "address": "DM Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+    }
+    var rzp1 = new Razorpay(options);
+        rzp1.open();
+    console.log(data)
+  }
+  function verifyPayment(payment,order){
+    $.ajax({
+        url:'/verify_payment',
+        method:'post',
+        data:{
+            payment,order
+        },
+        error:(error)=>{
+            Swal.fire({icon:'error',
+            title: 'Oops...',
+            text: error.responseJSON.message,
+        })
+        },
+        success:(response)=>{
+            if(response.status){
+                let timerInterval
+                Swal.fir({
+                    icon: 'success',
+                        title: 'Order Success!',
+                        html: 'You will be redirected to orders in  <b></b> milliseconds.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                }).then((result)=>{
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer')
+                        } 
+                }).then(function () {
+                        window.location = "/my-account/orders";
+                    });
+            }else {
+                    Swal.fire({
+                        title: 'Payment failed',
+                        icon: 'question',
+                        iconHtml: 'X',
+                    })
+                }
+        }
+    })
+  }
 
 </script>
