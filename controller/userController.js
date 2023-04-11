@@ -194,7 +194,7 @@ module.exports = {
               if (cartCount && user) {
                 res.render("user/cart", {
                   user,
-                  cartItems,
+                  cartItems,                          
                   cartCount,
                   totalPrice,
                 });
@@ -275,7 +275,9 @@ module.exports = {
     try {
       console.log(req.body);
       req.body.userId = await req.session.user._id;
+      
       let totalPrice = await cartHelpers.getTotal(req.session.user._id);
+      
       let products = await cartHelpers.getCartProductList(req.session.user._id);
       console.log(
         "1111111111111111",
@@ -286,9 +288,17 @@ module.exports = {
       orderHelpers
         .placeOrder(req.body, totalPrice, products, req.session.user._id)
         .then((response) => {
-          if (req.body.paymentMethod) {
+          if (req.body.paymentMethod=='COD') {
             console.log("123456785trewfgbxsdbxdfdfsfdsfdsfsdfdfsdfdfsdaf");
             res.json({ statusCod: true });
+          }
+          else  if (req.body.paymentMethod=='razorpay'){
+            
+            orderHelpers.generateRazorPay(req.session.user._id,totalPrice)
+            .then((response)=>{
+              console.log(response,"uk")
+              res.json(response)
+            })
           }
         })
         .catch((err) => {
@@ -349,10 +359,41 @@ module.exports = {
     }
   },
   getprofilePage: async (req, res) => {
-    let user = req?.session?.user;
+    // let user = req?.session?.user;
 
-    let address = await db.address.find({ user: req.session.user._id });
+    // let address = await db.address.find({ user: req.session.user._id });
+    // console.log("in user controller",address)
 
-    res.render("user/profile", { user, address });
+    // res.render("user/profile", { user, address });
+
+    try{
+   
+      orderHelpers.getAdminOrders()
+      .then((data)=>{
+        console.log("WORKING",data)
+        
+        res.render("user/profile",{data})
+        
+  
+      })}
+      catch(error){
+        console.log("errrorr")
+      }
   },
+  verifypayment:(req,res)=>{
+    try{
+      orderHelpers.verifypayment(req.body).then(()=>{
+        orderHelpers.changePaymentStatus(req.session.user,req.body["order[receipt]"])//sus in this line
+        .then(()=>{
+          res.json({status:true});
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      })
+    }
+    catch{
+
+    }
+  }
 };
