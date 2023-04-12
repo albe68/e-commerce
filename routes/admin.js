@@ -65,7 +65,7 @@ router.post('/category/add-categories',auth.verifyAdmin,adminController.addCateg
 
 // Delete Category Router//
 
-router.get('/category/kutta/:id',adminController.deleteCategory);
+router.get('/category/delete_category/:id',adminController.deleteCategory);
 
 // Edit Category Router//
 
