@@ -279,4 +279,5 @@ module.exports = {
       resolve(cart.cartProducts);
     });
   },
+  
 };
