@@ -382,6 +382,7 @@ module.exports = {
   },
   verifypayment:(req,res)=>{
     try{
+      console.log(req.body,"1111111111")
       orderHelpers.verifypayment(req.body).then(()=>{
         orderHelpers.changePaymentStatus(req.session.user,req.body["order[receipt]"])//sus in this line
         .then(()=>{
