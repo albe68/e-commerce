@@ -23,7 +23,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));//change to static
 app.use(express.static(path.join(__dirname, "public/admin-assets")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,8 +34,8 @@ app.use(
     saveUninitialized: false,
     secret: "secretKeyIsSecret",
     resave: false,
-    store: new mongoDbSesson({
-      uri: "mongodb://0.0.0.0:27017/store",
+    store: new mongoDbSesson({  
+      uri: "mongodb://0.0.0.0:27017/store" ,
       collection: "session",
     }),
     cookie: {
