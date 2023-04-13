@@ -1,97 +1,124 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
-<head>
-    <meta charset="utf-8">
+  <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+  <head>
+    <meta charset="utf-8" />
     <title>Evara Dashboard</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="assets/imgs/theme/favicon.svg"
+    />
     <!-- Template CSS -->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="screen-overlay"></div>
-   
+
     <main class="main-wrap">
-       
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Order List </h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div>
-                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
-                </div>
+      <section class="content-main">
+        <div class="content-header">
+          <div>
+            <h2 class="content-title card-title">Order List</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Search order ID"
+              class="form-control bg-white"
+            />
+          </div>
+        </div>
+        <div class="card mb-4">
+          <header class="card-header">
+            <div class="row gx-3">
+              <div class="col-lg-4 col-md-6 me-auto">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  class="form-control"
+                />
+              </div>
+              <div class="col-lg-2 col-6 col-md-3">
+                <select class="form-select">
+                  <option>Status</option>
+                  <option>Active</option>
+                  <option>Disabled</option>
+                  <option>Show all</option>
+                </select>
+              </div>
+              <div class="col-lg-2 col-6 col-md-3">
+                <select class="form-select">
+                  <option>Show 20</option>
+                  <option>Show 30</option>
+                  <option>Show 40</option>
+                </select>
+              </div>
             </div>
-            <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row gx-3">
-                        <div class="col-lg-4 col-md-6 me-auto">
-                            <input type="text" placeholder="Search..." class="form-control">
-                        </div>
-                        <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <option>Show 20</option>
-                                <option>Show 30</option>
-                                <option>Show 40</option>
-                            </select>
-                        </div>
-                    </div>
-                </header> <!-- card-header end// -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col" class="text-end"> Action </th>
-                                </tr>
-                            </thead>
-                          
-                            <tbody>
-                                <% data.forEach(element => { %>
-                                
+          </header>
+          <!-- card-header end// -->
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    <th scope="col" class="text-end">Action</th>
+                  </tr>
+                </thead>
 
-                                <tr>  
-                                    <td><%= element?._id  %></td>
-                                    <td><b><%= element?.orders.fName%></b></td>
-                                    <td><%= element?.orders.email %> </td>
-                                    <td><%= element?.orders.totalPrice %></td>
-                                    <td><span class="badge rounded-pill alert-warning"><%= element?.orders.paymentStatus %></span></td>
-                                    <td><%= element?.orders.createdAt %></td>
-                                    <td class="text-end">
-                                        <%if(element?.orders.paymentStatus=='placed'){%>
+                <tbody>
+                  <% data.forEach(element => { %>
 
-                                        <button onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')" class="btn btn-md rounded font-sm">Cancel</button>
-                                     
-                                        <%}else{%>
-                                        <p href="#" class=" btn-md rounded font-md btn-danger">Product Canceled</p>
-                                        <%}%>
-                                        <!-- <div class="dropdown">
+                  <tr>
+                    <td><%= element?._id %></td>
+                    <td><b><%= element?.orders.fName%></b></td>
+                    <td><%= element?.orders.email %></td>
+                    <td>₹<%= element?.orders.totalPrice %></td>
+                    <td>
+                      <span class="badge rounded-pill alert-warning"
+                        ><%= element?.orders.paymentStatus %></span
+                      >
+                    </td>
+                    <td><%= element?.orders.createdAt %></td>
+                    <td class="col-lg-1 col-md-1 ms-auto text-md-end">
+                      <!-- <select
+                        class="form-select d-inline-block mb-lg-3 mb-15 mw-200"
+                        onchange="deliveryStatus(this,'<%= element?.orders._id %>')"
+                      >
+                       
+                        <option>Delivered</option>
+                      </select> -->
+                      <%if(element?.orders.paymentStatus=='placed'){%>
+
+                      <button
+                        onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')"
+                        class="btn btn-md rounded font-sm"
+                      >
+                        Cancel
+                      </button>
+
+                      <%}else{%>
+                      <p href="#" style="text-align: center;" class="btn-md rounded font-md btn-danger">
+                        Product Canceled
+                      </p>
+                      <%}%>
+                      <!-- <div class="dropdown">
                                             <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#">View detail</a>
@@ -99,64 +126,95 @@
                                                 <a class="dropdown-item text-danger" href="#">Delete</a>
                                             </div>
                                         </div>  -->
-                                        <!-- dropdown //end -->
-                                    </td>
-                                </tr>
-                                <%  }); %> 
-                            </tbody>
-                            
-                        </table>
-                    </div> <!-- table-responsive //end -->
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
-          
-        </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
-                </div>
+                      <!-- dropdown //end -->
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
             </div>
-        </footer>
+            <!-- table-responsive //end -->
+          </div>
+          <!-- card-body end// -->
+        </div>
+        <!-- card end// -->
+      </section>
+      <!-- content-main end// -->
+      <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+          <div class="col-sm-6">
+            <!-- <script
+              data-cfasync="false"
+              src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+            ></script> -->
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+            ©, Evara - HTML Ecommerce Template .
+          </div>
+          <div class="col-sm-6">
+            <div class="text-sm-end">All rights reserved</div>
+          </div>
+        </div>
+      </footer>
     </main>
-    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/vendors/select2.min.js"></script>
-    <script src="assets/js/vendors/perfect-scrollbar.js"></script>
-    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
-    <!-- Main Script -->
-    <script src="assets/js/main.js" type="text/javascript"></script>
-</body>
 
+  </body>
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+  <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
 </html>
 
 <script>
-   function cancelOrder(proId,ordId) {
-    console.log( proId,ordId);
+  function cancelOrder(proId, ordId) {
+    console.log(proId, ordId);
     $.ajax({
       url: "/cancel-order",
       data: {
-        proId:proId,
+        proId: proId,
         orderId: ordId,
       },
       method: "post",
       success: (response) => {
         console.log("HELLOOO");
-        if(response){
-          location.reload()
+        if (response) {
+          location.reload();
         }
-        
       },
     });
-    Swal.fire('Canceled')
+    Swal.fire("Canceled");
+  }
+  function deliveryStatus(element, orderId) {
+    console.log(element.value,"hello"); //find a solution for proId
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3cc75c",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update Order Status",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("works")
+        $.ajax({
+          url: "/admin/orders/update-order",
+          method: 'PUT',
+          data: {
+            delivery: element.value,
+            orderId: orderId,
+          },
+          success: (response) => {
+            console.log(response)
+            if (response.status) {
+              Swal.fire("Updated!", "Order Status is Updated", "success").then(
+                () => {
+                  location.reload();
+                }
+              );
+            }
+          },
+        });
+      }
+    });
   }
 </script>
