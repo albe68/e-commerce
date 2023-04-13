@@ -119,5 +119,26 @@ module.exports={
         }
     })
   }
+  ,
+  totalUserCount:()=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        let response=await db.order.aggregate([
+          {
+            $unwind:"$orders"
+          },
+          {
+            $match:{
+              "orders.paymentStatus":"Delivered"
+            }
+          }
+        ])
+        resolve(response)
+      }
+      catch{
+
+      }
+    })
+  }
 
 }
