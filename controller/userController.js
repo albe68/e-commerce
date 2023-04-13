@@ -129,12 +129,14 @@ module.exports = {
 
       let user = req?.session?.user;
       let cartCount = await cartHelpers.getCartCount(user);
+      let category = await productHelpers.getAllcategory();
+
       console.log("proId");
       productHelpers
         .getAllProducts()
         .then((products) => {
           console.log("WORKING");
-          res.render("user/shop", { products, user, cartCount });
+          res.render("user/shop", { products, user,category, cartCount });
         })
         .catch((err) => {
           console.log("ERROR HAPPENED");
@@ -156,7 +158,9 @@ module.exports = {
         console.log(products, "PRODUCTS");
         res.render("user/view-product", { products, user, cartCount });
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   },
 
   getAddToCart: async (req, res) => {
@@ -382,16 +386,7 @@ module.exports = {
   },
   verifypayment:(req,res)=>{
     try{
-      console.log(req.body,"1111111111")
-      orderHelpers.verifypayment(req.body).then(()=>{
-        orderHelpers.changePaymentStatus(req.session.user,req.body["order[receipt]"])//sus in this line
-        .then(()=>{
-          res.json({status:true});
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
-      })
+    res.json({ status: true });
     }
     catch{
 
