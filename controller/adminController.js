@@ -42,23 +42,62 @@ const add_image = upload.array('image', 12)
 module.exports={
 
   
-  getAdminPanel:(req,res)=>{
-    try{
-      if(req.session.adminIn){
-        console.log(req.session.adminIn)
+  getAdminPanel:async(req,res)=>{
+    let variable=req.session.adminIn;
+
+    let totalProducts,days=[]
+    let ordersPerDay={};
+    let paymentCount=[]
+    await productHelpers.getAllProducts().then((Products)=>{
+      totalProducts=Products.length
+    })
+    let orderByCod=await orderHelpers.getCodCount()
+
+    // console.log("cod ",orderByCod)
+    let codCount = orderByCod.length
+    let orderByRZPAY = await orderHelpers.razorPayCount()
+    let rzPAYCount=orderByRZPAY.length
+    let totalOrder=rzPAYCount+codCount
+    console.log(orderByRZPAY,rzPAYCount,"RAZOR")
+    let totalUser = await userHelpers.totalUserCount()
+
+    paymentCount.push(codCount)
+    paymentCount.push(rzPAYCount)
+
+    await orderHelpers.getOrderByData().then((response)=>{
+      console.log(response<"this is response")
+      if(response.length>0){
+        let result=response[0]?.orders
+        for(let i=0;i<result.length;i++){
+          let ans={}
+          ans['createdAt']=result[i].createdAt
+          days.push(ans)
+          ans={}
+        }
+      }
+
+      days.forEach((order)=>{
+        const day=order.createdAt.toLocaleDateString('en-US',{weekday:'long'})
+        ordersPerDay[day]=(ordersPerDay[day]||0)+1;
+      })
+    })
+      await orderHelpers.getAllOrders().then(response=>{
+
+        console.log(response);
+        let length=response.length
+        let total=0;
+
+        // for(let i=0;i<length;i++){
+        //   total += response[i].orders.price
+        // }
         res.render("admin/admin-dashboard",{
-          layout:"adminLayout"
+          layout:"adminLayout",rzPAYCount,codCount,totalOrder
         })
-      }
-      else{
-        res.redirect("/admin/login")
-      }
+      })
+      
+  
 
-    }
-    catch(error){
-      console.log(error)
 
-    }
   }
   ,
     getAdminLogin:(req,res)=>{
@@ -395,7 +434,7 @@ console.log(req.params.id)  }
    
     orderHelpers.getAdminOrders()
     .then((data)=>{
-      console.log("WORKING",data)
+      // console.log("WORKING",data)
       
       res.render("admin/orders",{layout:"adminLayout",data})
 
@@ -404,7 +443,19 @@ console.log(req.params.id)  }
       console.log("errrorr")
     }
     
-  }
+  },
+  updateOrder:(req,res)=>{
+    try{
+      orderHelpers.updateOrder(req.body).then((response)=>{
+        res.json(response);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
+    catch(error){
+      console.log(error)
+    }
+  },
     } 
 
    
