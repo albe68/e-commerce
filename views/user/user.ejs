@@ -169,9 +169,9 @@
                 </div>
                 <div class="clearfix product-price-cover">
                   <div class="product-price primary-color float-left">
-                    <ins><span class="text-brand">$120.00</span></ins>
+                    <ins><span class="text-brand">₹120.00</span></ins>
                     <ins
-                      ><span class="old-price font-md ml-15">$200.00</span></ins
+                      ><span class="old-price font-md ml-15">₹200.00</span></ins
                     >
                     <span class="save-price font-md color3 ml-15">25% Off</span>
                   </div>
@@ -497,7 +497,7 @@
             <div class="banner-img banner-1 wow fadeIn animated home-3">
               <img
                 class="border-radius-10"
-                src="assets/imgs/games/GTAOnline.jpg""
+                src="assets/imgs/games/GTAOnline.jpg"
                 alt=""
               />
               <!-- <div class="banner-text">
@@ -2370,90 +2370,51 @@
         <!--End tab-content-->
       <!-- </div>
     </section> --> 
+    
     <section class="popular-categories section-padding mt-15">
+      
       <div class="container wow fadeIn animated">
         <h3 class="section-title mb-20"><span>Popular</span> Categories</h3>
+        
         <div class="carausel-6-columns-cover position-relative">
           <div
             class="slider-arrow slider-arrow-2 carausel-6-columns-arrow"
             id="carausel-6-columns-arrows"
           ></div>
+          
           <div class="carausel-6-columns" id="carausel-6-columns">
+            <%category?.forEach((locals,index)=>{%>
             <div class="card-1">
+              
               <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
+                <a href="/filter/<%=locals.category%>"
                   ><img src="assets/imgs/games/sanandreas.jpg" alt=""
                 /></a>
               </figure>
-              <h5><a href="shop-grid-right.html">Action</a></h5>
+              <h5><a href="shop-grid-right.html"><%=locals.category%></a></h5>  
+            
             </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html">
-                  <img src="assets/imgs/games/V.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">Survival</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/vicecity.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">Sports</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/maxpayne3.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">Free To Play</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/maxpayne.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">Adventure</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/GTATrilogy.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">SCI-FI</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/reddeadonline.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">RACING</a></h5>
-            </div>
-            <div class="card-1">
-              <figure class="img-hover-scale overflow-hidden">
-                <a href="shop-grid-right.html"
-                  ><img src="assets/imgs/games/reddeadredemption2.jpg" alt=""
-                /></a>
-              </figure>
-              <h5><a href="shop-grid-right.html">PUZZLE</a></h5>
-            </div>
+
+            
+     
+
+
+            <% });%>
           </div>
+         
         </div>
+        
       </div>
+     
     </section>
-    <section class="banner-2 section-padding pb-0">
+  
+    <!-- <section class="banner-2 section-padding pb-0">
       <div class="container">
         <div class="banner-img banner-big wow fadeIn animated f-none">
           <img src="assets/imgs/games/gtaBanner2.jpg" alt="" />
-          <div class="banner-text d-md-block d-none">
+          <div class="banner-text d-md-block d-none"> -->
             <!-- <h4 class="mb-15 mt-40 text-brand">Repair Services</h4> -->
-            <h1 class="fw-600 mb-20" style="color: white;">
+            <!-- <h1 class="fw-600 mb-20" style="color: white;">
               We're an GTA V <br />Grab GTA V here
             </h1>
             <a href="shop-grid-right.html" class="btn"
@@ -2465,8 +2426,8 @@
     </section>
     
     <section class="banners mb-20">
-      <div class="container">
-        <div class="row">
+      <div class="container"> -->
+        <!-- <div class="row">
           <div class="col-lg-4 col-md-6">
             <div class="banner-img wow fadeIn animated">
               <img src="assets/imgs/banner/banner-1.png" alt="" />
@@ -2499,13 +2460,13 @@
                 <h4>Shop Today’s <br />Deals & Offers</h4>
                 <a href="shop-grid-right.html"
                   >Shop Now <i class="fi-rs-arrow-right"></i
-                ></a>
-              </div>
+                ></a> -->
+              <!-- </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     
     <section class="deals section-padding">
       <div class="container">
@@ -2524,12 +2485,12 @@
               <div class="deal-content">
                 <h6 class="product-title">
                   <a href="shop-product-right.html"
-                    >Summer Collection New Morden Design</a
+                    >Summer Sale</a
                   >
                 </h6>
                 <div class="product-price">
-                  <span class="new-price">$139.00</span
-                  ><span class="old-price">$160.99</span>
+                  <span class="new-price">₹139.00</span
+                  ><span class="old-price">₹160.99</span>
                 </div>
               </div>
               <div class="deal-bottom">
@@ -2538,7 +2499,7 @@
                   class="deals-countdown"
                   data-countdown="2025/03/25 00:00:00"
                 ></div>
-                <a href="shop-grid-right.html" class="btn hover-up"
+                <a href="/view-product/642d4a1b1cb1d09b5b9353ac" class="btn hover-up"
                   >Shop Now <i class="fi-rs-arrow-right"></i
                 ></a>
               </div>
@@ -2552,18 +2513,18 @@
               "
             >
               <div class="deal-top">
-                <h2 class="text-success">Men Clothing</h2>
-                <h5>Shirt & Bag</h5>
+                <h2 class="text-success">CALL OF DUTY</h2>
+                <h5>Shooting</h5>
               </div>
               <div class="deal-content">
                 <h6 class="product-title">
                   <a href="shop-product-right.html"
-                    >Try something new on vacation</a
+                    >Shoot in your vacation</a
                   >
                 </h6>
                 <div class="product-price">
-                  <span class="new-price">$178.00</span
-                  ><span class="old-price">$256.99</span>
+                  <span class="new-price">₹178.00</span
+                  ><span class="old-price">₹256.99</span>
                 </div>
               </div>
               <div class="deal-bottom">
@@ -2572,7 +2533,7 @@
                   class="deals-countdown"
                   data-countdown="2026/03/25 00:00:00"
                 ></div>
-                <a href="shop-grid-right.html" class="btn hover-up"
+                <a href="/view-product/642afd0dd2c2f2405afe1d13" class="btn hover-up"
                   >Shop Now <i class="fi-rs-arrow-right"></i
                 ></a>
               </div>
