@@ -4,10 +4,11 @@
       <div class="col-md-12">
         <h2 class="text-center">Add Product</h2>
         <form
-          action="/admin/add-products"
+          action="/admin/add-products"  
           method="post"
-          enctype="multipart/form-data"
+          
           >
+          <!-- enctype="multipart/form-data" -->
           <label for="">Prodcut Name</label>
           <input type="text" name="name" class="form-control" />
           <label for="">Description</label>
@@ -18,10 +19,30 @@
         
 
           <label for="">Image</label>
-          <input id="image" type="file" name="image" class="form-control" />
+          <input id="image1" type="file" name="image" class="form-control" />
           
-
-
+          <div class="card-body">
+            
+            <div class="row gx-2">
+              
+              <div class="col-sm-6 mb-3">
+                
+                <label class="form-label">Category</label>
+                
+                <select name="category" class="form-select">
+                  <% category?.forEach(element => { %>
+                  <option ><%= element?.category %> </option>
+                  <%  }); %>     
+                </select>
+                
+              </div>
+              
+              
+              
+            </div> <!-- row.// -->
+          </div>
+         
+          
           <button type="submit" class="btn btn-success mt-4">Submit</button>
         </form>
       </div>
