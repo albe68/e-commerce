@@ -19,9 +19,12 @@
               ><i class="text-primary material-icons md-monetization_on"></i
             ></span>
             <div class="text">
-              <h6 class="mb-1 card-title">Revenue</h6>
-              <span>$13,456.5</span>
-              <span class="text-sm"> Shipping fees are not included </span>
+              <h6 class="mb-1 card-title">Total Orders</h6>
+              <span><%=totalOrder%></span>
+              <span class="text-sm" style="color: red
+              ;"> Order by Cod :<%=codCount%> </span>
+              <span class="text-sm" style="color: green;"> Order by Razor Pay : <%=rzPAYCount%></span>
+              
             </div>
           </article>
         </div>
@@ -587,6 +590,14 @@
         </ul>
       </nav>
     </div>
+      <div>
+    <p style="visibility: hidden" id="days">
+      <%= JSON.stringify(locals.ordersPerDay) %>
+    </p>
+    <p style="visibility: hidden" id="payment">
+      <%=JSON.stringify(locals.paymentCount) %>
+    </p>
+  </div>
   </section>
   <!-- content-main end// -->
   <footer class="main-footer font-xs">
@@ -603,3 +614,84 @@
     </div>
   </footer>
 </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js"></script> -->
+
+<script>
+  document.write(new Date());
+
+  // Sample data
+  var xValues = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  var yValues = [0, 5, 10, 15, 20, 25, 50];
+  var buyed = [];
+  let daysData = JSON.parse(document.getElementById('days').innerHTML);
+
+  for (let i = 0; i < xValues.length; i++) {
+    if (xValues[i] in daysData) {
+      buyed.push(daysData[xValues[i]]);
+    } else {
+      buyed.push(0);
+    }
+  }
+
+  new Chart('myChart1', {
+    type: 'bar',
+    data: {
+      labels: xValues,
+      datasets: [
+        {
+          fill: false,
+          lineTension: 0,
+          backgroundColor: 'yellow',
+          borderColor: 'rgba(0,0,255,0.1)',
+          data: buyed,
+          label: 'Sales',
+        },
+      ],
+    },
+    options: {
+      legend: { display: false },
+      scales: {
+        yAxes: [{ ticks: { min: 0, max: 25 } }],
+      },
+    },
+  });
+
+  var xValue = ['Razorpay', 'COD', 'Paypal'];
+  var yValue = [];
+  let paymentData = JSON.parse(document.getElementById('payment').innerHTML);
+  yValue.push(paymentData[0]);
+  yValue.push(paymentData[1]);
+  yValue.push(paymentData[2]);
+
+  var barColors = ['#27968B', 'grey', 'orange'];
+
+  new Chart('myChart2', {
+    type: 'pie',
+    data: {
+      labels: xValue,
+      datasets: [
+        {
+          backgroundColor: barColors,
+          data: yValue,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Payment mode',
+      },
+    },
+  });
+</script>
+
