@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
+<!-- <!DOCTYPE html>
+<html class="no-js" lang="en"> -->
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-right.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:25:55 GMT -->
-<head>
+<!-- <head>
     <meta charset="utf-8">
     <title>Evara - eCommerce HTML Template</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,12 +12,12 @@
     <meta property="og:title" content="">
     <meta property="og:type" content="">
     <meta property="og:url" content="">
-    <meta property="og:image" content="">
+    <meta property="og:image" content=""> -->
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg"> -->
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-</head>
+    <!-- <link rel="stylesheet" href="assets/css/main.css"> -->
+<!-- </head> -->
 
 <body>
  <main class="main">
@@ -42,7 +42,7 @@
                                         <!-- MAIN SLIDES -->
                                         <div class="product-image-slider">
                                             <figure class="border-radius-10">
-             <!--IMAGE--------------->    <img src="assets/imgs/shop/product-3-1.jpg" alt="product image">
+             <!--IMAGE--------------->    <img src="assets/imgs/games/fifaWC.jpg" alt="product image">
                                             </figure>
                                             <figure class="border-radius-10">
                                                 <img src="assets/imgs/shop/product-16-1.jpg" alt="product image">
@@ -80,15 +80,13 @@
                                 
 
 
-
+                                <% products?.forEach((locals) => { %>
 
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
-                                        <h2 class="title-detail">Green Shirt</h2>
+                                        <h2 class="title-detail"><%=locals.name%></h2>
                                         <div class="product-detail-rating">
-                                            <div class="pro-details-brand">
-                                                <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span>
-                                            </div>
+                                            
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
                                                     <div class="product-rating" style="width:90%">
@@ -99,8 +97,8 @@
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="text-brand">$120.00</span></ins>
-                                                <ins><span class="old-price font-md ml-15">$200.00</span></ins>
+                                                <ins><span class="text-brand">₹<%=locals.price%></span></ins>
+                                                <ins><span class="old-price font-md ml-15">₹<%=locals.price%></span></ins>
                                                 <span class="save-price  font-md color3 ml-15">25% Off</span>
                                             </div>
                                         </div>
@@ -145,7 +143,7 @@
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                <button onclick="addTocart('<%= locals._id %>','<%= locals.quantity %>')"  class="button button-add-to-cart">Add to cart</button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
@@ -158,21 +156,14 @@
                                     </div>
                                     <!-- Detail Info -->
                                 </div>
-                               
+                                <% }); %> 
                             </div>
                             
                             
                             
                             
                             
-                            
-                            <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
-                                <img class="border-radius-10" src="assets/imgs/banner/banner-4.png" alt="">
-                                <div class="banner-text">
-                                    <h4 class="mb-15 mt-40">Repair Services</h4>
-                                    <h2 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h2>
-                                </div>
-                            </div>
+                         
                         </div>
                     </div>
                     
@@ -335,4 +326,25 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-right.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:01 GMT -->
-</html>
+<!-- </html> -->
+
+<script>
+    function addTocart(proId,stock){
+      console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+      $.ajax({
+        url:'/add-to-cart/'+proId,
+        method:'get',
+        success:(response)=>{
+          console.log(response)
+          if(response.status){
+            let count=$('#cart-count').html();
+            count=parseInt(count)+1
+            $("#cart-count").html(count);
+            
+            
+  
+          }
+        }
+      })
+    }
+  </script>
