@@ -1,4 +1,6 @@
 <!-- Modal -->
+<%if(!orders.paymentStatus=="canceled"){%>
+
 <div
   class="modal fade custom-modal"
   id="onloadModal"
@@ -34,7 +36,7 @@
     </div>
   </div>
 </div>
-
+<%}%>
 
 <% orders?.forEach((element,index )=> { %>
 <%console.log("inside order-success ejs file")%>
@@ -62,25 +64,30 @@
                 </h6>
                 <p><!--a doubht in order id should be _id in order collection or _id in product details-->
                   Order ID : <%=element?.orders._id%>   
-                  <span
-                    style="text-transform: capitalize"
-                    class="d-flex align-items-center"
-                  >
-                    <%if(element?.orders.paymentStatus){%>
+                </p>
+
+                  <%if(element?.orders.paymentStatus=="canceled"){%>
+                  <p style="text-transform: capitalize;color: red;" class="d-flex align-items-center">
+                    
                       
                     Order Status : <%=element?.orders.paymentStatus%>
-                      <%}else{%>
+                      
+
                         
-                        Order Status : <%=element?.orders.paymentStatus%>
-                        <%}%>
+                       
                     <!-- <div class="spinner-grow spinner-grow-sm text-secondary"></div> -->
 
                     <!-- <div class="spinner-grow spinner-grow-sm text-danger"></div> -->
-                  </span>
+                  </p>
+                  <%}else{%>
+                  <p style="text-transform: capitalize;color: greenyellow;" class="d-flex align-items-center">
+                  Order Status : <%=element?.orders.paymentStatus%>
+                  </p>
+                  <%}%>
                   <span
                     class="order_status_info"
                     style="text-transform: capitalize"
-                    >Payment Method : COD(Cash On delivery)</span
+                    >Payment Method : <%=element?.orders.paymentMethod%></span
                   >
                   <br />
                   <span style="text-transform: capitalize"> </span>
@@ -98,21 +105,28 @@
                 <i class="fa-solid fa-circle-info"></i>
                 View Product
               </button> -->
-
+                <!--mobile-->
               <a
                 class="btn btn-dark rounded w-100 d-md-none py-3 mt-2"
                 onclick="cancelOrder('h','t')"
                 >Cancel Order</a
               >
-              <!--mobile-->
 
-              <button
-                class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center"
-                onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')"
-              >
-                Cancel Order
-              </button>
-              <!--desktop-->
+              
+              <%if(element.orders.paymentStatus=="canceled"){%>
+            <!--desktop-->
+           
+            <%}else {%>
+              <div style="text-align: right;">
+                <button
+                  class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center"
+                  onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')"
+                >
+                  Cancel Order
+                </button>
+              </div>
+              <%}%>
+              
               <!-- <button class="btn btn-dark rounded w-100 d-md-none py-3 mt-2">
                 Return order
               </button>
@@ -136,19 +150,7 @@
           </div>
           <hr />
 
-          <div class="h-100 w-100 text-center">
-            <h5>Your orders will be here once you orderd</h5>
-          </div>
-
-          <!-- edit button -->
-          <div class="row w-100">
-            <div class="col-12 d-flex justify-content-center mt-3">
-              <p>
-                <span class="text-info">NOTE : </span>A reload is required to
-                reflect changes all across the page
-              </p>
-            </div>
-          </div>
+       
 
           <script>
             // orders scripts here
@@ -161,8 +163,32 @@
   </div>
 </section>
 <% }); %>
+<div class="h-100 w-100 text-center">
+  <h5>Your orders will be here once you orderd</h5>
+</div>
+          
+<!-- edit button -->
+<div class="row w-100">
+  <div class="col-12 d-flex justify-content-center mt-3">
+    <p>
+      <span class="text-info">NOTE : </span>A reload is required to
+      reflect changes all across the page
+    </p>
+  </div>
+</div>
 <script>
+  
   function cancelOrder(proId,ordId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3cc75c',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Cancel The Order!'
+    }).then((result) => {
+      if (result.isConfirmed) {
     console.log( proId,ordId);
     $.ajax({
       url: "/cancel-order",
@@ -181,4 +207,7 @@
     });
     Swal.fire('Canceled')
   }
+})
+  }
+
 </script>
