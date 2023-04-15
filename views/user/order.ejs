@@ -240,6 +240,7 @@
                           </div>
                       </div>
                       <a  onclick="validation(this)"   class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                      <%=console.log("12121212qqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",this)%>
                   </div>
               </div>
           </div>
@@ -249,6 +250,9 @@
 </main>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!--Razor Pay-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!--Razor Pay-->
 
 <script>
     
@@ -407,7 +411,9 @@ function validation(e) {
     showConfirmButton: false,
     timer: 1500
     })
-            if(response.statusCod){window.location.href = '/order-success'}
+            if(response.statusCod){
+                window.location.href = '/order-success'
+            }
             else{
                 console.log("RAZOR PAY RESPONSE WORKING IN EJS PAGE")
                 razorpay(response)
@@ -422,30 +428,31 @@ function validation(e) {
   function razorpay(data){
     console.log("ty",data)
    var options={
-    "key":"rzp_test_HzJZCWFkUXcuQj",
-    "amount":data.amount,
-    "currency":"INR",
-    "name":"Evara",
-    "description":"Test Transaction",
-    "order_id":data._id,
-    "handler":function (response){
+    key:"rzp_test_HzJZCWFkUXcuQj",
+    amount:data.amount,
+    currency:"INR",
+    name:"Game Store",
+    
+    description:"Test Transaction",
+    order_id:data._id,
+    handler:function (response){
         verifyPayment(response,data)
     },
-    "modal":{
-        "ondismiss":function(){
+    modal:{
+        ondismiss:function(){
             console.log("checkout form closed")
         }
     },
-    "prefill": {
-                "name": data.userName,
-                "email": data.email,
-                "contact": data.mobile
+    prefill: {
+                name: data.userName,
+                email: data.email,
+                contact: data.mobile
             },
-            "notes": {
+            notes: {
                 "address": "DM Corporate Office"
             },
-            "theme": {
-                "color": "#3399cc"
+            theme: {
+                color: "#3399cc"
             }
     }
     var rzp1 = new Razorpay(options);
@@ -453,6 +460,7 @@ function validation(e) {
     console.log(data)
   }
   function verifyPayment(payment,order){
+    console.log("8888")
     $.ajax({
         url:'/verify_payment',
         method:'post',
@@ -466,9 +474,10 @@ function validation(e) {
         })
         },
         success:(response)=>{
+            console.log("9999999999999",response)
             if(response.status){
                 let timerInterval
-                Swal.fir({
+                Swal.fire({
                     icon: 'success',
                         title: 'Order Success!',
                         html: 'You will be redirected to orders in  <b></b> milliseconds.',
@@ -490,7 +499,7 @@ function validation(e) {
                             console.log('I was closed by the timer')
                         } 
                 }).then(function () {
-                        window.location = "/my-account/orders";
+                    window.location.href = '/order-success'
                     });
             }else {
                     Swal.fire({
