@@ -309,7 +309,7 @@
               <div class="shop-product-fillter">
                 <div class="totall-product">
                   <p>
-                    We found <strong class="text-brand">688</strong> items for
+                    We found <strong class="text-brand"><%=filterproducts.length%></strong> items for
                     you!
                   </p>
                 </div>
@@ -366,12 +366,12 @@
                         <a href="shop-product-right.html">
                           <img
                             class="default-img"
-                            src="assets/imgs/shop/product-2-1.jpg"
+                            src="assets/imgs/games/fifaWC.jpg"
                             alt=""
                           />
                           <img
                             class="hover-img"
-                            src="assets/imgs/shop/product-2-2.jpg"
+                            src="assets/imgs/games/fifa23.jpg"
                             alt=""
                           />
                         </a>
@@ -406,7 +406,7 @@
                     </div>
                     <div class="product-content-wrap">
                       <div class="product-category">
-                        <a href="shop-grid-right.html">Music</a>
+                        <a href="shop-grid-right.html"><%=locals.category%></a>
                       </div>
                       <h2>
                         <a href="shop-product-right.html"
@@ -476,15 +476,12 @@
                 <h5 class="section-title style-1 mb-30 wow fadeIn animated">
                   Category
                 </h5>
-                <ul class="categories">
-                  <li><a href="shop-grid-right.html">Shoes & Bags</a></li>
-                  <li><a href="shop-grid-right.html">Blouses & Shirts</a></li>
-                  <li><a href="shop-grid-right.html">Dresses</a></li>
-                  <li><a href="shop-grid-right.html">Swimwear</a></li>
-                  <li><a href="shop-grid-right.html">Beauty</a></li>
-                  <li><a href="shop-grid-right.html">Jewelry & Watch</a></li>
-                  <li><a href="shop-grid-right.html">Accessories</a></li>
-                </ul>
+                <%category?.forEach((locals,index)=>{%>  
+                  <ul class="categories">
+                    <li><a href="/filter/<%=locals.category%>"><%=locals.category%></a></li>
+                   
+                  </ul>
+                  <% });%>
               </div>
               <!-- Fillter By Price -->
 
