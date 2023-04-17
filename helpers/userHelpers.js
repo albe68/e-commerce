@@ -139,6 +139,13 @@ module.exports={
 
       }
     })
+  },
+  documentCount:()=>{
+    return new Promise(async(resolve,reject)=>{
+      await db.products.find().countDocuments().then((documents)=>
+      resolve(documents))
+    })
+
   }
 
 }
