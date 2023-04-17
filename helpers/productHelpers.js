@@ -4,18 +4,21 @@ const db = require("../model/connection");
 //IMAGE UPLOAD
 const { products, category } = require("../model/connection");
 
-var fs = require("fs");
-var path = require("path");
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+// var fs = require("fs");
+// var path = require("path");
+// var express = require("express");
+// var app = express();
+// var bodyParser = require("body-parser");
+// var mongoose = require("mongoose");
+
 module.exports = {
   // Get All Product
 
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
       try {
+        let page_index=1;
+        
         let products = await db.products.find({});
         // console.log(products)
         resolve(products);
@@ -106,7 +109,13 @@ module.exports = {
     console.log("in helper:", proId);
     return new Promise(async (resolve, reject) => {
       try {
-        await db.products.deleteOne({ _id: proId });
+        await db.products.updateOne({ _id: proId },{
+          $set:[
+            {
+              
+            }
+          ]
+        });
         // console.log(_id)
         resolve();
       } catch (error) {
@@ -145,7 +154,10 @@ module.exports = {
               status: true,
             },
           }
-        );
+        )
+        .then(()=>{
+          resolve();
+        });
       });
     } catch (error) {
       console.log("ERROR IN LIST PRODUCT", error);
@@ -274,5 +286,43 @@ module.exports = {
     })
     
   },
+  shopListProducts:(pageNum)=>{
+    let perPage=6;
+    return new Promise(async(resolve,reject)=>{
+      await db.products.find().skip((pageNum-1)*perPage).limit(perPage).then((response)=>{
+        resolve(response)
+      })
+    })
+  },
+  wishListProducts:(proId)=>{
+    return new Promise((async(resolve,reject)=>{
+      db.products.find({_id:proId}).then(async(response)=>{
+        try{
+          console.log(response,"uuid")
+          await db.wishlist(response).save()
+        }
+        catch{
+          
+        }
+      
+      })
+      
+
+
+    }))
+  }
+  ,
+  addToWishlist:(products)=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        
+        let wishProducts=db.wishlist(products).save()
+        // data.save(wishProducts)
+      })
+    }
+    catch{
+
+    }
+  }
 
 };
