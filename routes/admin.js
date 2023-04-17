@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var auth=require("../controller/auth")
-// 30-03-23 commented
+// 11-04-23 commented
 // const multer  = require('multer')
 
 // const storage = multer.diskStorage({
@@ -46,7 +46,7 @@ router.post("/products/edit_product/:id",adminController.postEditProducts);
 
 //delete product//
 router.get("/products/delete_product/:id",adminController.getdeleteProducts)
-
+router.get("/products/list_product/:id",adminController.getListProducts)
 
 
 //USERS
@@ -76,6 +76,8 @@ router.get('/category/edit_categories/:id',auth.verifyAdmin,adminController.edit
 router.post('/category/edit_categories/:id',adminController.updateCategory);
 //Order Management //
 router.get('/orders',adminController.getAdminOrders)
+//Update Order//
+router.put('/orders/update-order',adminController.updateOrder)
 
 
 module.exports = router;
