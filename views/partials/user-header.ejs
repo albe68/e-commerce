@@ -1,3 +1,18 @@
+<style>
+  .profile-picture {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+</style>
+
 <header class="header-area header-style-3 header-height-2">
   <div class="header-top header-top-ptb-1 d-none d-lg-block">
     <div class="container">
@@ -8,7 +23,7 @@
               <li>
                 <div class="logo logo-width-1">
                   <a href="/"
-                    ><img src="assets/imgs/theme/i(1).png" alt="logo"
+                    ><img src="assets/imgs/theme/logo.png" alt="logo"
                   /></a>
                 </div>
               </li>
@@ -41,43 +56,16 @@
         <div class="col-xl-3 col-lg-4">
           <div class="header-info header-info-right">
             <ul>
-              <li>
-                <a class="language-dropdown-active" href="#">
-                  <i class="fi-rs-world"></i> English
-                  <i class="fi-rs-angle-small-down"></i
-                ></a>
-                <ul class="language-dropdown">
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="assets/imgs/theme/flag-fr.png"
-                        alt=""
-                      />Français</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="assets/imgs/theme/flag-dt.png"
-                        alt=""
-                      />Deutsch</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="assets/imgs/theme/flag-ru.png"
-                        alt=""
-                      />Pусский</a
-                    >
-                  </li>
-                </ul>
-              </li>
+            
               <%if(!locals.user){%>
               <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
               <% }else{ %>
               <li>
-                <a href="/profile"> <%= user.username %></a>
+                <div class="profile-picture">
+                  <a href="/profile"> <%= user.username %></a>
+                </div>
+
+                
               </li>
               <a href="/logout"
                 ><button
@@ -129,7 +117,7 @@
             <div class="header-action-2">
 
               <div class="header-action-icon-2">
-                <a href="shop-wishlist.html">
+                <a href="/wishlist">
                   <img
                     class="svgInject"
                     alt="Evara"
@@ -198,6 +186,7 @@
           <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888</p>
         </div>
         <!--MOBILE CODE-->
+       
         <p class="mobile-promotion">
           Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%
         </p>
@@ -279,3 +268,12 @@
     </div>
   </div>
 </header>
+<!--First letter of Name-->
+<script>
+  const name = "user.username";
+ 
+const initials = name.split(' ').map(word => word.charAt(0)).join('');
+const capitalizedLetter =initials.toUpperCase()
+const profilePicture = document.querySelector('.profile-picture');
+profilePicture.textContent = capitalizedLetter
+</script>
