@@ -1,7 +1,4 @@
 const db=require("../model/connection")
-const productHelpers = require("../helpers/productHelpers")
-const userHelpers=require("../helpers/userHelpers")
-// const fileupload=require("express-fileupload")
 const { admin, category,products, user,order } = require("../model/connection");  //changed Model to model
 const session=require('express-session')
 const {response}=require("../app")
@@ -12,16 +9,12 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser');
 const auth=require("../controller/auth")
+const productHelpers = require("../helpers/productHelpers")
+const userHelpers=require("../helpers/userHelpers")
 const adminHelpers = require("../helpers/adminHelpers");
-
 const orderHelpers = require("../helpers/orderHelpers");
 
 
-// let adminData={
-//     username:"admin@gmail.com",
-//     password:"admin",
-//     name:"Albert"
-// }
 
 //add product with multer
 const multer = require('multer');
@@ -91,7 +84,7 @@ module.exports={
         //   total += response[i].orders.price
         // }
         res.render("admin/admin-dashboard",{
-          layout:"adminLayout",rzPAYCount,codCount,totalOrder
+          layout:"adminLayout",rzPAYCount,codCount,totalOrder  
         })
       })
       
@@ -258,9 +251,10 @@ console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
   
   
   getdeleteProducts:(req,res)=>{
-    try{console.log("THIS ISparams",req.params.id)
+    try{console.log("THIS IS params",req.params.id)
     let proId=req.params.id;
-    productHelpers.deleteProduct(proId)
+    console.log('params',proId)
+    productHelpers.unlistProduct(proId)
     
     .then(() => {
       
@@ -273,10 +267,21 @@ console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
       console.log(error)
 
     }
-  
-
   },
-
+  getListProducts:(req,res)=>{
+    console.log("line")
+    let proId=req.params.id
+    console.log("POD",proId)
+    try{
+      productHelpers.listProduct(proId).then(()=>{
+        res.redirect("/admin/products")
+      })
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+,
   //CATEGORY MANAGEMENT
 
  // Get Category
