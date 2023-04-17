@@ -19,7 +19,7 @@ verifyAdmin:(req,res,next)=>{
         next()
     }
     else{
-        console.log("KADHAAAAM")
+       
         res.render("admin/login",{layout:"adminLayout"})
     }
 },
