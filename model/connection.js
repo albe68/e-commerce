@@ -103,6 +103,20 @@ const addressSchema = new mongoose.Schema({
     },
   ],
 });
+
+const wishlistSchema=new mongoose.Schema({
+  user:mongoose.Types.ObjectId,
+  wishItems: [
+    {
+      productId: mongoose.Types.ObjectId,
+      
+    },
+  ],
+  addedAt:{
+    type:Date,
+    default:Date.now
+  }
+})
 module.exports = {
   user: db.model("user", userSchema),
   admin: db.model("admin", adminSchema),
@@ -111,5 +125,6 @@ module.exports = {
   cart: db.model("cart", cartSchema),
   order: db.model("order", orderSchema),
   address: db.model("address", addressSchema),
+  wishlist:db.model("wishlist",wishlistSchema)
 
 };
