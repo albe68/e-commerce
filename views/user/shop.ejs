@@ -446,14 +446,9 @@
         <div class="row flex-row-reverse">
           <div class="col-lg-9">
             <div class="shop-product-fillter">
-              <div class="totall-product">
-                <p>
-                  We found <strong class="text-brand">688</strong> items for
-                  you!
-                </p>
-              </div>
+             
               <div class="sort-by-product-area">
-                <div class="sort-by-cover mr-10">
+                <!-- <div class="sort-by-cover mr-10">
                   <div class="sort-by-product-wrap">
                     <div class="sort-by">
                       <span><i class="fi-rs-apps"></i>Show:</span>
@@ -471,35 +466,32 @@
                       <li><a href="#">All</a></li>
                     </ul>
                   </div>
-                </div>
-                <div class="sort-by-cover">
-                  <div class="sort-by-product-wrap">
-                    <div class="sort-by">
-                      <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                    </div>
-                    <div class="sort-by-dropdown-wrap">
-                      <span>
-                        Featured <i class="fi-rs-angle-small-down"></i
-                      ></span>
-                    </div>
+                </div> -->
+                <form id="sort-form" method="POST" action="/sort">
+                  <div class="sort-container">
+                    <label for="sort-select">Sort by:</label>
+                    <select
+                      id="sort-select"
+                      name="selectedValue"
+                      onchange="this.form.submit()"
+                    >
+                      <option value=""><a href="#">Price</a></option>
+                      <option value="price-low-to-high">
+                        <a href="#">Price: Low to High</a>
+                      </option>
+                      <option value="price-high-to-low">
+                        <a href="#">Price: High to Low</a>
+                      </option>
+                    </select>
                   </div>
-                  <div class="sort-by-dropdown">
-                    <ul>
-                      <li><a class="active" href="#">Featured</a></li>
-                      <li><a href="#">Price: Low to High</a></li>
-                      <li><a href="#">Price: High to Low</a></li>
-                      <li><a href="#">Release Date</a></li>
-                      <li><a href="#">Avg. Rating</a></li>
-                    </ul>
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
             
             <div class="row product-grid-3">
               
               
-              <% products?.forEach((locals) => { %>
+              <% response?.forEach((locals,index) => { %>
                 <%if(locals.status){%>
               <div class="col-lg-4 col-md-4 col-12 col-sm-6">
                 <div class="product-cart-wrap mb-30">
@@ -508,37 +500,26 @@
                       <a href="/view-product/<%=locals._id%>">
                         <img
                           class="default-img"
-                          src="assets/imgs/games/fifaWC.jpg"
+                          src="uploads/<%=locals.Image[0]%>"
                           alt=""
                         />
                         <img
                           class="hover-img"
-                          src="assets/imgs/games/fifa23.jpg"
+                          src="uploads/<%=locals.Image[1]%>"
                           alt=""
                         />
                       </a>
                     </div>
                     <div class="product-action-1">
-                      <a
-                        aria-label="Quick view"
-                        class="action-btn hover-up"
-                        data-bs-toggle="modal"
-                        data-bs-target="#quickViewModal"
-                      >
-                        <i class="fi-rs-search"></i
-                      ></a>
+                   
                       <a
                         aria-label="Add To Wishlist"
                         class="action-btn hover-up"
-                        href="shop-wishlist.html"
+                        href="/wishlist/<%=locals._id%>"
+                        
                         ><i class="fi-rs-heart"></i
                       ></a>
-                      <a
-                        aria-label="Compare"
-                        class="action-btn hover-up"
-                        href="shop-compare.html"
-                        ><i class="fi-rs-shuffle"></i
-                      ></a>
+                 
                     </div>
                     <div
                       class="product-badges product-badges-position product-badges-mrg"
@@ -590,32 +571,23 @@
        
             
             <!--pagination-->
-            <!-- <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+            <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
               <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-start">
+                  <% for(let i=1;i<=pages;i++){%>
                   <li class="page-item active">
-                    <a class="page-link" href="#">01</a>
+                    <a class="page-link" href="/shop?page=<%= i%>"><%=i%></a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">02</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">03</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link dot" href="#">...</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">16</a>
-                  </li>
-                  <li class="page-item">
+                  <%}%>
+                  <li class="page-item active">
                     <a class="page-link" href="#"
                       ><i class="fi-rs-angle-double-small-right"></i
                     ></a>
                   </li>
                 </ul>
               </nav>
-            </div> -->
+            </div>
+          
           </div>
          
 
@@ -624,12 +596,17 @@
               <h5 class="section-title style-1 mb-30 wow fadeIn animated">
                 Category
               </h5>
-              <%category?.forEach((locals,index)=>{%>  
               <ul class="categories">
+                
+                <li><a href="/shop">All Category</a></li>
+              <%category?.forEach((locals,index)=>{%>  
+             
+              
                 <li><a href="/filter/<%=locals.category%>"><%=locals.category%></a></li>
                
-              </ul>
+              
               <% });%>
+            </ul>
             </div>
             <!-- Fillter By Price -->
             <!-- <div class="sidebar-widget price_range range mb-30">
@@ -925,13 +902,34 @@
 
 <script>
   function addTocart(proId,stock){
-    console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-    $.ajax({
-      url:'/add-to-cart/'+proId,
+  
+    $.ajax({ 
+      
+      url:'/check-cart-quantity/'+proId, 
       method:'get',
       success:(response)=>{
+        if(response.status){
+          if(stock-response.quantity<=0){
+
+            
+              Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Out Of Stock',
+              showConfirmButton: false,
+              timer: 1500
+              })
+                                       
+          }
+          else{
+            console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+         $.ajax({
+           url:'/add-to-cart/'+proId,
+          method:'get',
+          success:(response)=>{
         console.log(response)
         if(response.status){
+          
           let count=$('#cart-count').html();
           count=parseInt(count)+1
           $("#cart-count").html(count);
@@ -941,5 +939,46 @@
         }
       }
     })
+          }
+        }
+        else if(response.status==false&&stock==0){
+          toastOutofStock()
+        }
+        else{
+          $.ajax({
+      url:'/add-to-cart/'+proId,
+      method:'get',
+      success:(response)=>{
+        console.log(response)
+        if(response.status){
+          
+          let count=$('#cart-count').html();
+          count=parseInt(count)+1
+          $("#cart-count").html(count);
+          
+          
+
+        }
+      }
+    })
+        }
+      }
+    })
+
+
+
   }
+
+  function sortBylow(value){
+    console.log("ajax for shop sort by low",value)
+    $.ajax({
+      url:'/shop/sortBylow/'+value,
+      method:'get',
+      success:()=>{
+        console.log("it worked")
+      }
+    })
+
+  }
+  
 </script>
