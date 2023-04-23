@@ -1,18 +1,20 @@
-const db=require("../model/connection")
-const { admin, category,products, user,order } = require("../model/connection");  //changed Model to model
-const session=require('express-session')
-const {response}=require("../app")
-const mongoose = require("mongoose");
-var fs = require('fs');
-var path = require('path');
-var express = require('express')
-var app = express()
-var bodyParser = require('body-parser');
-const auth=require("../controller/auth")
+// const db=require("../model/connection")
+// const { admin, category,products, user,order } = require("../model/connection");  //changed Model to model
+// const session=require('express-session')
+// const {response}=require("../app")
+// const mongoose = require("mongoose");
+// var fs = require('fs');
+// var path = require('path');
+// var express = require('express')
+// var app = express()
+// var bodyParser = require('body-parser');
+// const auth=require("../controller/auth")
 const productHelpers = require("../helpers/productHelpers")
 const userHelpers=require("../helpers/userHelpers")
 const adminHelpers = require("../helpers/adminHelpers");
 const orderHelpers = require("../helpers/orderHelpers");
+var XLSX = require('xlsx');
+
 
 
 
@@ -37,41 +39,49 @@ module.exports={
   
   getAdminPanel:async(req,res)=>{
     let variable=req.session.adminIn;
-
+    
     let totalProducts,days=[]
     let ordersPerDay={};
     let paymentCount=[]
+
     await productHelpers.getAllProducts().then((Products)=>{
+      console.log(Products,"adminControl @ 45")
       totalProducts=Products.length
     })
+
     let orderByCod=await orderHelpers.getCodCount()
 
-    // console.log("cod ",orderByCod)
+   
     let codCount = orderByCod.length
+
     let orderByRZPAY = await orderHelpers.razorPayCount()
     let rzPAYCount=orderByRZPAY.length
     let totalOrder=rzPAYCount+codCount
     console.log(orderByRZPAY,rzPAYCount,"RAZOR")
+    
     let totalUser = await userHelpers.totalUserCount()
 
     paymentCount.push(codCount)
     paymentCount.push(rzPAYCount)
 
-    await orderHelpers.getOrderByData().then((response)=>{
-      console.log(response<"this is response")
+    await orderHelpers.getOrderByDate().then((response)=>{
+      console.log(response,"this is response")
       if(response.length>0){
         let result=response[0]?.orders
         for(let i=0;i<result.length;i++){
           let ans={}
           ans['createdAt']=result[i].createdAt
           days.push(ans)
+          console.log("hola",ans,"hola")
           ans={}
         }
       }
 
       days.forEach((order)=>{
+        console.log(order,"iop")
         const day=order.createdAt.toLocaleDateString('en-US',{weekday:'long'})
         ordersPerDay[day]=(ordersPerDay[day]||0)+1;
+        console.log(day,"ACTDAY")
       })
     })
       await orderHelpers.getAllOrders().then(response=>{
@@ -80,11 +90,11 @@ module.exports={
         let length=response.length
         let total=0;
 
-        // for(let i=0;i<length;i++){
-        //   total += response[i].orders.price
-        // }
+        for(let i=0;i<length;i++){
+          total += response[i].price
+        }
         res.render("admin/admin-dashboard",{
-          layout:"adminLayout",rzPAYCount,codCount,totalOrder  
+          layout:"adminLayout",variable,length,total,totalProducts,ordersPerDay,paymentCount,totalUser,rzPAYCount,codCount,totalOrder  
         })
       })
       
@@ -118,7 +128,7 @@ module.exports={
         .then((response)=>{
           if(response.status){
             console.log(response.status)
-            console.log(response.admin._id)
+            console.log(response.admin._id,"kill")
             req.session.admin=response.admin._id;
             req.session.adminIn=true;
             console.log(req.session.adminIn)
@@ -156,7 +166,7 @@ module.exports={
   /*PRODUCTS PAGE*/
   Products:(req,res)=>{
     productHelpers.getAllProducts().then((products)=>{
-    // console.log("these are :",products)
+    console.log("these are :",products)
     res.render("admin/products", {products,layout: "adminLayout"})
     })
  
@@ -182,22 +192,16 @@ getAddProducts: async(req, res) => {
         
       },
 
-
-// postProducts:(req,res)=>{
-//         console.log(req.body);
-//         console.log(req.file.filename)
-       
-//         productHelpers.postAddProduct(req.body, req.file.filename).then((response)=>{
-//           res.redirect('/admin/add-product')
-//       })
-//     },
-
     
 
-postAddProduct: async (req, res) => {
+postAddProduct: async (req, res) => { console.log(req.files);
+  console.log(req.files);
+  console.log(req.file);
 console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
+const image=req.files.map(files=>(files.filename))
+console.log("TAKE IT ",image,"admin Cont 210")
   try{
-    productHelpers.addProduct(req.body).then((insertedId)=>{
+    productHelpers.addProduct(req.body,image).then((insertedId)=>{
       console.log("product added");
       res.redirect('/admin/add-product')
     })
@@ -209,20 +213,21 @@ console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
 
   Products:(req,res)=>{
     productHelpers.getAllProducts().then((products)=>{
-    // console.log("these are :",products)
+    console.log("these are :",products)
     res.render("admin/products", {products,layout: "adminLayout"})
     })
  
   },
 
-  getEditProducts:(req,res)=>{
+  getEditProducts:async(req,res)=>{
    let proId = req.params.id;
    console.log("get:",proId)
-   
+   const category=await productHelpers.getAllcategory()
+   console.log("opo",category,"opo")
   productHelpers.getProduct(proId).then((products) => {
         res.render("admin/edit-product", {
           products,
-          layout: "adminLayout",
+          layout: "adminLayout", category
          });
       })
       .catch((err) =>
@@ -235,16 +240,80 @@ console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
   postEditProducts: (req, res) => {
     let proId = req.params.id;
     let body = req.body;
-    // console.log("BODYYYYYYYYYYYY",body)
+    console.log(proId,"BODYYYYYYYYYYYY",body,req.body)
+
+    const images = []
+    if (!req.files.image1) {
+      let image1 = req.body.image1
+      req.files.image1 = [{
+        fieldname: 'image1',
+        originalname: req.body.image1,
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        destination: 'public/uploads',
+        filename: req.body.image1,
+        path: ` public\\uploads\\${image1}`,
+      }]
+    }
+    if (!req.files.image2) {
+      let image2 = req.body.image2
+      req.files.image2 = [{
+        fieldname: 'image2',
+        originalname: req.body.image2,
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        destination: 'public/uploads',
+        filename: req.body.image2,
+        path: `public\\uploads\\${image2}`,
+      }]
+    }
+    if (!req.files.image3) {
+      let image3 = req.body.image3
+      req.files.image3 = [{
+        fieldname: 'image3',
+        originalname: req.body.image3,
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        destination: 'public/uploads',
+        filename: req.body.image3,
+        path: `public\\uploads\\${image3}`,
+      }]
+    }
+    if (!req.files.image4) {
+
+      let image4 = req.body.image4
+      req.files.image4 = [{
+        fieldname: 'image4',
+        originalname: req.body.image4,
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        destination: 'public/uploads',
+        filename: req.body.image4,
+        path: `public\\uploads\\${image4}`,
+      }]
+
+    }
+    if (req.files) {
+      Object.keys(req?.files).forEach((key) => {
+        if (Array.isArray(req?.files[key])) {
+          req?.files[key]?.forEach((file) => {
+            images.push(file.filename);
+          });
+        } else {
+          images.push(req?.files[key]?.filename);
+        }
+      });
+    }
+
     productHelpers
-      .updateProduct(proId,body)
-      .then(() => {
-        console.log("gifiidiiddd",body)
-        res.redirect("/admin/products");
-     
-        
-      })
-      .catch((err) => console.log(err));
+    .updateProduct(req.params.id, req.body, images)
+    .then((response) => {
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      res.status(500).send('Internal server error');
+    });
+
   },
   
 
@@ -315,8 +384,9 @@ console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq",req.body)
         .addCategory(req.body).then((response) => {
           
           if (response == false) {
+            console.log("CATEGORY ALREADY EXSISTS")
             res.send({ value: "error" });
-            console.log("ALREADY EXSISTS")
+            
             res.redirect("/admin/category")
           } 
           else {
@@ -461,6 +531,59 @@ console.log(req.params.id)  }
       console.log(error)
     }
   },
+  getSalesReport:async(req,res)=>{
+    try{
+      getDate=(date)=>{
+        let orderDate = new Date(date);
+        let day = orderDate.getDate();
+        let month = orderDate.getMonth() + 1;
+        let year = orderDate.getFullYear();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        return `${isNaN(day) ? "00" : day}-${isNaN(month) ? "00" : month}-${isNaN(year) ? "0000" : year
+        } ${date.getHours(hours)}:${date.getMinutes(minutes)}:${date.getSeconds(seconds)}`;
+      }
+      
+     const total= await adminHelpers.getSalesRepTotalAmount()
+     const report=await adminHelpers.salesReport()
+     let Details=[]
+report.forEach(orders=>{Details.push(orders.orders)})
+console.log("loiuse",Details,"loise")
+   res.render('admin/salesReport',{layout:'adminLayout',Details,getDate,total})
+   
+     
+    }
+    catch(error){
+      console.log(error)
+    }
+  },
+  postSalesReport:async(req,res)=>{
+  try{  getDate=(date)=>{
+      let orderDate = new Date(date);
+      let day = orderDate.getDate();
+      let month = orderDate.getMonth() + 1;
+      let year = orderDate.getFullYear();
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let seconds = date.getSeconds();
+      return `${isNaN(day) ? "00" : day}-${isNaN(month) ? "00" : month}-${isNaN(year) ? "0000" : year
+      } ${date.getHours(hours)}:${date.getMinutes(minutes)}:${date.getSeconds(seconds)}`;
+    }
+    let Details=[];
+    console.log("hiiiiiiii",req.body)
+    let total=await adminHelpers.getTotalAmount(req.body)
+    adminHelpers.postReport(req.body).then((orderData)=>{
+      orderData.forEach(orders=>{Details.push(orders.orders)})
+      res.render('admin/salesReport',{layout:'adminLayout',Details,getDate,total})
+    })
+  }catch(error){
+    console.log(error)
+  }
+    
+    
+
+  }
     } 
 
    
