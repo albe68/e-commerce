@@ -14,12 +14,12 @@ const ConnectMongoDBSession = require("connect-mongodb-session");
 //var fileupload = require("express-fileupload");
 var bodyParser = require('body-parser');
 const mongoDbSesson = new ConnectMongoDBSession(session);
-
+require('dotenv').config()
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.use(logger("dev"));
+// app.use(logger("dev")); //route console is logged off
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
