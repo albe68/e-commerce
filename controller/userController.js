@@ -1,29 +1,44 @@
 const db = require("../model/connection");
+// const session = require("express-session");
+// const { response } = require("../app");
+// const mongoose = require("mongoose");
 const userHelpers = require("../helpers/userHelpers");
-const session = require("express-session");
-const { response } = require("../app");
-const mongoose = require("mongoose");
 const productHelpers = require("../helpers/productHelpers");
 const cartHelpers = require("../helpers/cartHelpers");
-const { body, validationResult } = require("express-validator");
 const orderHelpers = require("../helpers/orderHelpers");
-const { orders } = require("../controller/userController");
 const categoryHelpers = require("../helpers/categoryHelpers");
-const slugify = require("slugify");
 const wishlistHelpers = require("../helpers/wishlistHelpers");
+const { body, validationResult } = require("express-validator");
+// const { orders } = require("../controller/userController");
+const slugify = require("slugify");
+var colors = require('colors');
+const otp=require("../middleware/otp/otp")
+const client = require("twilio")(otp.accountSid, otp.authToken);
+
+let otpNumber;
 module.exports = {
   //(newly added next and async while doing cart COUNT)
+  darkMode:(req,res)=>{
+    try {
+      console.log("darkkkkkkkkkkk")
+      var x = "foo";
+      console.log(x.bar);
+    } catch (error) {
+      console.error("An error occurred: ", error);
+    }
+    
+  },
   home: async (req, res, next) => {
     try {
       var hello = slugify("JHSAj khjHSJABSnkhs bnSNKHAJK SNBANBSNSHBakjn");
-      console.log(hello);
+      console.log('%c This message is red with a yellow background', 'color: red; background-color: yellow');
       let user = req?.session?.user;
       console.log("User In", user);
       //if user load this code
+      console.log('%c Your message here', 'color: #00ff00');
 
       let cartCount = await cartHelpers?.getCartCount(user);
       let category = await productHelpers.getAllcategory();
-      console.log("shjahsjahsjahskjash");
       //CHANGED THE STRUCTURE OF THIS CODE NORMAL RENDER VS PRODUCTS COMING
       productHelpers
         .getAllProducts()
@@ -130,6 +145,9 @@ module.exports = {
       console.log(error);
     }
   },
+
+
+
   //List Product
   shopPage: async (req, res, err) => {
     try {
@@ -145,7 +163,7 @@ module.exports = {
       let user = req?.session?.user;
       let cartCount = await cartHelpers.getCartCount(user);
       let category = await productHelpers.getAllcategory();
-      console.log("response", response);
+      
       console.log("proId");
       productHelpers
         .shopListProducts(pageIndex)
@@ -184,6 +202,8 @@ module.exports = {
     }
   },
 
+  //CART
+
   getAddToCart: async (req, res) => {
     try {
       // req.session.returnUrl = req.originalUrl;
@@ -208,6 +228,8 @@ module.exports = {
       let user = req.session.user;
       let cartCount = await cartHelpers.getCartCount(user);
       console.log(cartCount);
+      var hi={user,cartCount}
+      console.log(hi,"45")
       if (cartCount > 0) {
         //if condition for if cart is empty total Price is also empty so error occurs
 
@@ -216,6 +238,7 @@ module.exports = {
           cartHelpers
             .getCartProduct(req.session.user)
             .then((cartItems) => {
+              console.log("kola",cartItems,"kola")
               if (cartCount && user) {
                 res.render("user/cart", {
                   user,
@@ -246,6 +269,7 @@ module.exports = {
     }
   },
   EmptyCart: (req, res) => {
+    
     try {
       res.render("user/emptyCart");
     } finally {
@@ -284,20 +308,26 @@ module.exports = {
       console.log("error is remove cart catch");
     }
   },
+
+  //ORDER
   getOrder: async (req, res) => {
+    let user = req.session.user._id;
+
+    let cartCount = await cartHelpers?.getCartCount(user);
+
     let cartItems = await cartHelpers.getCartProduct(req.session.user);
     let address = await db.address.find({ user: req.session.user._id });
     // console.log(address)
     console.log(cartItems.quantity);
 
     let totalPrice = await cartHelpers.getTotal(req.session.user._id);
-    let user = req?.session?.user;
     console.log("KIKIKIKIKIKI", req.body, "KIKIKIKIKI");
     res.render("user/order", {
       user: req.session.user,
       totalPrice,
       cartItems,
       address,
+      cartCount
     });
   },
   placeOrder: async (req, res) => {
@@ -338,10 +368,13 @@ module.exports = {
   },
   orderSucesss: async (req, res) => {
     let user = req.session.user._id;
+
+    let cartCount = await cartHelpers?.getCartCount(user);
+
     // let orders = await orderHelpers.getOrders(req.session.user._id);
     let orders = await orderHelpers.getOrders(user); // when db.collection name is called without await the whole schema comes so use await db.orders.find({})
     console.log("123456", orders);
-    res.render("user/order-success", { user, orders });
+    res.render("user/order-success", { user, orders,cartCount});
   },
   cancelOrder: async (req, res) => {
     console.log("AHHAHAHAHAHHAHAHAHA", req.body);
@@ -360,17 +393,54 @@ module.exports = {
       console.log(error);
     }
   },
+
+
   filterProduct: async (req, res) => {
     let catName = req.params.id;
     let user = req?.session?.user;
     console.log(user);
-    let cartCount = await cartHelpers.getCartProduct(user);
+    
+    let cartCount = await cartHelpers?.getCartCount(user);
     let category = await productHelpers.getAllProducts();
     console.log("1234567", category);
     productHelpers.filterCategory(catName).then((filterproducts) => {
-      console.log(filterproducts.length, "dibu");
+      console.log(filterproducts, "dibu");
       res.render("user/filter", { user, filterproducts, cartCount, category });
     });
+  },  
+
+  getprofilePage: async (req, res) => {
+    let user = req?.session?.user;
+    let cartCount = await cartHelpers?.getCartCount(user);
+
+    
+
+    let address = await db.address.find({ user: req.session.user._id });
+    console.log("in user controller",address)
+
+    // res.render("user/profile", { user, address });
+
+    try {
+      
+      // var user1= await orderHelpers.getUserOrders()
+      orderHelpers.getAdminOrders().then((data) => {
+        console.log("WORKING", data);
+
+        res.render("user/profile", { data,user,address,cartCount });
+      });
+    } catch (error) {
+      console.log("errrorr",error);
+    }
+  },
+  changePassword: async(req, res) => {
+    try {
+      await userHelpers.changePassword(profileId,req.body)
+      .then((data)=>{
+        res.redirect("/")
+      })
+    } catch(error){
+      console.log(error)
+    }
   },
   deleteAddress: async (req, res) => {
     try {
@@ -387,29 +457,8 @@ module.exports = {
       res.render("user/500Page");
     }
   },
-  getprofilePage: async (req, res) => {
-    // let user = req?.session?.user;
 
-    // let address = await db.address.find({ user: req.session.user._id });
-    // console.log("in user controller",address)
-
-    // res.render("user/profile", { user, address });
-
-    try {
-      orderHelpers.getAdminOrders().then((data) => {
-        console.log("WORKING", data);
-
-        res.render("user/profile", { data });
-      });
-    } catch (error) {
-      console.log("errrorr");
-    }
-  },
-  changePassword: (req, res) => {
-    try {
-    } catch {}
-  },
-  verifypayment: (req, res) => {
+  verifypayment: (req, res) => {tatu
     try {
       res.json({ status: true });
     } catch {}
@@ -422,7 +471,7 @@ module.exports = {
       wishlistHelpers
         .addToWishlist(proId, user)
         .then((response) => {
-          res.json(response.status);
+          res.redirect("/shop")
         })
         .catch((err) => {
           console.log(err);
@@ -459,5 +508,157 @@ module.exports = {
       console.log(wishId,"1111111111")
       // res.redirect('/wishlist')
     })
+  },
+  changePassword:async(req,res)=>{
+    let userId = req.session.user._id;
+    const passwords=req.body
+    await userHelpers.changePassword(passwords,userId)
+  },
+  checkCartQuantity:(req,res)=>{
+    try{
+      console.log("kim kim")
+      cartHelpers.checkCartQuantity(req.session.user._id,req.params.id)
+      .then((response)=>{
+        res.json(response);
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+    catch(error){
+      console.log(error,"ERROR PAGE ")
+    }
+  },
+
+  getSearch:async(req,res)=>{
+    let user = req?.session?.user;
+
+    let cartCount = await cartHelpers?.getCartCount(user);
+
+    let category = await productHelpers.getAllcategory();
+
+    console.log(req.body,"hey it is body")
+  const isUser=req.session.user
+    let viewCategory=await categoryHelpers.viewAddCategory()
+    console.log("views da",viewCategory,"views da")
+    userHelpers.productSearch(req.body).then(response=>{
+      if(response){
+        res.render('user/shop-search',{
+          viewCategory,response,user,category,cartCount
+        })
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
+  },
+  sortProducts:async (req,res)=>{
+    let user = req?.session?.user;
+
+    let cartCount = await cartHelpers?.getCartCount(user);
+
+    let category = await productHelpers.getAllcategory();
+
+    let sortOption=req.body['selectedValue']
+    console.log("really?",sortOption,"really?")
+    let viewCategory=await categoryHelpers.viewAddCategory()
+    userHelpers.postSort(sortOption).then(response=>{
+      if(response){
+        res.render("user/shop-search",{response,viewCategory,user,category,cartCount})
+      }
+    })
+  },
+
+   getUserOtpLogin: (req, res) => {
+  // let userIn=req.session.userLoggedIn
+  // let user=req.session.user._id
+
+    res.render("user/otpLogin");
+  },
+  postUserOtpLogin:async(req,res)=>{
+   try{
+    number=req.body.number;
+    let users=await db.user.find({phoneNumber:number}).exec();
+    console.log(colors.green('userIn: %s'), number,req.body,users);
+
+    loggedUser=users;
+    if(users==false){
+      res.redirect("/login")
+    }
+    else{
+      console.log(colors.green('else case worked%s'), number,req.body);
+      console.log(client,"kando")
+      client.verify.v2
+  .services(otp.verifySid)
+  .verifications.create({ to: `+91 ${number}`, channel: "sms" })
+  .then((verification) => console.log(verification.status))
+  .then(() => {
+    const readline = require("readline").createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    res.render("user/otpEntering")
+
+ 
+  });
+    }
+   }
+   catch(err){
+    console.log(err)
+   } 
+  },
+  postOtpVerify:async(req,res)=>{
+    try{
+      console.log(req.body,"here its is")
+      otpNumber=req.body.otp;
+     await   client.verify?.v2
+          .services(otp.verifySid)
+          .verificationChecks.create({ to: `+91 ${number}`, code: otpNumber })
+          .then((verification_check) =>{ console.log(verification_check.status)
+
+          if(verification_check.valid==true){
+            let id=loggedUser[0]._id;
+            req.session.user={loggedUser,id};
+            req.session.userLoggedIn=true;
+            userSession=req.session.userLoggedIn;
+            res.render("user/user",{userSession,countdown:60}) 
+          }
+          else{
+            res.redirect("/otp-verify")
+          }
+        })
+     
+      }
+    catch(error){
+      console.log(error)
+    }
+  }
+  ,
+  getOtpVerify:(req,res)=>{
+    res.render("user/otp-entering")
+  },
+
+
+
+
+  postUserLogin:async(req,res)=>{
+    try{
+      await userHelpers.doLogin(req.body).then(response=>{
+        let loggedInStatus=response.loggedInStatus;
+        let blockedStatus=response.blockedStatus;
+        if(loggedInStatus==true){
+          req.session.user=response;
+          req.session.userLoggedIn=true;
+          userSession=req.session.userLoggedIn;
+          res.redirect("/");
+        }
+        else{
+          blockedStatus;
+          res.render("user/login",
+          {loggedInStatus,blockedStatus})
+        }
+      })
+    }
+    catch(error){
+      res.status(500)
+    }
   }
 };
