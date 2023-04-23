@@ -279,5 +279,28 @@ module.exports = {
       resolve(cart.cartProducts);
     });
   },
-  
+  checkCartQuantity:async(userId,proId)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        let cart=await db.cart.findOne({user:userId});
+        if(cart){
+          let cartIndex=cart?.cartProducts?.findIndex(
+            (cart)=>cart.item==proId);
+            if(cartIndex== -1){
+              let quantity=0;
+              resolve({status:true,quantity:quantity})
+            }else{
+              let quantity=cart?.cartProducts[cartIndex]?.quantity;
+              resolve({status:true,quantity:quantity})
+            }
+        }
+        else{
+          resolve({status:false})
+        }
+      }
+      catch(error){
+        console.log(error)
+      }
+    })
+  }
 };

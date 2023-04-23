@@ -1,4 +1,4 @@
-const { response } = require("express");
+// const { response } = require("express");
 // const { tryParse } = require("objectid");
 const db = require("../model/connection");
 //IMAGE UPLOAD
@@ -43,15 +43,22 @@ module.exports = {
 
   // Add Product
 
-  addProduct: (products) => {
+  addProduct: (products,filename) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("asjkajskajkajskajsklajsklajska",products)
-        let data = await db.products(products);
+        ImageUpload=new db.products({
+          name:products.name,
+          description:products.description,
+          quantity:products.quantity,
+          Image:filename,
+          category:products.category,
+          price:products.price
+          
+        })
+        ImageUpload.save().then(data=>{
+          resolve(data)
+        })
         
-        data.save();
-        resolve(data._id);
-        console.log("dataaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data._id);
       } catch (error) {
         console.log(error);
       }
@@ -80,25 +87,28 @@ module.exports = {
 
   // Update Product
 
-  updateProduct: (proId, body) => {
-    return new Promise((resolve, reject) => {
+  updateProduct: (proId, body,image) => {
+    return new Promise(async(resolve, reject) => {
       try {
         console.log("THISSSSSSSSSSSSS", body);
-        db.products
+       await db.products
           .updateOne(
             { _id: proId },
             {
               $set: {
                 name: body.name,
                 description: body.description,
+                quantity:body.quantity,
                 price: body.price,
                 category: body.category,
+                Image: image
+                
               },
             }
           )
-          .then(() => {
-            resolve();
-          });
+          .then((response) => {
+            resolve(response);
+          }).catch(err=>{console.log(err); reject(err)});
       } catch (error) {
         console.log(error);
       }

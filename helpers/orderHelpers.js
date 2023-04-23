@@ -1,6 +1,6 @@
 // const { rejects } = require("assert"); --------what is rejects?
 const { rejects } = require("assert");
-const { orders } = require("../controller/userController");
+// const { orders } = require("../controller/userController");
 const { user, products } = require("../model/connection");
 var ObjectId = require("mongodb").ObjectId;
 const db = require("../model/connection");
@@ -84,7 +84,7 @@ module.exports = {
 
         console.log("jsajslkaljsklajskajsklajskajlksa", product);
         let status = order.paymentMethod === "COD" ? "placed" : "pending";
-
+        
         let orderAddress = {
           fName: order.fname,
           lName: order.lname,
@@ -155,7 +155,8 @@ module.exports = {
               shippingAddress: address, //changed from order.billing_address to address
               email: order.email,
               createdAt: new Date(),
-              paymentStatus: status,
+              orderStatus: status,
+              
               productDetails: product,
               totalPrice: total,
             },
@@ -181,7 +182,7 @@ module.exports = {
                       shippingAddress: address, //changed from order.billing_address to address
                       email: order.email,
                       createdAt: new Date(),
-                      paymentStatus: status,
+                      orderStatus: status,
                       productDetails: product,
                       totalPrice: total,
                     },
@@ -277,7 +278,7 @@ module.exports = {
             { "orders.orderindex._id": body.orderid },
             {
               $set: {
-                ["orders." + orderindex + ".paymentStatus"]: "canceled",
+                ["orders." + orderindex + ".orderStatus"]: "canceled",
               },
             }
           )
@@ -338,7 +339,7 @@ module.exports = {
               { "orders.orderindex._id": "${orderId}" },
               {
                 $set: {
-                  ["orders." + orderIndex + ".paymentStatus"]: "Delivered",
+                  ["orders." + orderIndex + ".orderStatus"]: "Delivered",
                 },
               }
             )
@@ -494,7 +495,7 @@ module.exports = {
       resolve(response)
     })
   },
-  getOrderByData:async()=>{
+  getOrderByDate:async()=>{
 
     try {
       const startDate = new Date('2022-01-01');

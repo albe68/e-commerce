@@ -1,4 +1,4 @@
-const {response}=require("express");
+// const {response}=require("express");
 const db=require("../model/connection");
 const {wishlist}=require("../model/connection");
 const { body } = require("express-validator");
@@ -14,7 +14,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let wishlist= await db.wishlist.find({user:userId})
             console.log(wishlist,"log")
-            if(wishlist){
+            if(wishlist.length){
                 let productExist=wishlist[0].wishItems.findIndex((item)=>{
                     item.productId==proId
                 })

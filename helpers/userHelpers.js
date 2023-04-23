@@ -1,7 +1,7 @@
 const db=require("../model/connection")
 const bcrypt=require('bcrypt')
 // const ObjectId=require('objectid')
-const { response } = require("../app")
+// const { response } = require("../app")
 
 module.exports={
     //User Signup
@@ -129,23 +129,83 @@ module.exports={
           },
           {
             $match:{
-              "orders.paymentStatus":"Delivered"
+              "orders.orderStatus":"Delivered"
             }
           }
         ])
         resolve(response)
       }
-      catch{
+      catch(error){
+        console.log(error)
 
       }
     })
   },
-  documentCount:()=>{
+
+  changePassword:async(userId,data)=>{
+   return new Promise(async(resolve,reject)=>{
+await db.user.updateOne({_id:userId},
+  {
+    $set:{
+      username:data,
+      email:data,
+      phoneNumber:data,
+      
+    }
+  }  
+  ).then(data=>{
+    console.log("iiiii",data,"uuuu")
+    resolve(data)
+  })
+   })
+                        
+                
+    db.user.updateOne({_id:userId},{
+      $set:{
+        password
+      }
+    })
+  },
+  productSearch:(searchData)=>{
+    let keyword=searchData.search
+    console.log(keyword)
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const products=await db.products.find({name:{$regex: new RegExp(keyword,'i')}});
+        if(products.length>0){
+          console.log(products,"DOOM");
+          resolve(products)
+        }else{
+          reject('no products found')
+        }
+      }
+      catch(error){
+        console.log(error)
+      }
+    })
+  },
+
+  
+  postSort:(sortOption)=>{
+    return new Promise(async(resolve,reject)=>{
+      let products;
+      if(sortOption==='price-low-to-high'){
+        products=await db.products.find().sort({price:1}).exec();
+      }
+      else if(sortOption==='price-high-to-low'){
+        products=await db.products.find().sort({price:-1}).exec();
+      }
+      else{
+        products=await db.products.find().exec()
+      }
+      resolve(products)
+    })
+  },  documentCount:()=>{
     return new Promise(async(resolve,reject)=>{
       await db.products.find().countDocuments().then((documents)=>
       resolve(documents))
     })
 
-  }
+  },
 
 }
