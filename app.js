@@ -54,7 +54,7 @@ app.use(function (req, res, next) {
 });
 
 // app.use(auth.authInit);
-//app.use(fileupload());
+
 
 // error handler
 app.use(function (err, req, res, next) {
