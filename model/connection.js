@@ -19,21 +19,22 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  blocked:{
+    type:Boolean,
+    default:false
+  }
 });
 
 //Products Schema
 const productSchema = new mongoose.Schema({
   name: { type: String },
   description: { type: String },
-  price: { type: String },
+  price: { type: Number },
 
   // brand: {type:String},
   quantity: { type: Number },
   category: { type: String },
-  image: {
-    data: Buffer,
-    contentType: String,
-  }, //changed for list and unlist
+  Image: {  type: Array}, //changed for list and unlist
   status: {
     type: Boolean,
     default: true,
@@ -76,6 +77,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "pending",
       },
+      orderStatus:{
+        type: String,
+       
+      },
       status: {
         type: Boolean,
         default: true,
@@ -117,6 +122,24 @@ const wishlistSchema=new mongoose.Schema({
     default:Date.now
   }
 })
+
+const otpSchema = new mongoose.Schema({
+  otp: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const couponSchema=new mongoose.Schema({
+  couponName:{type:String},
+  expiry:{type:Date},
+  minPurchase:{type:Number},
+  description:{type:String},
+  discountPercentage:{type:Number},
+  maxDiscountValue:{type:Number}
+
+
+
+})
 module.exports = {
   user: db.model("user", userSchema),
   admin: db.model("admin", adminSchema),
@@ -125,6 +148,7 @@ module.exports = {
   cart: db.model("cart", cartSchema),
   order: db.model("order", orderSchema),
   address: db.model("address", addressSchema),
-  wishlist:db.model("wishlist",wishlistSchema)
-
+  wishlist:db.model("wishlist",wishlistSchema),
+  otp:db.model("otp",otpSchema),
+  coupon:db.model("coupon",couponSchema)
 };
