@@ -1,7 +1,10 @@
-// const {response}=require("express");
+// const {response}=require("fpress");
 const db=require("../model/connection");
 const {wishlist}=require("../model/connection");
 const { body } = require("express-validator");
+const ObjectId=require("mongodb").ObjectId
+const mongoose = require('mongoose');
+
 
 module.exports={
 
@@ -9,10 +12,22 @@ module.exports={
         let proObj={
             productId:proId
         }
-        console.log(proId,userId,'hsajkhsajkhsakj')
+        
 
         return new Promise(async(resolve,reject)=>{
+          
+
+            
             let wishlist= await db.wishlist.find({user:userId})
+            if(wishlist){
+                const myObjectId = mongoose.Types.ObjectId(proId);
+                console.log(myObjectId,'hsajkhsajkhsakj')
+                let wishIndex=wishlist[0].wishItems.findIndex(
+                    (element)=>element.productId==proId)
+                    console.log("helloo",wishIndex)
+                }
+            
+
             console.log(wishlist,"log")
             if(wishlist.length){
                 let productExist=wishlist[0].wishItems.findIndex((item)=>{
