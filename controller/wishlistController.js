@@ -12,8 +12,7 @@ module.exports={
           let proId = req.params.id;
           let user = req.session.user._id;
           console.log(proId, "ooo");
-          wishlistHelpers
-            .addToWishlist(proId, user)
+          wishlistHelpers.addToWishlist(proId, user)
             .then((response) => {
               res.redirect("/shop")
             })
@@ -32,7 +31,7 @@ module.exports={
             res.render("user/wishlist", { user, products });
           });
         } catch (error) {
-          console.log(error);
+          console.log("what",error);
         }
       },
       postWishlist: (req, res) => {
