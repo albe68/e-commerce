@@ -123,4 +123,20 @@ module.exports = {
       console.log(error, "ERROR PAGE ");
     }
   },
+  changeProductQuantity: async (req, res, next) => {
+    try {
+      console.log("req.body", req.body);
+      let userId = req.session.user._id;
+      cartHelpers
+        .changeProductQuantity(req.body, userId)
+        .then((response) => {
+          res.json({ status: true });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
