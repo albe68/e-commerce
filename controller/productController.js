@@ -58,4 +58,26 @@ module.exports={
       }
     })
   },
+  getSearch:async(req,res)=>{
+    let user = req?.session?.user;
+
+    let cartCount = await cartHelpers?.getCartCount(user);
+
+    let category = await productHelpers.getAllcategory();
+
+    console.log(req.body,"hey it is body")
+  const isUser=req.session.user
+    let viewCategory=await categoryHelpers.viewAddCategory()
+    console.log("views da",viewCategory,"views da")
+    userHelpers.productSearch(req.body).then(response=>{
+      if(response){
+        res.render('user/shop-search',{
+          viewCategory,response,user,category,cartCount
+        })
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
+  },
+  
 }
