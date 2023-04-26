@@ -458,7 +458,7 @@ module.exports = {
     }
   },
 
-  verifypayment: (req, res) => {tatu
+  verifypayment: (req, res) => {
     try {
       res.json({ status: true });
     } catch {}
