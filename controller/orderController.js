@@ -1,9 +1,13 @@
 const db = require("../model/connection");
 const cartHelpers = require("../helpers/cartHelpers");
 const orderHelpers = require("../helpers/orderHelpers");
+const couponHelpers=require("../helpers/couponHelpers")
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 var colors = require('colors');
+var voucher_codes = require('voucher-code-generator');
+const session = require("express-session");
+
 
 
 module.exports={
@@ -90,4 +94,24 @@ module.exports={
           console.log(error);
         }
       },
+      verifypayment: (req, res) => {
+        try {
+          res.json({ status: true });
+        } catch {}
+      },
+      verifyCoupon:async(req,res)=>{
+        try{
+          console.log(req.query.couponName);
+          let code=req.query.couponName;
+          let total=await cartHelpers.getTotal(req.session._id);
+          couponHelpers.couponValidator(code,req.session._id,total).then(response=>{
+            res.json(response);
+          });
+   
+        console.log(colors.green('vouceherrrr: %s'), hi);
+      }
+        catch{
+
+        }
+      }
 }
