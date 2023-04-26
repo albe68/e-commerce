@@ -119,7 +119,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                            <!-- <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="page-about.html">About Us</a></li>
                                     <li><a href="page-contact.html">Contact</a></li>
@@ -130,7 +130,7 @@
                                     <li><a href="page-terms.html">Terms of Service</a></li>
                                     <li><a href="page-404.html">404 Page</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
                                 <ul class="dropdown">
                                     <li><a href="#">English</a></li>
@@ -189,15 +189,15 @@
                                         <li class="nav-item">
                                             <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item">
                                             <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item">
                                             <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Change Password</a>
                                         </li>
@@ -206,20 +206,37 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="tab-content dashboard-content">
-                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                     </div>
+                                        <div class="col-md-8">
+                                          <div class="tab-content dashboard-content">
+                                     <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Hello Rosie! </h5>
+                                            <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+                                             <div class="card p-4">
+                                             <div class=" image d-flex flex-column justify-content-center align-items-center">
+                                             <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> 
+                                             <span class="name mt-3">user2</span>
+                                              <span class="idd">@user2</span> 
+                                              <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">Oxc4c16a645_b21a</span>
+                                             <span><i class="fa fa-copy"></i></span> </div> <div class="d-flex flex-row justify-content-center align-items-center mt-3">
+                                             <span class="number">Total Orders: <span class="follow">5</span></span> </div> <div class=" d-flex mt-2">
+                                             <button class="btn1 btn-dark">Edit Profile</button> </div> 
+                                             <!-- <div class="text mt-3">
+                                             <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting@ with FND night. </span> 
+                                            </div> -->
+                                             <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"> <span><i class="fa fa-twitter"></i></span> <span><i class="fa fa-facebook-f"></i></span>
+                                             <span><i class="fa fa-instagram"></i></span> <span><i class="fa fa-linkedin"></i></span>
+                                             </div> 
+                                             <div class=" px-2 rounded mt-4 date "> <span class="join">Joined April,2023</span>
+                                             </div>
+                                             </div> 
                                             </div>
-                                            <div class="card-body">
-                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
-                                            </div>
+</div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                     </div>
+
+
+                                        <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h5 class="mb-0">Your Orders</h5>
@@ -239,10 +256,10 @@
                                                         <%data.forEach(element=>{%>
                                                         <tbody>
                                                             <tr>
-                                                                <td>#1357</td>
-                                                                <td/td>
-                                                                <td>Processing</td>
-                                                                <td>$125.00 for 2 item</td>
+                                                                <td>#<%=element.orders._id%></td>
+                                                                <td><%=element.orders.createdAt%></td>
+                                                                <td><%=element.orders.orderStatus%></td>
+                                                                <td>₹<%=element.orders.totalPrice%> for 2 item</td>
                                                                 <td><a href="#" class="btn-small d-block">View</a></td>
                                                             </tr>
                                                           
@@ -253,8 +270,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                        </div>
+
+
+                                        <!-- <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h5 class="mb-0">Orders tracking</h5>
@@ -278,45 +297,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        </div> -->
                                         
          
-                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                        <!-- <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h5>Account Details</h5>
                                             </div>
                                             <div class="card-body">
                                                 <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
-                                                <form method="post" name="enq">
-                                                    <div class="row">
-                                                        <div class="form-group col-md-6">
-                                                            <label>First Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="name" type="text">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>Last Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="phone">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Display Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="dname" type="text">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Email Address <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="email" type="email">
-                                                        </div>
+                                                <form  action="/change-passsword" method="post" name="change-passsword">
+                                                   
                                                         <div class="form-group col-md-12">
                                                             <label>Current Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="password" type="password">
+                                                            <input required="" class="form-control square" name="old-password" type="password">
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>New Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="npassword" type="password">
+                                                            <input required="" class="form-control square" name="new-password" type="password">
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>Confirm Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="cpassword" type="password">
+                                                            <input required="" class="form-control square" name="cnf-password" type="password">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
@@ -324,7 +327,9 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
+                                        </div> -->
+
+                                        
                                     </div>
 
 
@@ -499,12 +504,11 @@
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
-                    <h5 class="mb-5">Now Loading</h5>
-                    <div class="loader">
-                        <div class="bar bar1"></div>
-                        <div class="bar bar2"></div>
-                        <div class="bar bar3"></div>
-                    </div>
+                    <div class="">
+                        <h1 class="mb-5">G[S]</h1>
+                        <img src="assets/imgs/theme/Eclipse-1s-200px.gif"/>  
+                        
+                      </div>
                 </div>
             </div>
         </div>
@@ -519,7 +523,7 @@
     <script src="assets/js/plugins/wow.js"></script>
     <script src="assets/js/plugins/jquery-ui.js"></script>
     <script src="assets/js/plugins/perfect-scrollbar.js"></script>
-    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>                                                                                                                                                                                                                                                                            
     <script src="assets/js/plugins/select2.min.js"></script>
     <script src="assets/js/plugins/waypoints.js"></script>
     <script src="assets/js/plugins/counterup.js"></script>
@@ -536,3 +540,12 @@
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
 </html>
+
+
+
+        
+        
+        
+   
+   
+   
