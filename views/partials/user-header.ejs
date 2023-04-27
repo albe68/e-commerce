@@ -22,14 +22,16 @@
             <ul>
               <li>
                 <div class="logo logo-width-1">
-                  <a href="/"
-                    ><img src="assets/imgs/theme/logo.png" alt="logo"
+                  <a href="/" 
+                    ><img src="assets/imgs/theme/logo(3).png" alt="logo"
                   /></a>
                 </div>
               </li>
             </ul>
           </div>
         </div>
+
+        
 
         <!--PREVIOUS HEADER WITH TEXT WHEN IT DELETES THE ALIGNMNET CHNAGES SO DON'T-->
         <!-- <div class="col-xl-6 col-lg-4">
@@ -48,9 +50,11 @@
         </div> -->
 
         <div class="col-xl-6 col-lg-4">
-          <form action="#">
-            <input type="text" placeholder="Search for items..." />
+          <form action="/search" method="post">
+            <input    type="text" name="search" id="keyword" placeholder="Search for items..." />
+            <button style="display: none;" type="submit" >Search</button>
           </form>
+         
         </div>
 
         <div class="col-xl-3 col-lg-4">
@@ -61,20 +65,22 @@
               <li><i class="fi-rs-user"></i><a href="/login">Log In</a></li>
               <% }else{ %>
               <li>
-                <div class="profile-picture">
-                  <a href="/profile"> <%= user.username %></a>
-                </div>
+                
+                  <a class="profile-picture"href="/profile"> <%= user.username %></a>
+               
 
                 
               </li>
-              <a href="/logout"
-                ><button
+              <li class="nav-item">
+                <button class="nav-link btn-icon darkmode" onclick="toggleDarkMode(1)">
+                  <i class="material-icons md-nights_stay"></i>
+                </button>
+              </li>
+              <!-- <a href="/logout"><button
                   type="button"
-                  class="btn btn-fill-out btn-block hover-up me-2"
-                >
+                  class="btn btn-fill-out btn-block hover-up me-2">
                   Logout
-                </button></a
-              >
+                </button></a> -->
 
               <% } %>
               <div class="header-middle header-middle-ptb-1 d-none d-lg-block"></div>
@@ -85,7 +91,7 @@
                       <div class="header-action-2">
                        
 
-                <div class="header-info header-info-right">
+                <!-- <div class="header-info header-info-right">
                   <a class="mini-cart-icon" href="/cart">
                     <img
                       alt="Evara"
@@ -94,7 +100,7 @@
                     <span id="cart-count" class="pro-count blue"
                       ><%=locals.cartCount%></span>
                   </a>
-                </div>
+                </div> -->
                 
                 </div>
                 </div>
@@ -109,50 +115,14 @@
     </div>
   </div>
 
-  <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
-    <div class="container">
-      <div class="header-wrap">
-        <div class="header-right">
-          <div class="header-action-right">
-            <div class="header-action-2">
-
-              <div class="header-action-icon-2">
-                <a href="/wishlist">
-                  <img
-                    class="svgInject"
-                    alt="Evara"
-                    src="assets/imgs/theme/icons/icon-heart.svg"
-                  />
-                  <!--WISH LIST COUNT------------------------------------------>
-                  <!-- <span class="pro-count blue">4</span> -->
-                </a>
-              </div>
-
-              <div class="header-action-icon-2">
-                <a class="mini-cart-icon" href="/cart">
-                  <img
-                    alt="Evara"
-                    src="assets/imgs/theme/icons/icon-cart.svg"
-                  />
-                  <span id="cart-count" class="pro-count blue"
-                    ><%=locals.cartCount%></span
-                  >
-                </a>
-                <!-- CART DROP DOWN REMOVE -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
   <div class="header-bottom header-bottom-bg-color sticky-bar">
     <div class="container">
       <div class="header-wrap header-space-between position-relative main-nav">
         <div class="logo logo-width-1 d-block d-lg-none">
           <a href="index.html"
-            ><img src="assets/imgs/theme/logo.ico" alt="logo"
+            ><img src="assets/imgs/theme/logo.ico" alt="logo"  
           /></a>
         </div>
         <div class="header-nav d-none d-lg-flex">
@@ -183,8 +153,46 @@
           </div>
         </div>
         <div class="hotline d-none d-lg-block">
-          <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888</p>
+          <p style="visibility: hidden"><i  class="fi-rs-headset"></i><span style="visibility: hidden">Hotline</span> 1900 - 888</p>
         </div>
+        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+          <div class="container">
+            <div class="header-wrap">
+              <div class="header-right">
+                <div class="header-action-right">
+                  <div class="header-action-2">
+      
+                    <div class="header-action-icon-2">
+                      <a href="/wishlist">
+                        <img
+                          class="svgInject"
+                          alt="Evara"
+                          src="assets/imgs/theme/icons/icon-heart.svg"
+                        />
+                        <!--WISH LIST COUNT------------------------------------------>
+                        <!-- <span class="pro-count blue">4</span> -->
+                      </a>
+                    </div>
+      
+                    <div class="header-action-icon-2">
+                      <a class="mini-cart-icon" href="/cart">
+                        <img
+                          alt="Evara"
+                          src="assets/imgs/theme/icons/icon-cart.svg"
+                        />
+                        <span id="cart-count" class="pro-count blue"
+                          ><%=locals.cartCount%></span
+                        >
+                      </a>
+                      <!-- CART DROP DOWN REMOVE -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!--MOBILE CODE-->
        
         <p class="mobile-promotion">
@@ -277,3 +285,34 @@ const capitalizedLetter =initials.toUpperCase()
 const profilePicture = document.querySelector('.profile-picture');
 profilePicture.textContent = capitalizedLetter
 </script>
+<script>
+  function toggleDarkMode(mode) {
+    console.log(mode)
+  $.ajax({
+    url:"/dark-mode", 
+    method:"patch",
+    data:{
+      'dark-mode':mode
+    }
+  })
+  var body = document.querySelector("body");
+  body.classList.toggle("dark-mode");
+}
+</script>
+
+<style>
+  /* Example styles for dark mode */
+.dark-mode {
+  background-color: #222222;
+  color: #ffffff;
+}
+
+.dark-mode a {
+  color: #ffffff;
+}
+
+.dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+  color: #ffffff;
+}
+
+</style>
