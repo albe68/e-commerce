@@ -1,257 +1,285 @@
-<!DOCTYPE HTML>
-<html lang="en">
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
-<head>
-    <meta charset="utf-8">
-    <title>Evara Dashboard</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
-    <!-- Template CSS -->
-    <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-    <div class="screen-overlay"></div>
-    <aside class="navbar-aside" id="offcanvas_aside">
-        <div class="aside-top">
-            <a href="index.html" class="brand-wrap">
-                <img src="assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
-            </a>
-            <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
-            </div>
+<section class="">
+    <div class="container d-flex justify-content-center">
+      <div class="row w-75 mt-5">
+        <div class="col-md-12">
+          <h2 class="text-center">Edit Product</h2>
+          <%products?.forEach((locals) => { %>
+          <form
+            action="/admin/products/edit_product/<%=locals._id %>"
+            method="POST"
+            name="myform"
+            id="form"
+            enctype="multipart/form-data"
+          >
+            <label for="">Prodcut Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="name"
+              required=""
+              onkeyup="validateName()"
+              value="<%=locals.name%>"
+            />
+            <span id="name-error" class="validation-label"></span>
+            <br />
+            <label for="">Description</label>
+            <input
+              type="text"
+              name="description"
+              class="form-control"
+              required=""
+              id="description"
+              onkeyup="validateDescription()"
+              value="<%=locals.description%>"
+            />
+            <span id="description-error" class="validation-label"></span>
+            <br />
+  
+            <label for="">Price</label>
+            <input
+              type="text"
+              name="price"
+              class="form-control"
+              id="price"
+              required=""
+              onkeyup="validatePrice()"
+              value="<%=locals.price%>"
+            />
+            <span id="price-error" class="validation-label"></span>
+            <br />
+            <label for="cars">Category</label>
+  
+            <select name="category" class="form-select">
+                <% category?.forEach(element => { %>
+                <option ><%= element?.category %> </option>
+                <%  }); %>     
+              </select>
+  
+            <label for="">Quantity</label>
+            <input
+              type="text"
+              name="quantity"
+              class="form-control"
+              id="quantity"
+              required=""
+              onkeyup="validateQuantity()"
+              value="<%=locals.quantity%>"
+            />
+            <span id="quantity-error" class="validation-label"></span>
+            <br />
+            <label for="">Image</label>
+            <img
+              src="/uploads/<%=locals.Image[0]%>"
+              alt=""
+              style="width: 100px; height: auto"
+            />
+            <img
+              src="/uploads/<%=locals.Image[1]%>"
+              alt=""
+              style="width: 100px; height: auto"
+            />
+            <img
+              src="/uploads/<%=locals.Image[2]%>"
+              alt=""
+              style="width: 100px; height: auto"
+            />
+            <img
+              src="/uploads/<%=locals.Image[3]%>"
+              alt=""
+              style="width: 100px; height: auto"
+            />
+            <input
+              type="file"
+              name="image1"
+              value="<%=locals.Image%>"
+              class="form-control"
+            />
+            <input
+              type="hidden"
+              name="image1"
+              value="<%=locals.Image[0]%>"
+            />
+            <input
+              type="file"
+              name="image2"
+              value="<%=locals.Image%>"
+              class="form-control"
+            />
+            <input
+              type="hidden"
+              name="image2"
+              value="<%=locals.Image[1]%>"
+            />
+            <input
+              type="file"
+              name="image3"
+              value="<%=locals.Image%>"
+              class="form-control"
+            />
+            <input
+              type="hidden"
+              name="image3"
+              value="<%=locals.Image[2]%>"
+            />
+            <input
+              type="file"
+              name="image4"
+              value="<%=locals.Image%>"
+              class="form-control"
+            />
+            <input
+              type="hidden"
+              name="image4"
+              value="<%=locals.Image[3]%>"
+            />
+  
+            <button type="submit" class="btn btn-success mt-4">Submit</button>
+          </form>
+          <br />
+          <br />
+          <%})%>
         </div>
-        <nav>
-            <ul class="menu-aside">
-                <li class="menu-item">
-                    <a class="menu-link" href="index.html"> <i class="icon material-icons md-home"></i>
-                        <span class="text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Products</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-products-list.html">Product List</a>
-                        <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html">Order detail</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
-                        <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu active">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Edit product</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-form-product-1.html" class="active">Edit product 1</a>
-                        <a href="page-form-product-2.html">Edit product 2</a>
-                        <a href="page-form-product-3.html">Edit product 3</a>
-                        <a href="page-form-product-4.html">Edit product 4</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-account-login.html">User login</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span> </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
-                    </a>
-                </li>
-            </ul>
-            <hr>
-            <ul class="menu-aside">
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text"> Starter page </span>
-                    </a>
-                </li>
-            </ul>
-            <br>
-            <br>
-        </nav>
-    </aside>
-    <main class="main-wrap">
-       
-       
-        <section class="content-main">
-            <div class="row">
-                <div class="col-9">
-                    <div class="content-header">
-                        <h2 class="content-title">Edit New Product</h2>
-                        
-                    </div>
-                </div>
-                <%products?.forEach((locals) => { %>
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Basic</h4>
-                        </div>
-                        
-                        <div class="card-body">
-                            <form action="/admin/products/edit_product/<%= locals._id %>" method="post" 
-                    
-                            >
-                                
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Product title</label>
-                                    <input name="name" type="text"  class="form-control" id="product_name" value="<%=locals.name%>" >
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Full description</label>
-                                    <textarea required name="description" placeholder="Type here" class="form-control" rows="4"><%=locals.description%></textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label name="price" 
-                                            class="form-label">Price</label>
-                                            <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control" name="price" value="<%=locals.price%>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                   
-                                    <!-- <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control">
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-lg-4">
-                                        <label class="form-label">Currency</label>
-                                        <select class="form-select">
-                                            <option> USD </option>
-                                            <option> EUR </option>
-                                            <option> RUBL </option>
-                                        </select>
-                                    </div> -->
-                                </div>
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Tax rate</label>
-                                    <input type="text" placeholder="%" class="form-control" id="product_name">
-                                </div>
-                                <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label> -->
-                                <div>
-
-                                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
-                                    <button type="submit" class="btn btn-light rounded font-sm mr-1 text-body hover-up">Cancel</button>
-                                   
-                                </div>
-                            
-                        </div>
-                        <%}); %> 
-                    </div> <!-- card end// -->
-                      
-                </div>
-                
-                <div class="col-lg-3">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Media</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <img src="assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file">
-                            </div>
-                        </div>
-                    </div> <!-- card end// -->
-                  
-            </div>
-        </form>
-        </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </main>
-    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/vendors/select2.min.js"></script>
-    <script src="assets/js/vendors/perfect-scrollbar.js"></script>
-    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
-    <!-- Main Script -->
-    <script src="assets/js/main.js" type="text/javascript"></script>
-</body>
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
-</html>
+      </div>
+    </div>
+  </section>
+  <script>
+    const img = document.forms['myform']['file'];
+    const validExt = ['jpeg', 'png', 'jpg', 'webp'];
+    function validateImage() {
+      if (img.value !== '') {
+        const dot_pos = img.value.lastIndexOf('.') + 1;
+        const img_ext = img.value.substring(dot_pos);
+        const result = validExt.includes(img_ext);
+        if (result == false) {
+          swal.fire('OOPs!', 'Selected file is not an image!', 'error');
+          return false;
+        } else {
+          if (Number(img.files[0].size / (1024 * 1024)) >= 3) {
+            swal.fire(
+              'OOPs!',
+              'Size must be smaller than 3 MB . Current size is :' +
+                Number(img.files[0].size / (1024 * 1024)),
+              'error'
+            );
+            // alert('Size must be smaller than 3 MB . Current size is :' + Number(img.files[0].size/(1024*1024)))
+          }
+        }
+      } else {
+        swal.fire('error', 'No image is selected...', 'error');
+        // alert('No image is selected...');
+        return false;
+      }
+      return true;
+    }
+    const nameError = document.getElementById('name-error');
+    const descriptionError = document.getElementById('description-error');
+    const priceError = document.getElementById('price-error');
+    const quantityError = document.getElementById('quantity-error');
+    const formError = document.getElementById('form-error');
+    const form = document.getElementById('form');
+    function validateName() {
+      var name = document.getElementById('name').value;
+      var nameInput = document.getElementById('name');
+      if (name.length == 0) {
+        nameError.innerHTML = 'Name is required';
+        nameError.style.color = 'red';
+        nameInput.style.border = 'solid 2px red';
+        return false;
+      }
+      if (!name.match(/^[A-Z a-z 0-9]{3,}$/)) {
+        nameError.innerHTML = 'Write valid name';
+        nameError.style.color = 'red';
+        nameInput.style.border = 'solid 2px red';
+        return false;
+      }
+      nameError.innerHTML = '';
+      // nameError.innerHTML = "Valid Name";
+      nameError.style.color = 'green';
+      nameInput.style.border = 'solid 2px green';
+      return true;
+    }
+    function validateDescription() {
+      const description = document.getElementById('description').value;
+      const descriptionInput = document.getElementById('description');
+      console.log(name);
+      if (description.length == 0) {
+        descriptionError.innerHTML = 'Discription is required';
+        descriptionError.style.color = 'red';
+        descriptionInput.style.border = 'solid 2px red';
+        return false;
+      }
+      if (!description.match(/^[0-9 A-Z a-z]{3,}$/)) {
+        descriptionError.innerHTML = 'Write valid discription';
+        descriptionError.style.color = 'red';
+        nameInput.style.border = 'solid 2px red';
+        return false;
+      }
+      descriptionError.innerHTML = '';
+      // nameError.innerHTML = "Valid Name";
+      descriptionError.style.color = 'green';
+      descriptionInput.style.border = 'solid 2px green';
+      return true;
+    }
+    function validatePrice() {
+      const price = document.getElementById('price').value;
+      const priceInput = document.getElementById('price');
+      if (price.length == 0) {
+        priceError.innerHTML = 'Price field is required';
+        priceError.style.color = 'red';
+        priceInput.style.border = 'solid 2px red';
+        return false;
+      }
+      if (!price.match(/^\d+(\.\d{1,2})?$/)) {
+        priceError.innerHTML = 'Write valid price';
+        priceError.style.color = 'red';
+        nameInput.style.border = 'solid 2px red';
+        return false;
+      }
+      priceError.innerHTML = '';
+      // nameError.innerHTML = "Valid Name";
+      priceError.style.color = 'green';
+      priceInput.style.border = 'solid 2px green';
+      return true;
+    }
+    function validateQuantity() {
+      const quantity = document.getElementById('quantity').value;
+      const quantityInput = document.getElementById('quantity');
+      console.log(name);
+      if (quantity.length == 0) {
+        quantityError.innerHTML = 'quantity field is required';
+        quantityError.style.color = 'red';
+        quantityInput.style.border = 'solid 2px red';
+        return false;
+      }
+      if (!quantity.match(/^[1-9]\d*$/)) {
+        quantityError.innerHTML = 'Write valid quantity';
+        quantityError.style.color = 'red';
+        nameInput.style.border = 'solid 2px red';
+        return false;
+      }
+      quantityError.innerHTML = '';
+      // nameError.innerHTML = "Valid Name";
+      quantityError.style.color = 'green';
+      quantityInput.style.border = 'solid 2px green';
+      return true;
+    }
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (
+        !validatePrice() ||
+        !validateQuantity() ||
+        !validateDescription() ||
+        !validateName()
+      ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Enter details correctly!!',
+        });
+        return false;
+      } else {
+        form.submit();
+      }
+    });
+  </script>
+  
