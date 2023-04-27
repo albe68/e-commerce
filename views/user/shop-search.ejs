@@ -897,7 +897,19 @@
   
   <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-grid-left.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:43 GMT -->
   
+  <script>
+    $('.sort-button').click(function() {
+  // Remove active class from all sort buttons
+  $('.sort-button').removeClass('active');
   
+  // Add active class to this sort button
+  $(this).addClass('active');
+  
+  // Sort the list from high to low
+  // ...
+});
+
+  </script>
   <script>
     function addTocart(proId,stock){
     
@@ -980,3 +992,4 @@
     }
     
   </script>
+
