@@ -10,6 +10,18 @@
                 <div
                   class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5"
                 >
+                <div class="heading_s1">
+                  <h3 class="mb-30">Login</h3>
+                </div>
+                <%if (locals.blockedStatus){%>
+                <p class="message" style="color: red">
+                  You are blocked by admin
+                </p>
+                <%}%> <%if(locals.loggedInStatus==false){%>
+                <p class="message" style="color: red">
+                  Invalid Credentials
+                </p>
+                <%}%>
                   <div class="padding_eight_all bg-white">
                     <div class="heading_s1">
                       <h3 class="mb-30">Login</h3>
@@ -69,16 +81,7 @@
                       <div>
                         <p class="mb-3 text-center text-success">OR</p>
                       </div>
-                      <div class="form-group">
-                        <button
-                          type="submit"
-                          class="btn btn-fill-out btn-block hover-up"
-                          name="login"
-                          style="width: 100%"
-                        >
-                          Request OTP
-                        </button>
-                      </div>
+                   
                       <div>
                         <a class="ms-5" href="/signup"
                           >New ? Create An Account</a
@@ -92,7 +95,22 @@
           </div>
         </div>
       </div>
+        
     </section>
+    <div class="form-group">
+      <!-- <button
+        type="button"
+        class="btn btn-fill-out btn-block hover-up"
+        name="login"
+        style="width: 100%"
+        href="/"
+      >
+        Request OTP
+      </button> -->
+      <a href="/otp-login" class="btn btn-warning w-100"
+      >Request OTP</a
+    >
+    </div>
   </main>
  
   <!-- Preloader Start -->
@@ -100,11 +118,10 @@
     <div class="preloader d-flex align-items-center justify-content-center">
       <div class="preloader-inner position-relative">
         <div class="text-center">
-          <h5 class="mb-5">Now Loading</h5>
-          <div class="loader">
-            <div class="bar bar1"></div>
-            <div class="bar bar2"></div>
-            <div class="bar bar3"></div>
+          <div class="">
+            <h1 class="mb-5">G[S]</h1>
+            <img src="assets/imgs/theme/Eclipse-1s-200px.gif"/>  
+            
           </div>
         </div>
       </div>
@@ -113,7 +130,7 @@
 </section>
 
 <script>
-  function validation(e){
-    
-  }
+  setTimeout(function () {
+    document.querySelector('.message').style.display = 'none';
+  }, 2000);
 </script>
