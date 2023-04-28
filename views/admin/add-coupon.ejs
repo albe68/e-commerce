@@ -1,0 +1,109 @@
+<div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title pb-5">Add new coupon</h4>
+        <form class="form-sample">
+          <div class="alert alert-danger" id="errorDisplay" role="alert" hidden></div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Coupon Code</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" id="couponName" value="" class="form-control" placeholder="Generate Coupon Code" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <a class="btn btn-outline-info" onclick="generateCoupon()">Generate Code</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Validity</label>
+                <div class="col-sm-9">
+                  <input type="date" name="" class="form-control" id="validity" cols="45" rows="5"></input>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Min Purchase</label>
+                <div class="col-sm-9">
+                  <input id="minAmount" type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 discPer">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Discount (%)</label>
+                <div class="col-sm-9">
+                  <input id="discountPercentage" type="number" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" id="maxdiscountfield">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Max Discount (Rs)</label>
+                <div class="col-sm-9">
+                  <input id="maxDiscountValue" type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Description(T&amp;C)</label>
+                <div class="col-sm-9">
+                  <textarea name="" class="form-control" id="description" cols="45" rows="5"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a type="button" class="btn btn-outline-info col-1" onclick="validatorCoupen()">Submit</a>
+        </form>
+      </div>
+    </div>
+  </div>  <script>
+    function validatorCoupen() {
+      const coupenName = document.getElementById('couponName').value
+      const validity = document.getElementById('validity').value
+      const minAmount = document.getElementById('minAmount').value
+      const description = document.getElementById('description').value
+      const discountPercentage = document.getElementById('discountPercentage').value
+      const maxDiscountValue = document.getElementById('maxDiscountValue').value
+      const error = document.getElementById('errorDisplay')
+     
+        submitCoupon(coupenName, new Date(validity), parseInt(minAmount), description, parseInt(discountPercentage), maxDiscountValue)
+      
+    }
+    function submitCoupon(coupenName, validity, minAmount, description, discountPercentage, maxDiscountValue) {
+        console.log("heyyyy",coupenName, validity, minAmount, description, discountPercentage, maxDiscountValue)
+      $.ajax({
+        url: '/admin/add-coupon',
+        method: 'POST',
+        data: {
+          couponName: coupenName,
+          expiry: validity,
+          minPurchase: minAmount,
+          description: description,
+          discountPercentage: discountPercentage,
+          maxDiscountValue: maxDiscountValue,
+        },
+        success: (response) => {
+          location.href = '/coupon_management'
+        }
+      })
+    }
+
+  function generateCoupon() {
+    $.ajax({
+      url: '/admin/generate_coupon',
+      method: 'get',
+      success: (response) => {
+        $('#couponName').val(response.couponCode);
+      }
+    });
+  }
+
+
+  </script>
