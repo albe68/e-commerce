@@ -86,34 +86,39 @@
                   <% data.forEach(element => { %>
 
                   <tr>
-                    <td><%= element?._id %></td>
+                    <td><%= element?.orders._id %></td>
                     <td><b><%= element?.orders.fName%></b></td>
                     <td><%= element?.orders.email %></td>
                     <td>₹<%= element?.orders.totalPrice %></td>
                     <td>
                       <span class="badge rounded-pill alert-warning"
-                        ><%= element?.orders.paymentStatus %></span
+                        ><%= element?.orders.orderStatus %></span
                       >
                     </td>
                     <td><%= element?.orders.createdAt %></td>
                     <td class="col-lg-1 col-md-1 ms-auto text-md-end">
-                      <!-- <select
-                        class="form-select d-inline-block mb-lg-3 mb-15 mw-200"
-                        onchange="deliveryStatus(this,'<%= element?.orders._id %>')"
-                      >
+                      <%if(element?.orders.orderStatus=='placed'||element?.orders.orderStatus=='pending'){%>
+                      <select class="form-select d-inline-block mb-lg-3 mb-15 mw-200" onclick="deliveryStatus(this,'<%= element?.orders._id %>')" >
                        
                         <option>Delivered</option>
-                      </select> -->
-                      <%if(element?.orders.paymentStatus=='placed'){%>
+                      </select>
+                      <%}%>
+                      <%if(element?.orders.orderStatus=='Delivered'){%>
+                        <p href="#" style="text-align: center;" class="btn-md rounded font-md btn-success">
+                          Product Delivered
+                        </p>
+                   
 
-                      <button
+                      <%}else if(element?.orders.orderStatus!='canceled'){%>
+                        <button
                         onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')"
                         class="btn btn-md rounded font-sm"
                       >
                         Cancel
                       </button>
-
-                      <%}else{%>
+                  
+                      <%}%>
+                      <%if(element?.orders.orderStatus=='canceled'){%>
                       <p href="#" style="text-align: center;" class="btn-md rounded font-md btn-danger">
                         Product Canceled
                       </p>
@@ -184,6 +189,7 @@
     Swal.fire("Canceled");
   }
   function deliveryStatus(element, orderId) {
+    
     console.log(element.value,"hello"); //find a solution for proId
     Swal.fire({
       title: "Are you sure?",
