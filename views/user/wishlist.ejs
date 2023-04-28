@@ -186,12 +186,19 @@
                                         <th scope="col">Action</th>
                                         <th scope="col">Remove</th>
                                     </tr>
-                                </thead>
+                                </thead>    
                                 <tbody>
-                                    <%products.forEach((locals)=>{%>
+
+                                  
+                                    <%products?.forEach((locals,index)=>{%> 
                                     <tr>
-                                        <td class="image product-thumbnail"><img src="assets/imgs/shop/product-1-1.jpg" alt="#"></td>
-                                        <td class="product-des product-name">
+                                        <td class="image product-thumbnail">
+                                            <img 
+                                            src="uploads/<%=locals.wishlist.Image[0]%>" 
+                                            alt="#">
+                                        </td>
+                                    
+                                            <td class="product-des product-name">
                                             <h5 class="product-name"><a href="shop-product-right.html"><%=locals.wishlist.name%></a></h5>
                                             <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
                                             </p>
@@ -201,7 +208,7 @@
                                             <span class="color3 font-weight-bold">In Stock</span>
                                         </td>
                                         <td class="text-right" data-title="Cart">  
-                                            <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                            <button onclick="addTocart('<%= locals._id %>','<%= locals.wishlist.quantity %>')"  class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                         </td>
                                         <td class="action" data-title="Remove">  <button onclick="removeItem('<%=locals._id%>','<%=locals.wishlist._id%>')" ><i class="fi-rs-trash"></i></button></td>
                                     </tr>
@@ -375,4 +382,72 @@
 })
        
     }
+
+    function addTocart(proId,stock){
+        console.log("kui",proId,stock)
+  $.ajax({ 
+    
+    url:'/check-cart-quantity/'+proId, 
+    method:'get',
+    success:(response)=>{
+      if(response.status){
+        if(stock-response.quantity<=0){
+
+          
+            Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Out Of Stock',
+            showConfirmButton: false,
+            timer: 1500
+            })
+                                     
+        }
+        else{
+          console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+       $.ajax({
+         url:'/add-to-cart/'+proId,
+        method:'get',
+        success:(response)=>{
+      console.log(response)
+      if(response.status){
+        
+        let count=$('#cart-count').html();
+        count=parseInt(count)+1
+        $("#cart-count").html(count);
+        
+        
+
+      }
+    }
+  })
+        }
+      }
+      else if(response.status==false&&stock==0){
+        toastOutofStock()
+      }
+      else{
+        $.ajax({
+    url:'/add-to-cart/'+proId,
+    method:'get',
+    success:(response)=>{
+      console.log(response)
+      if(response.status){
+        
+        let count=$('#cart-count').html();
+        count=parseInt(count)+1
+        $("#cart-count").html(count);
+        
+        
+
+      }
+    }
+  })
+      }
+    }
+  })
+
+
+
+}
 </script>
