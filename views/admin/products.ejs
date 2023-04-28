@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </header> <!-- card-header end// -->
-                <% products?.forEach((locals) => { %>
+                <% products?.forEach((locals,index) => { %>
                 <div class="card-body">
                    
                     <article class="itemlist">
@@ -62,7 +62,7 @@
                             <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
                                 <a class="itemside" href="#">
                                     <div class="left">
-                                        <img src="/images/<%= locals._id %>0.png " class="img-sm img-thumbnail" alt="Item">
+                                        <img src="uploads/<%=locals.Image[0]%>" class="img-sm img-thumbnail" alt="Item">
                                     </div>
                                     <div class="info">
                                         <h6 class="mb-0"><%=locals.name%></h6>
