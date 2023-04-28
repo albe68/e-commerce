@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
-<head>
-    <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-</head>
 
 <body>
     
@@ -51,15 +32,15 @@
                                 </thead>
                                 
                                 <tbody>   
-                                    <%cartItems.forEach((locals)=>{%> 
+                                    <%cartItems?.forEach((locals)=>{%> 
                                     <tr>   
-                                        <td class="image product-thumbnail"><img src="/uploads/<%=locals.Products._id%>[0]" alt="alternate text"></td>
+                                        <td class="image product-thumbnail"><img src="/uploads/<%=locals?.Products?.Image[0]%>" alt="alternate text"></td>
                                         <td class="product-des product-name">
-                                            <h5 class="product-name"><a href="shop-product-right.html"><%=locals.Products.name%></a></h5>
-                                            <p class="font-xs"><%locals.Products.description%>
-                                            </p>
+                                            <h5 class="product-name"><a href="/view-product/<%=locals?.Products?._id%>"><%=locals?.Products?.name%></a></h5>
+                                            <p class="font-xs"><%locals?.Products?.description%>
+                                            </p> 
                                         </td>
-                                        <td class="price" data-title="Price"><span>₹<%=locals.Products.price%> </span></td>
+                                        <td class="price" data-title="Price"><span>₹<%=locals?.Products?.price%> </span></td>
                                         <td class="text-center" data-title="Stock">
 
 <!--CHANGE PRODUCT QUANTITY -------------------------------------------------------------------------------------->
@@ -260,7 +241,6 @@
 
  
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
-</html>
 
 <script>
   function  changeQuantity(cartId,proId,count,input){
