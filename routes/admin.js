@@ -1,21 +1,9 @@
 var express = require("express");
 var router = express.Router();
 var auth=require("../controller/auth")
-// 11-04-23 commented
-// const multer  = require('multer')
+const multer = require("../middleware/multer/multer");
+const uploads = require("../middleware/multer/multer")
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//       cb(null, 'public/uploads/') 
-//       //  had put ./ before public
-//   },
-//   filename: function (req, file, cb) {            //file name of the image uploaded file
-//       const uniqueSuffix = Date.now() + '-' + file.originalname 
-//       cb(null, file.fieldname + '-' + uniqueSuffix)
-//   }
-// })
-
-// const upload = multer({ storage: storage })
 
 
 
@@ -37,12 +25,12 @@ router.get('/products',auth.verifyAdmin,adminController.Products)
 router.get("/add-product",auth.verifyAdmin,adminController.getAddProducts);
 
 // ,upload.single('image')
-router.post("/add-products",adminController.postAddProduct);
+router.post("/add-products",multer.uploads,adminController.postAddProduct);
 
 
 //edit product//
 router.get("/products/edit-product/:id",auth.verifyAdmin,adminController.getEditProducts);
-router.post("/products/edit_product/:id",adminController.postEditProducts);
+router.post("/products/edit_product/:id",auth.verifyAdmin,multer.editeduploads,adminController.postEditProducts);
 
 //delete product//
 router.get("/products/delete_product/:id",adminController.getdeleteProducts)
@@ -78,6 +66,13 @@ router.post('/category/edit_categories/:id',adminController.updateCategory);
 router.get('/orders',adminController.getAdminOrders)
 //Update Order//
 router.put('/orders/update-order',adminController.updateOrder)
+//Sales report
+router.get("/sales_report",adminController.getSalesReport) 
+router.post("/sales_report",adminController.postSalesReport)
 
+//coupon management
+router.get("/generate_coupon",adminController.generateCoupon)
+router.get("/coupon_management",adminController.getCoupon)
 
+router.post("/add-coupon",adminController.addCoupon)
 module.exports = router;
