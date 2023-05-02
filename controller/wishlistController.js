@@ -1,6 +1,7 @@
 const db = require("../model/connection");
 const productHelpers = require("../helpers/productHelpers");
 const wishlistHelpers = require("../helpers/wishlistHelpers");
+const cartHelpers = require("../helpers/cartHelpers");
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 var colors = require('colors');
@@ -23,12 +24,14 @@ module.exports={
           console.log(error);
         }
       },
-      getWishlist: (req, res) => {
+      getWishlist:async (req, res) => {
         try {
           let user = req.session.user._id;
+          let cartCount = await cartHelpers.getCartCount(user);
+
           wishlistHelpers.listWishlist(user).then((products) => {
-            console.log(products, "lol");
-            res.render("user/wishlist", { user, products });
+            console.log(products, "in line 30 wishlist controller");
+            res.render("user/wishlist", { user, products,cartCount });
           });
         } catch (error) {
           console.log("what",error);

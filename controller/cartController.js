@@ -6,6 +6,7 @@ var colors = require("colors");
 
 
 module.exports = {
+  
   getAddToCart: async (req, res) => {
     try {
       // req.session.returnUrl = req.originalUrl;

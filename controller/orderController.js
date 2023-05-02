@@ -4,8 +4,8 @@ const orderHelpers = require("../helpers/orderHelpers");
 const couponHelpers=require("../helpers/couponHelpers")
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
-var colors = require('colors');
-var voucher_codes = require('voucher-code-generator');
+const colors = require('colors');
+const voucher_codes = require('voucher-code-generator');
 const session = require("express-session");
 
 

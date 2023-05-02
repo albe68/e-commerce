@@ -516,4 +516,18 @@ module.exports = {
       })
     })
   },
+  viewOrderDetails:(orderId)=>{
+    return new Promise(async (resolve,reject)=>{
+      let proId=await db.order.findOne({"orders._id":orderId},{'orders.$':1})
+
+      let details=proId.orders[0];
+      let order=proId.orders[0].productDetails;
+
+      const productDetails=proId.orders.map(object=> object.productDetails);
+      const address=proId.orders.map(object=>object.shippingAddress);
+      const products=productDetails.map(object=>object)
+
+      resolve({products,address,details})
+    })
+  }
 };

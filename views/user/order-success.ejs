@@ -118,12 +118,23 @@
            
             <%}else {%>
               <div style="text-align: right;">
+                
+                  <button
+                    class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center"
+                    href="/view-order-details/<%=element?.orders._id%>"
+                    
+                  >
+                    View Product
+                  </button>
+               
                 <button
                   class="btn btn-dark rounded d-none d-md-inline m-0 align-items-center"
                   onclick="cancelOrder('<%=element?.orders.productDetails._id %>','<%=element?.orders._id%>')"
                 >
                   Cancel Order
                 </button>
+
+           
               </div>
               <%}%>
               
@@ -209,5 +220,15 @@
   }
 })
   }
+   
+  function viewProduct(proId,orderid){
+      console.log(orderid);
+   $.ajax({    
+     url:'/view-order-details/'+orderid,  
+     method:'get'
+  
+   })
+    }
+
 
 </script>

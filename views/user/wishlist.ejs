@@ -194,7 +194,7 @@
                                     <tr>
                                         <td class="image product-thumbnail">
                                             <img 
-                                            src="uploads/<%=locals.wishlist.Image[0]%>" 
+                                            src="/uploads/<%=locals.wishlist.Image[0]%>" 
                                             alt="#">
                                         </td>
                                     
@@ -208,7 +208,7 @@
                                             <span class="color3 font-weight-bold">In Stock</span>
                                         </td>
                                         <td class="text-right" data-title="Cart">  
-                                            <button onclick="addTocart('<%= locals._id %>','<%= locals.wishlist.quantity %>')"  class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                            <button onclick="addTocart('<%= locals.wishlist._id %>','<%= locals.wishlist.quantity %>')"  class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                         </td>
                                         <td class="action" data-title="Remove">  <button onclick="removeItem('<%=locals._id%>','<%=locals.wishlist._id%>')" ><i class="fi-rs-trash"></i></button></td>
                                     </tr>
@@ -254,7 +254,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                                <a href="index.html"><img src="/assets/imgs/theme/logo.svg" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">

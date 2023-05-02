@@ -21,9 +21,9 @@ module.exports={
 
       console.log(proId); //proId is sus
 
-      productHelpers.getProduct(proId).then((products) => {
-        console.log(products, "PRODUCTS");
-        res.render("user/view-product", { products, user, cartCount });
+      productHelpers.getProduct(proId).then((product) => {
+        console.log(product, "PRODUCTS");
+        res.render("user/view-product", { product, user, cartCount });
       });
     } catch (error) {
       console.log(error);

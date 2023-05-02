@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema({
 
 //Products Schema
 const productSchema = new mongoose.Schema({
+  
   name: { type: String },
   description: { type: String },
   price: { type: Number },
 
-  // brand: {type:String},
   quantity: { type: Number },
   category: { type: String },
   Image: {  type: Array}, //changed for list and unlist

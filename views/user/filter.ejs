@@ -363,15 +363,15 @@
                   <div class="product-cart-wrap mb-30">
                     <div class="product-img-action-wrap">
                       <div class="product-img product-img-zoom">
-                        <a href="shop-product-right.html">
+                        <a href="/view-product/<%=locals._id%>">
                           <img
                             class="default-img"
-                            src="assets/imgs/games/fifaWC.jpg"
+                            src="/uploads/<%=locals?.Image[0]%>" 
                             alt=""
                           />
                           <img
                             class="hover-img"
-                            src="assets/imgs/games/fifa23.jpg"
+                            src="/uploads/<%=locals?.Image[1]%>" 
                             alt=""
                           />
                         </a>
@@ -413,14 +413,14 @@
                           ><%=locals.name%></a
                         >
                       </h2>
-                      <div class="rating-result" title="90%">
+                      <!-- <div class="rating-result" title="90%">
                         <span>
                           <span>90%</span>
                         </span>
-                      </div>
+                      </div> -->
                       <div class="product-price">
                         <span>₹<%=locals.price%></span>
-                        <span class="old-price">₹245.8</span>
+                        <span class="old-price">₹10,000</span>
                       </div>
                       <div class="product-action-1 show">
                         <a
