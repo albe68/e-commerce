@@ -12,7 +12,7 @@ const { admin } = require("../model/connection");
 
 router.get("/",adminController.getAdminPanel);
 /* GET users listing. */
--router.get("/login",adminController.getAdminLogin)
+router.get("/login",adminController.getAdminLogin)
 
 
 // Post Admin Login Router//
