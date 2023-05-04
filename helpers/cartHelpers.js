@@ -1,5 +1,6 @@
 const { user } = require("../model/connection");
 const db = require("../model/connection");
+
 module.exports = {
   //Add To Cart//
 
@@ -302,5 +303,59 @@ module.exports = {
         console.log(error)
       }
     })
-  }
+  },
+  applyCoupoun:(couponName)=>{
+
+    return new Promise((resolve,reject)=>{
+    
+      db.coupon.find({couponName:couponName.couponId}).then((response)=>{
+        if(couponName.couponId){
+          resolve(response);
+          
+        }
+        console.log(response,"121")
+      })
+    })
+    
+    
+      },
+      discountTotal:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+          const id=await db.cart.aggregate([
+            {
+              $match:{
+                user:userId
+
+              }
+            },
+            {
+              $unwind:'$cartProducts',
+            },{
+              $project:{
+               item: 'cartProducts.item',
+               quantity:'cartProducts.quantity'
+
+              }
+
+            },{
+              $lookup:{
+                from:'products',
+                localField:'item',
+                foreignField:'_id',
+                as:'cartItems'
+
+              }
+            },{
+              $project:{
+                item:1,
+                quantity:1,
+                cartProducts:{$arrayElemAt:["$cartItems",0]}
+              }
+            }
+          ])
+        })
+
+      }
 };
+
+
