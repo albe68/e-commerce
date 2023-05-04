@@ -19,7 +19,7 @@ verifyAdmin:(req,res,next)=>{
         next()
     }
     else{
-       
+       console.log("admin not logged in")
         res.render("admin/login",{layout:"adminLayout"})
     }
 },
