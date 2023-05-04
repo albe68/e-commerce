@@ -108,7 +108,7 @@ module.exports = {
     try {
       if (req.session.adminIn) {
         console.log(req.session.adminIn, "222222222222222222");
-        res.render("admin/admin-dashboard", { layout: "adminLayout" });
+        res.redirect("/admin");
       } else {
         console.log(req.session.adminIn, "11111111111111111111111111111111111");
         res.render("admin/login", { layout: "adminLayout" });
@@ -120,6 +120,7 @@ module.exports = {
   postAdminlogin: (req, res) => {
     // console.log("hello",adminData)
     try {
+      console.log('console me')
       adminHelpers
         .doAdminLogin(req.body)
         .then((response) => {
@@ -585,8 +586,8 @@ module.exports = {
 
   },
   getCoupon:(req,res)=>{
-    res.render("admin/add-coupon",{layout:"adminLayout"})
-  },
+    res.render("admin/couponManagement",{layout:"adminLayout"})
+  }, 
   generateCoupon:async(req,res)=>{
     await couponHelpers.generateCoupon().then(response=>{
       console.log(response)
