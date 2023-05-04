@@ -18,8 +18,7 @@ module.exports={
     
         let cartItems = await cartHelpers.getCartProduct(req.session.user);
         let address = await db.address.find({ user: req.session.user._id });
-        // console.log(address)
-        console.log(cartItems.quantity);
+        console.log(address,"SET")
     
         let totalPrice = await cartHelpers.getTotal(req.session.user._id);
         console.log("KIKIKIKIKIKI", req.body, "KIKIKIKIKI");
