@@ -13,6 +13,7 @@ const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 var colors = require("colors");
 const otp = require("../middleware/otp/otp");
+const couponHelpers = require("../helpers/couponHelpers");
 const client = require("twilio")(otp.accountSid, otp.authToken);
 
 let otpNumber;
@@ -669,10 +670,28 @@ module.exports = {
 
   orderDetails: async (req, res) => {
     try {
-      console.log(req.body);
+      console.log(req.params);
+      let userId=req.session.user._id
+      let orderId= req.params;
+      const orderDet=await orderHelpers.orderDetails(orderId,userId)
       res.render("user/order-details");
     } catch (error) {
       console.log(error);
     }
   },
+  applyCoupon:async(req,res)=>{
+    console.log("SIGNAL",req.body)
+  try {   
+    let userId=req.session.user._id
+    let total=await cartHelpers.getTotal(userId)
+    let coupon=req.body.couponId;
+    console.log(coupon,'heyeyeye')
+    couponHelpers.couponValidator(userId,total)
+      
+      let couponData=await cartHelpers.applyCoupoun(coupon)}
+      catch(err){
+        console.log(err)
+
+      }
+  }
 };
