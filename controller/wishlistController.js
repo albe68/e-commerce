@@ -5,11 +5,13 @@ const cartHelpers = require("../helpers/cartHelpers");
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 var colors = require('colors');
+const { accessSync } = require("fs");
 
 
 module.exports={
-    addToWishlist: (req, res) => {
+    addToWishlist: async(req, res) => {
         try {
+          let wishlist=await wishlistHelpers
           let proId = req.params.id;
           let user = req.session.user._id;
           console.log(proId, "ooo");
