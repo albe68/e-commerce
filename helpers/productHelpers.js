@@ -46,13 +46,14 @@ module.exports = {
   addProduct: (products,filename) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const { name, description, price,quantity,category } = products;
         ImageUpload=new db.products({
-          name:products.name,
-          description:products.description,
-          quantity:products.quantity,
+          name:name,
+          description:description,
+          quantity:quantity,
           Image:filename,
-          category:products.category,
-          price:products.price
+          category:category,
+          price:price
           
         })
         ImageUpload.save().then(data=>{
