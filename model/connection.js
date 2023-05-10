@@ -55,8 +55,11 @@ const cartSchema = new mongoose.Schema({
     {
       item: mongoose.Types.ObjectId,
       quantity: Number,
+
     },
+   
   ],
+  totalPrice:{ type: Number }
 });
 const orderSchema = new mongoose.Schema({
   userId: mongoose.Types.ObjectId,

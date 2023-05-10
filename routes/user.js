@@ -56,7 +56,9 @@ router.get(
 );
 router.post("/cancel-order", orderController.cancelOrder);
 router.post("/verify_payment", orderController.verifypayment);
-router.get("/view-order-details/:id",userController.orderDetails)
+router.get("/view-order-details/:id",userController.orderDetails);
+router.get("/order-details/:id",userController.viewOrder)
+
 // router.post("/verify_coupon", orderController.verifyCoupon);
 
 //  wISHLIST
@@ -69,5 +71,10 @@ router.delete("/wishlist/remove/:id", wishlistController.deleteWishlist);
 router.get("/profile", userController.getprofilePage);
 router.post("/change-passsword", userController.changePassword);
 router.delete("/delete-address/:id", addressController.deleteAddress);
+
+//coupon 
+
+router.post("/apply_coupon",userController.applyCoupon)
+
 
 module.exports = router;

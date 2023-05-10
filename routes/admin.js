@@ -9,9 +9,9 @@ const uploads = require("../middleware/multer/multer")
 
 const adminController=require("../controller/adminController");
 const { admin } = require("../model/connection");
-
-router.get("/",adminController.getAdminPanel);
 /* GET users listing. */
+router.get("/",adminController.getAdminPanel);
+/*GET users login*/
 router.get("/login",adminController.getAdminLogin)
 
 
@@ -25,7 +25,7 @@ router.get('/products',auth.verifyAdmin,adminController.Products)
 router.get("/add-product",auth.verifyAdmin,adminController.getAddProducts);
 
 // ,upload.single('image')
-router.post("/add-products",multer.uploads,adminController.postAddProduct);
+router.post("/add-products",auth.verifyAdmin,multer.uploads,adminController.postAddProduct);
 
 
 //edit product//
@@ -33,14 +33,14 @@ router.get("/products/edit-product/:id",auth.verifyAdmin,adminController.getEdit
 router.post("/products/edit_product/:id",auth.verifyAdmin,multer.editeduploads,adminController.postEditProducts);
 
 //delete product//
-router.get("/products/delete_product/:id",adminController.getdeleteProducts)
-router.get("/products/list_product/:id",adminController.getListProducts)
+router.get("/products/delete_product/:id",auth.verifyAdmin,adminController.getdeleteProducts)
+router.get("/products/list_product/:id",auth.verifyAdmin,adminController.getListProducts)
 
 
 //USERS
 router.get('/users',auth.verifyAdmin,adminController.Users)
-router.get('/users/block_user/:id',adminController.blockUser);
-router.get('/users/unblock_user/:id',adminController.unblockUser);
+router.get('/users/block_user/:id',auth.verifyAdmin,adminController.blockUser);
+router.get('/users/unblock_user/:id',auth.verifyAdmin,adminController.unblockUser);
 //CATEGORY
 
 // Get Category Router//
@@ -53,7 +53,7 @@ router.post('/category/add-categories',auth.verifyAdmin,adminController.addCateg
 
 // Delete Category Router//
 
-router.get('/category/delete_category/:id',adminController.deleteCategory);
+router.get('/category/delete_category/:id',auth.verifyAdmin,adminController.deleteCategory);
 
 // Edit Category Router//
 
@@ -61,18 +61,18 @@ router.get('/category/edit_categories/:id',auth.verifyAdmin,adminController.edit
 
 // Edit Category Router//
 
-router.post('/category/edit_categories/:id',adminController.updateCategory);
+router.post('/category/edit_categories/:id',auth.verifyAdmin,adminController.updateCategory);
 //Order Management //
-router.get('/orders',adminController.getAdminOrders)
+router.get('/orders',auth.verifyAdmin,adminController.getAdminOrders)
 //Update Order//
-router.put('/orders/update-order',adminController.updateOrder)
+router.put('/orders/update-order',auth.verifyAdmin,adminController.updateOrder)
 //Sales report
-router.get("/sales_report",adminController.getSalesReport) 
-router.post("/sales_report",adminController.postSalesReport)
+router.get("/sales_report",auth.verifyAdmin,adminController.getSalesReport) 
+router.post("/sales_report",auth.verifyAdmin,adminController.postSalesReport)
 
 //coupon management
-router.get("/generate_coupon",adminController.generateCoupon)
-router.get("/coupon_management",adminController.getCoupon)
+router.get("/generate_coupon",auth.verifyAdmin,adminController.generateCoupon)
+router.get("/coupon_management",auth.verifyAdmin,adminController.getCoupon)
 
-router.post("/add-coupon",adminController.addCoupon)
+router.post("/add-coupon",auth.verifyAdmin,adminController.addCoupon)
 module.exports = router;

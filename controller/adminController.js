@@ -189,7 +189,8 @@ module.exports = {
     console.log(req.files);
     console.log(req.files);
     console.log(req.file);
-    console.log("ahjkshajskahjshajskahsjkahkjsaasasawqwqwqwq", req.body);
+    const { name, description, price,quantity,category } = req.body;
+    console.log( "name",name,"des", description,"price", price )
     const image = req.files.map((files) => files.filename);
     console.log("TAKE IT ", image, "admin Cont 210");
     try {

@@ -31,9 +31,11 @@ module.exports={
             console.log(wishlist,"log")
             if(wishlist.length){
                 let productExist=wishlist[0].wishItems.findIndex((item)=>{
+                    console.log(item.productId,"seperate",proId)
                     item.productId==proId
                 })
                 if(productExist==-1){
+                    console.log("prooo",productExist)
                     db.wishlist.updateOne({user:userId},
                         {
                             $addToSet:{
@@ -45,6 +47,7 @@ module.exports={
                 }
             }
                 else{
+                    console.log("every time");
                     const newWishlist= new db.wishlist({
                         user:userId,
                         wishItems:proObj

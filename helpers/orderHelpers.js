@@ -529,5 +529,43 @@ module.exports = {
 
       resolve({products,address,details})
     })
+  },
+  orderDetails:(orderId,userId)=>{
+    return new Promise(async(resolve,reject)=>{
+      const convertObjectOrderId = new ObjectId(orderId);
+    const hi=  typeof(objId)
+    console.log(hi,"123")
+      let order = await db.order.find({ "orders._id": convertObjectOrderId });
+      console.log(order,"ttt")
+      let orderIndex = order[0].orders.findIndex(
+        (order) => order._id == convertObjectOrderId
+      );
+   db.order.aggregate([
+      {  $match:{
+          userId:userId
+        }
+      },
+        
+      {
+        $unwind:'$orders'
+      },
+    
+      {
+        $project:{
+          productDetails: "$orders.productDetails"
+          
+        }
+      },{
+        $unwind:'$productDetails'
+      }
+      
+    
+    
+    ]).then(data=>{
+      console.log(data,"halo")
+      resolve(data)
+
+    })
+    })
   }
 };

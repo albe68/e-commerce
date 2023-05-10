@@ -4,10 +4,11 @@ const db = require("../model/connection");
 module.exports = {
   //Add To Cart//
 
-  addToCart: (proId, user) => {
+  addToCart: (proId, user,totalPrice) => {
     proObj = {
       item: proId,
       quantity: 1,
+      totalPrice:totalPrice
     };
     return new Promise(async (resolve, reject) => {
       let userCart = await db.cart.findOne({ user: user._id });
@@ -308,7 +309,11 @@ module.exports = {
 
     return new Promise((resolve,reject)=>{
     
-      db.coupon.find({couponName:couponName.couponId}).then((response)=>{
+      db.coupon.aggregate(
+        {
+        couponName:couponName.couponId}
+        )
+        .then((response)=>{
         if(couponName.couponId){
           resolve(response);
           
@@ -319,9 +324,26 @@ module.exports = {
     
     
       },
-      discountTotal:(userId)=>{
+      discountTotal:(userId,proId)=>{
         return new Promise(async(resolve,reject)=>{
-          const id=await db.cart.aggregate([
+          
+          let order=await db.cart.findOne({user:userId});
+          if(cart){
+            let orderindex = order[0].orders.findIndex(
+              (order) => order._id == body.orderId
+            );
+              if(cartIndex== -1){
+                let quantity=0;
+                resolve({status:true,quantity:quantity})
+              }else{
+                let quantity=cart?.cartProducts[cartIndex]?.quantity;
+                resolve({status:true,quantity:quantity})
+              }
+          }
+          else{
+            resolve({status:false})
+          }
+          const id=await db.order.aggregate([
             {
               $match:{
                 user:userId

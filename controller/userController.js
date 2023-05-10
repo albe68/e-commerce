@@ -116,6 +116,7 @@ module.exports = {
 
   postUserSignin: (req, res) => {
     try {
+    
       userHelpers
         .doLogin(req.body)
         .then((response) => {
@@ -210,8 +211,9 @@ module.exports = {
       // req.session.returnUrl = req.originalUrl;
       // console.log(req.params.id,"===req.params.id")
       // console.log(req.session.user,"===req.session.user")
+
       cartHelpers
-        .addToCart(req.params.id, req.session.user)
+        .addToCart(req.params.id, req.session.user,totalPrice)
         .then(() => {
           console.log("ADDED TO CART AND RIDIRECTING");
 
@@ -339,10 +341,10 @@ module.exports = {
 
       let products = await cartHelpers.getCartProductList(req.session.user._id);
       console.log(
-        "1111111111111111",
+        
         req.body.userId,
         req.session.user._id,
-        "222222222222"
+        
       );
       orderHelpers
         .placeOrder(req.body, totalPrice, products, req.session.user._id)
@@ -673,22 +675,33 @@ module.exports = {
       console.log(req.params);
       let userId=req.session.user._id
       let orderId= req.params;
-      const orderDet=await orderHelpers.orderDetails(orderId,userId)
-      res.render("user/order-details");
+      const products=await orderHelpers.orderDetails(orderId,userId)
+      res.json({ status: true });
     } catch (error) {
       console.log(error);
     }
+  },
+  viewOrder:async(req,res)=>{
+    console.log(req.params,"haahahahahaha");
+    let userId=req.session.user._id
+    let orderId= req.params;
+    const products=await orderHelpers.orderDetails(orderId,userId)
+    res.render("user/order-details",{products});
   },
   applyCoupon:async(req,res)=>{
     console.log("SIGNAL",req.body)
   try {   
     let userId=req.session.user._id
-    let total=await cartHelpers.getTotal(userId)
     let coupon=req.body.couponId;
+    let total=await cartHelpers.getTotal(userId)
+    
     console.log(coupon,'heyeyeye')
-    couponHelpers.couponValidator(userId,total)
-      
-      let couponData=await cartHelpers.applyCoupoun(coupon)}
+     
+      let couponData=await cartHelpers.applyCoupoun(coupon);
+let discountTotal=await cartHelpers.discountTotal(userId,total);
+
+
+    }
       catch(err){
         console.log(err)
 

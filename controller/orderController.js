@@ -8,6 +8,8 @@ const colors = require('colors');
 const voucher_codes = require('voucher-code-generator');
 const session = require("express-session");
 
+let couponPrice = 0;
+
 
 
 module.exports={
@@ -35,20 +37,23 @@ module.exports={
           console.log(req.body);
           req.body.userId = await req.session.user._id;
     
-          let totalPrice = await cartHelpers.getTotal(req.session.user._id);
-    
+          let total = await cartHelpers.getTotal(req.session.user._id);
+          total = total - couponPrice;
+          let totalPrice = total;
+          let total1 = total;
           let products = await cartHelpers.getCartProductList(req.session.user._id);
           console.log(
-            "1111111111111111",
+            
             req.body.userId,
             req.session.user._id,
-            "222222222222"
+            
           );
           orderHelpers
-            .placeOrder(req.body, totalPrice, products, req.session.user._id)
+            .placeOrder(req.body, total, products, req.session.user._id)
             .then((response) => {
+              couponPrice=0;
               if (req.body.paymentMethod == "COD") {
-                console.log("123456785trewfgbxsdbxdfdfsfdsfdsfsdfdfsdfdfsdaf");
+                
                 res.json({ statusCod: true });
               } else if (req.body.paymentMethod == "razorpay") {
                 orderHelpers
