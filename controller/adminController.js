@@ -41,7 +41,6 @@ module.exports = {
     let paymentCount = [];
 
     await productHelpers.getAllProducts().then((Products) => {
-      console.log(Products, "adminControl @ 45");
       totalProducts = Products.length;
     });
 
@@ -52,7 +51,6 @@ module.exports = {
     let orderByRZPAY = await orderHelpers.razorPayCount();
     let rzPAYCount = orderByRZPAY.length;
     let totalOrder = rzPAYCount + codCount;
-    console.log(orderByRZPAY, rzPAYCount, "RAZOR");
 
     let totalUser = await userHelpers.totalUserCount();
 
@@ -60,29 +58,24 @@ module.exports = {
     paymentCount.push(rzPAYCount);
 
     await orderHelpers.getOrderByDate().then((response) => {
-      console.log(response, "this is response");
       if (response.length > 0) {
         let result = response[0]?.orders;
         for (let i = 0; i < result.length; i++) {
           let ans = {};
           ans["createdAt"] = result[i].createdAt;
           days.push(ans);
-          console.log("hola", ans, "hola");
           ans = {};
         }
       }
 
       days.forEach((order) => {
-        console.log(order, "iop");
         const day = order.createdAt.toLocaleDateString("en-US", {
           weekday: "long",
         });
         ordersPerDay[day] = (ordersPerDay[day] || 0) + 1;
-        console.log(day, "ACTDAY");
       });
     });
     await orderHelpers.getAllOrders().then((response) => {
-      console.log(response);
       let length = response.length;
       let total = 0;
 
@@ -107,10 +100,8 @@ module.exports = {
   getAdminLogin: (req, res) => {
     try {
       if (req.session.adminIn) {
-        console.log(req.session.adminIn, "222222222222222222");
         res.redirect("/admin");
       } else {
-        console.log(req.session.adminIn, "11111111111111111111111111111111111");
         res.render("admin/login", { layout: "adminLayout" });
       }
     } catch (error) {
@@ -118,26 +109,22 @@ module.exports = {
     }
   },
   postAdminlogin: (req, res) => {
-    // console.log("hello",adminData)
     try {
-      console.log('console me')
       adminHelpers
         .doAdminLogin(req.body)
         .then((response) => {
           if (response.status) {
-            console.log(response.status);
-            console.log(response.admin._id, "kill");
+         
             req.session.admin = response.admin._id;
             req.session.adminIn = true;
-            console.log(req.session.adminIn);
             res.redirect("/admin");
           } else {
             res.redirect("/admin/login");
           }
         })
-        .catch((err) => console.log("QWERTYUIYTREW"));
+        .catch((err) => console.log("ERROR"));
     } catch (error) {
-      console.log("ERROORRORRR");
+     
       console.log(error);
     }
   },
@@ -146,9 +133,7 @@ module.exports = {
       req.session.admin = null;
       req.session.adminIn = false;
       res.clearCookie();
-      console.log("LOGGED OUT");
       res.redirect("/admin/login");
-      console.log(req.session.adminIn);
     } catch (error) {
       console.log(error);
     }
@@ -160,18 +145,13 @@ module.exports = {
   /*PRODUCTS PAGE*/
   Products: (req, res) => {
     productHelpers.getAllProducts().then((products) => {
-      console.log("these are :", products);
       res.render("admin/products", { products, layout: "adminLayout" });
     });
   },
   //ADD PRODUCTS
   getAddProducts: async (req, res) => {
     await productHelpers.getAllcategory().then((category) => {
-      console.log(
-        "jksajsklajsklajkasjkaljs",
-        category,
-        "asjkajkskajskajsklajska"
-      );
+   
 
       productHelpers.getAllProducts().then((products) => {
         res.render("admin/add-product", {
@@ -182,20 +162,14 @@ module.exports = {
       });
     });
 
-    // console.log("jasajkshjashajkhsakjshajkshakjshkas",category)
   },
 
   postAddProduct: async (req, res) => {
-    console.log(req.files);
-    console.log(req.files);
-    console.log(req.file);
+  
     const { name, description, price,quantity,category } = req.body;
-    console.log( "name",name,"des", description,"price", price )
     const image = req.files.map((files) => files.filename);
-    console.log("TAKE IT ", image, "admin Cont 210");
     try {
       productHelpers.addProduct(req.body, image).then((insertedId) => {
-        console.log("product added");
         res.redirect("/admin/add-product");
       });
     } catch (error) {
@@ -205,16 +179,13 @@ module.exports = {
 
   Products: (req, res) => {
     productHelpers.getAllProducts().then((products) => {
-      console.log("these are :", products);
       res.render("admin/products", { products, layout: "adminLayout" });
     });
   },
 
   getEditProducts: async (req, res) => {
     let proId = req.params.id;
-    console.log("get:", proId);
     const category = await productHelpers.getAllcategory();
-    console.log("opo", category, "opo");
     productHelpers
       .getProduct(proId)
       .then((products) => {
@@ -230,7 +201,6 @@ module.exports = {
   postEditProducts: (req, res) => {
     let proId = req.params.id;
     let body = req.body;
-    console.log(proId, "BODYYYYYYYYYYYY", body, req.body);
 
     const images = [];
     if (!req.files.image1) {
@@ -313,14 +283,11 @@ module.exports = {
 
   getdeleteProducts: (req, res) => {
     try {
-      console.log("THIS IS params", req.params.id);
       let proId = req.params.id;
-      console.log("params", proId);
       productHelpers
         .unlistProduct(proId)
 
         .then(() => {
-          console.log("hiiiii");
           res.redirect("/admin/products");
         })
         .catch((err) => console.log(err));
@@ -329,9 +296,7 @@ module.exports = {
     }
   },
   getListProducts: (req, res) => {
-    console.log("line");
     let proId = req.params.id;
-    console.log("POD", proId);
     try {
       productHelpers.listProduct(proId).then(() => {
         res.redirect("/admin/products");
@@ -371,13 +336,11 @@ module.exports = {
         .addCategory(req.body)
         .then((response) => {
           if (response == false) {
-            console.log("CATEGORY ALREADY EXSISTS");
             res.send({ value: "error" });
 
             res.redirect("/admin/category");
           } else {
             res.send({ value: "good" });
-            console.log("responseeeeeeeeeeeeeeeeeeeeeee", response);
             res.redirect("/admin/category");
           }
         })
@@ -391,13 +354,10 @@ module.exports = {
 
   deleteCategory: (req, res) => {
     try {
-      console.log("HEYY");
       let cateId = req.params.id;
-      console.log(cateId);
       productHelpers
         .deleteCategory(cateId)
         .then(() => {
-          console.log("hiiiii");
 
           res.redirect("/admin/category");
         })
@@ -407,7 +367,6 @@ module.exports = {
     }
   },
   ud: (req, res) => {
-    console.log(req.params.id);
   },
   // Edit Category
 
@@ -436,7 +395,6 @@ module.exports = {
   updateCategory: (req, res) => {
     let cate = req.body;
     let cateId = req.params.id;
-    console.log("HELOOOOOOOOOOOOOOOO", cate, cateId);
     productHelpers
       .updateCategory(cate, cateId)
       .then(() => {
@@ -477,12 +435,11 @@ module.exports = {
   getAdminOrders: (req, res) => {
     try {
       orderHelpers.getAdminOrders().then((data) => {
-        // console.log("WORKING",data)
 
         res.render("admin/orders", { layout: "adminLayout", data });
       });
     } catch (error) {
-      console.log("errrorr");
+      console.log(error);
     }
   },
   updateOrder: (req, res) => {
@@ -522,7 +479,7 @@ module.exports = {
       report.forEach((orders) => {
         Details.push(orders.orders);
       });
-      console.log("loiuse", Details, "loise");
+      
       res.render("admin/salesReport", {
         layout: "adminLayout",
         Details,
@@ -550,7 +507,6 @@ module.exports = {
         )}`;
       };
       let Details = [];
-      console.log("hiiiiiiii", req.body);
       let total = await adminHelpers.getTotalAmount(req.body);
       adminHelpers.postReport(req.body).then((orderData) => {
         orderData.forEach((orders) => {
@@ -568,8 +524,7 @@ module.exports = {
     } 
   },
   addCoupon:(req,res)=>{
-    console.log("hola")
-    console.log(req.body)
+   
     const coupon=req.body;
     data={
       couponName:coupon.couponName,
@@ -581,17 +536,15 @@ module.exports = {
     
     }
     couponHelpers.addNewCoupon(data).then(response=>{
-      console.log(response,"thizzzzzzzzz")
       res.json(response)
     })
 
   },
   getCoupon:(req,res)=>{
-    res.render("admin/couponManagement",{layout:"adminLayout"})
+    res.render("admin/add-coupon",{layout:"adminLayout"})
   }, 
   generateCoupon:async(req,res)=>{
     await couponHelpers.generateCoupon().then(response=>{
-      console.log(response)
       res.json(response)
     });
   }
