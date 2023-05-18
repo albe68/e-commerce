@@ -520,7 +520,7 @@ module.exports = {
         });
       });
     } catch (error) {
-      console.log(error);
+      console.log(error,"error tested");
     } 
   },
   addCoupon:(req,res)=>{
