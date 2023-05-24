@@ -73,6 +73,7 @@ router.post("/sales_report",auth.verifyAdmin,adminController.postSalesReport)
 //coupon management
 router.get("/generate_coupon",auth.verifyAdmin,adminController.generateCoupon)
 router.get("/coupon_management",auth.verifyAdmin,adminController.getCoupon)
+router.get("/add-coupon",auth.verifyAdmin,adminController.getAddCoupon)
 
-router.post("/add-coupon",auth.verifyAdmin,adminController.addCoupon)
+router.post("/add_coupon",auth.verifyAdmin,adminController.postAddCoupon)
 module.exports = router;

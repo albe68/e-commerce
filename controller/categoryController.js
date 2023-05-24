@@ -16,13 +16,13 @@ module.exports = {
   filterProduct: async (req, res) => {
     let catName = req.params.id;
     let user = req?.session?.user;
-    console.log(user);
+   
 
     let cartCount = await cartHelpers?.getCartCount(user);
     let category = await productHelpers.getAllProducts();
-    console.log("1234567", category);
+   
     productHelpers.filterCategory(catName).then((filterproducts) => {
-      console.log(filterproducts, "dibu");
+     
       res.render("user/filter", { user, filterproducts, cartCount, category });
     });
   },

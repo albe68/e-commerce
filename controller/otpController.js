@@ -34,7 +34,6 @@ module.exports={
           }
           else{
             console.log(colors.green('else case worked%s'), number,req.body);
-            console.log(client,"kando")
             client.verify.v2
         .services(otp.verifySid)
         .verifications.create({ to: `+91 ${number}`, channel: "sms" })
@@ -60,7 +59,7 @@ module.exports={
 
             let cartCount = await cartHelpers?.getCartCount(user);
             let category = await productHelpers.getAllcategory();
-            console.log(req.body,"here its is")
+           
             otpNumber=req.body.otp;
            await   client.verify?.v2
                 .services(otp.verifySid)
@@ -70,7 +69,7 @@ module.exports={
                 if(verification_check.valid==true){
                   let id=loggedUser[0]._id;
                   req.session.user={loggedUser,id};
-                  console.log("come check this:id",id,"req.session.user:",req.session.user)
+                 
                 //   req.session.userLoggedIn=true;
                   req.session.userIn = true;
 
@@ -78,7 +77,7 @@ module.exports={
                   res.render("user/user",{user,cartCount,category,userSession}) 
                 }
                 else{
-                    console.log("dooooooooooomed")
+                   
                   res.redirect("/otp-verify")
                 }
               })

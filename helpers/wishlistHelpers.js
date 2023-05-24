@@ -21,21 +21,16 @@ module.exports={
             let wishlist= await db.wishlist.find({user:userId})
             if(wishlist){
                 const myObjectId = mongoose.Types.ObjectId(proId);
-                console.log(myObjectId,'hsajkhsajkhsakj')
                 let wishIndex=wishlist[0].wishItems.findIndex(
                     (element)=>element.productId==proId)
-                    console.log("helloo",wishIndex)
                 }
             
 
-            console.log(wishlist,"log")
             if(wishlist.length){
                 let productExist=wishlist[0].wishItems.findIndex((item)=>{
-                    console.log(item.productId,"seperate",proId)
                     item.productId==proId
                 })
                 if(productExist==-1){
-                    console.log("prooo",productExist)
                     db.wishlist.updateOne({user:userId},
                         {
                             $addToSet:{
@@ -47,7 +42,6 @@ module.exports={
                 }
             }
                 else{
-                    console.log("every time");
                     const newWishlist= new db.wishlist({
                         user:userId,
                         wishItems:proObj
@@ -69,7 +63,6 @@ module.exports={
      
     },
     listWishlist:(userId)=>{
-        console.log("hi53")
         return new Promise((resolve,reject)=>{
             db.wishlist.aggregate([
                 {
@@ -101,7 +94,6 @@ module.exports={
 
                 
             ]).then(wishlist=>{
-                console.log(wishlist,"789")
                 resolve(wishlist)
 
             })

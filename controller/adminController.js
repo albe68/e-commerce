@@ -15,9 +15,13 @@ const adminHelpers = require("../helpers/adminHelpers");
 const orderHelpers = require("../helpers/orderHelpers");
 const couponHelpers=require("../helpers/couponHelpers")
 var XLSX = require("xlsx");
+const voucher_codes = require('voucher-code-generator');
+
+
 
 //add product with multer
 const multer = require("multer");
+const { response } = require("express");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -122,7 +126,7 @@ module.exports = {
             res.redirect("/admin/login");
           }
         })
-        .catch((err) => console.log("ERROR"));
+        .catch((err) => console.log("ERROR",err));
     } catch (error) {
      
       console.log(error);
@@ -345,7 +349,7 @@ module.exports = {
           }
         })
         .catch((err) => {
-          console.log("ERROR");
+          console.log("ERROR",err);
         });
     } catch (error) {
       console.log(error);
@@ -361,7 +365,7 @@ module.exports = {
 
           res.redirect("/admin/category");
         })
-        .catch((err) => console.log("ERROR"));
+        .catch((err) => console.log("ERROR",err));
     } catch (error) {
       console.log(error);
     }
@@ -405,7 +409,7 @@ module.exports = {
 
   Users: (req, res) => {
     productHelpers.getAllUsers().then((user) => {
-      console.log(user);
+     
       res.render("admin/users", { user, layout: "adminLayout" });
     });
   },
@@ -523,16 +527,19 @@ module.exports = {
       console.log(error,"error tested");
     } 
   },
-  addCoupon:(req,res)=>{
+  postAddCoupon:(req,res)=>{
    
     const coupon=req.body;
-    data={
-      couponName:coupon.couponName,
-      expiry:coupon.expiry,
-      minPurchase:coupon.minPurchase,
-      description:coupon.description,
-      discountPercentage:coupon.discountPercentage,
-      maxDiscountValue:coupon.maxDiscountValue
+    let data={
+      coupon: req.body.coupen,
+      discountType: req.body.discountType,
+      cappedAmount: req.body.cappedAmount,
+      amount: req.body.discountAmount,
+      amountValidity: req.body.amountValidity,
+      percentage: req.body.discountPercentage,
+      validity: req.body.validity,
+      description: req.body.description,
+      redeemTime: req.body.redeemTime,
     
     }
     couponHelpers.addNewCoupon(data).then(response=>{
@@ -540,13 +547,37 @@ module.exports = {
     })
 
   },
-  getCoupon:(req,res)=>{
-    res.render("admin/add-coupon",{layout:"adminLayout"})
+  getCoupon:async(req,res)=>{
+    
+    let coupon=await couponHelpers.getAllCoupon().then(response=>{
+     
+      res.render("admin/coupon-management",{layout:"adminLayout",response})
+
+    })
   }, 
   generateCoupon:async(req,res)=>{
-    await couponHelpers.generateCoupon().then(response=>{
-      res.json(response)
+    try {
+      
+      const couponCode=    voucher_codes.generate({
+        length: 3,
+        count: 5,
+        prefix: "GS-",
+        charset: "0123456789"
+        
     });
+    console.log("good")
+   
+    res.send({ coupenCode: couponCode })
+    } catch (error) {
+     
+      console.log(error);
+      res.render("user/500Page");
+    }
+ 
+  },
+  getAddCoupon:(req,res)=>{
+    res.render("admin/add-coupon",{layout: "adminLayout"})
   }
+
 
 };

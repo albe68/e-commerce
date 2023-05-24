@@ -11,14 +11,11 @@ var instance = new Razorpay({
   key_secret: "MarcF2ircaxqW5jFjgQg7ZKE",
 });
 module.exports = {
-  placeOrder: (order, total, products, user) => {
+  placeOrder: (order, couponPrice, user) => {
+   
     //aysync moved with P.O
     try {
-      console.log(
-        "rrrrrrrrrrrrrrrrrrrrrrrrrr",
-        user,
-        "rrrrrrrrrrrrrrrrrrrrrrrrrrrr"
-      );
+    
       //aggregation pipeline 1 for product
       return new Promise(async (resolve, reject) => {
         let product = await db.cart.aggregate([
@@ -80,9 +77,9 @@ module.exports = {
           );
         }
 
-        console.log("TOTAL QUANTITY", totalQuantity, "TOTAL QUANTITY");
+       
 
-        console.log("jsajslkaljsklajskajsklajskajlksa", product);
+       
         let status = order.paymentMethod === "COD" ? "placed" : "pending";
         
         let orderAddress = {
@@ -101,7 +98,7 @@ module.exports = {
           address: orderAddress,
         };
         let addressDoc = await db.address.findOne({ user: user });
-        console.log("true");
+       
         if (addressDoc) {
           db.address
             .find({
@@ -156,9 +153,10 @@ module.exports = {
               email: order.email,
               createdAt: new Date(),
               orderStatus: status,
-              
+              couponDiscount: couponPrice,
+
               productDetails: product,
-              totalPrice: total,
+              totalPrice: couponPrice,
             },
           ],
         };
@@ -183,8 +181,10 @@ module.exports = {
                       email: order.email,
                       createdAt: new Date(),
                       orderStatus: status,
+                      couponDiscount: couponPrice,
+
                       productDetails: product,
-                      totalPrice: total,
+                      totalPrice: couponPrice,
                     },
                   ],
                 },
@@ -197,15 +197,13 @@ module.exports = {
 
           orderData.save();
         }
-        console.log("55555555555555555555555555555555555555");
 
-        // resolve(orderData)
 
         //Deleting from cart after  placing order
         db.cart
           .deleteMany({ user: user })
           .then((res) => {
-            console.log("RESOLVED");
+           
             resolve({ status: true });
           })
           .catch((err) => {
@@ -213,7 +211,7 @@ module.exports = {
           });
       });
     } catch (error) {
-      console.log("ERROR");
+     
     }
     let address = {
       address: order.address,
@@ -244,7 +242,7 @@ module.exports = {
             },
           ])
           .then((data) => {
-            console.log(data);
+           
             resolve(data);
           })
           .catch((err) => reject({ error: "Unauthorized Action" }));
@@ -256,23 +254,14 @@ module.exports = {
   cancelOrder: (body, userId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("hsjhasjhasjkahsjkhasjhasjkhasjkhaksjhaskas", body);
+       
         let order = await db.order.find({ "orders._id": body.orderId });
-        console.log(
-          "88888888888888888888888888",
-          order,
-          "8888888888888888888888"
-        );
+     
         let orderindex = order[0].orders.findIndex(
           (order) => order._id == body.orderId
         );
-        console.log(
-          "--------------------",
-          orderindex,
-          "------------------------"
-        );
+   
 
-        console.log("11111111111111111111111", orderindex);
         await db.order
           .updateOne(
             { "orders.orderindex._id": body.orderid },
@@ -283,7 +272,6 @@ module.exports = {
             }
           )
           .then(async (orders) => {
-            console.log("sjakjskasjaks", orders);
             resolve(orders);
           });
       } catch (error) {
@@ -293,7 +281,6 @@ module.exports = {
   },
   getSingleOrder: () => {
     let order = db.order.find({});
-    console.log(order);
   },
   getOrders: async (userId) => {
     return new Promise((resolve, reject) => {
@@ -322,18 +309,15 @@ module.exports = {
   updateOrder: (data) => {
     
     let orderId = data.orderId.trim();
-    console.log({ orderId }, "line 322");
     //just look at the $orderId if any error happens
     return new Promise(async (resolve, reject) => {
       try {
         let order = await db.order.find({ "orders._id": orderId });
-        console.log(order, "line 327");
         if (order) {
           //might should add order Index like this orders[0].
           let orderIndex = order[0].orders.findIndex(
             (order) => order._id == orderId
           );
-          console.log("line 331", orderIndex);
           db.order
             .updateOne(
               { "orders.orderindex._id": "${orderId}" },
@@ -345,7 +329,6 @@ module.exports = {
             )
             .then(async (e) => {
               if (data.delivery == "Delivered") {
-                console.log("Delivered");
                 let updateDelDate = await db.order.updateOne(
                   { "orders._id": orderId },
                   {
@@ -354,7 +337,6 @@ module.exports = {
                     },
                   }
                 );
-                console.log(updateDelDate, "line");
               }
               resolve({ status: true });
             })
@@ -389,26 +371,15 @@ module.exports = {
       }
     });
   },
-  generateRazorPay: async (userId, total) => {
+  generateRazorPay: async (userId, couponPrice) => {
     const OrderDetails = await db.order.find({ userId: userId });
     let length = OrderDetails[0].orders.length;
     let orderId = OrderDetails[0].orders[length - 1]._id;
     let userName = OrderDetails[0].orders[length - 1].fName;
     let mobile = OrderDetails[0].orders[length - 1].shippingAddress.mobile;
     let email = OrderDetails[0].orders[length - 1].shippingAddress.email;
-    console.log(
-      "length:",
-      length,
-      "orderId:",
-      orderId,
-      "userName:",
-      userName,
-      "mobile:",
-      mobile,
-      "email:",
-      email
-    );
-    total = total * 100;
+    
+    const total = couponPrice * 100;
     return new Promise((resolve, reject) => {
       try {
         var options = {
@@ -423,7 +394,6 @@ module.exports = {
           order.userName = userName;
           order.mobile = mobile;
           order.email = email;
-          console.log("375 line");
           resolve(order);
         });
       } catch (err) {
@@ -500,7 +470,6 @@ module.exports = {
     try {
       const startDate = new Date('2022-01-01');
       let orderDate = await db.order.find({ createdAt: { $gte: startDate } });
-      console.log("orderDate",orderDate);
       return orderDate
     }
     catch (err) {
@@ -534,9 +503,7 @@ module.exports = {
     return new Promise(async(resolve,reject)=>{
       const convertObjectOrderId = new ObjectId(orderId);
     const hi=  typeof(objId)
-    console.log(hi,"123")
       let order = await db.order.find({ "orders._id": convertObjectOrderId });
-      console.log(order,"ttt")
       let orderIndex = order[0].orders.findIndex(
         (order) => order._id == convertObjectOrderId
       );
@@ -562,7 +529,6 @@ module.exports = {
     
     
     ]).then(data=>{
-      console.log(data,"halo")
       resolve(data)
 
     })

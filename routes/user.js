@@ -48,11 +48,8 @@ router.delete("/remove-cart", cartController.removeCart);
 
 //ORDER
 router.get("/order", verifyLogin.verifyLogin, orderController.getOrder);
-router.post("/order", orderController.placeOrder);
-router.get(
-  "/order-success",
-  verifyLogin.verifyLogin,
-  orderController.orderSucesss
+router.post("/order", userController.placeOrder);
+router.get("/order-success",verifyLogin.verifyLogin,orderController.orderSucesss
 );
 router.post("/cancel-order", orderController.cancelOrder);
 router.post("/verify_payment", orderController.verifypayment);
@@ -73,6 +70,8 @@ router.post("/change-passsword", userController.changePassword);
 router.delete("/delete-address/:id", addressController.deleteAddress);
 
 //coupon 
+router.post('/verify_coupon',userController.verifyCoupon)
+router.post('/coupun_verified',userController.couponChecked)
 
 router.post("/apply_coupon",userController.applyCoupon)
 

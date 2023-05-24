@@ -20,7 +20,6 @@ module.exports = {
         let page_index=1;
         
         let products = await db.products.find({});
-        // console.log(products)
         resolve(products);
       } catch (error) {
         console.log(error);
@@ -32,7 +31,6 @@ module.exports = {
     return new Promise((resolve, reject) => {
       try {
         db.products.find({ _id: proId }).then((products) => {
-          console.log(products);
           resolve(products);
         });
       } catch (error) {
@@ -68,7 +66,6 @@ module.exports = {
 
   postAddProduct: (product) => {
     return new Promise((resolve, reject) => {
-      console.log(filename);
       db.products.create(
         {
           name: userData.name,
@@ -77,7 +74,7 @@ module.exports = {
         },
         (err, data) => {
           if (err) {
-            console.log("errorrrrrrr", err);
+            console.log("error", err);
           } else {
             resolve(data);
           }
@@ -91,7 +88,6 @@ module.exports = {
   updateProduct: (proId, body,image) => {
     return new Promise(async(resolve, reject) => {
       try {
-        console.log("THISSSSSSSSSSSSS", body);
        await db.products
           .updateOne(
             { _id: proId },
@@ -117,7 +113,6 @@ module.exports = {
   },
 
   deleteProduct: (proId) => {
-    console.log("in helper:", proId);
     return new Promise(async (resolve, reject) => {
       try {
         await db.products.updateOne({ _id: proId },{
@@ -127,7 +122,6 @@ module.exports = {
             }
           ]
         });
-        // console.log(_id)
         resolve();
       } catch (error) {
         console.log(error);
@@ -151,7 +145,7 @@ module.exports = {
             resolve();
           });
       } catch (error) {
-        console.log("ERROR IN UNlist PRODUCT", error);
+        console.log( error);
       }
     });
   },
@@ -171,7 +165,7 @@ module.exports = {
         });
       });
     } catch (error) {
-      console.log("ERROR IN LIST PRODUCT", error);
+      console.log( error);
     }
   },
   //CATEGORY
@@ -180,13 +174,11 @@ module.exports = {
 
   addCategory: (categories) => {
     return new Promise((resolve, reject) => {
-      console.log("1234567",categories)
       db.category
         .find({
           category: categories.category,
         })
         .then(async (response) => {
-          console.log(response);
           if (response.length == 0) {
             try {
               
@@ -217,11 +209,11 @@ module.exports = {
   deleteCategory: (cateId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(cateId);
+       
         await db.category.deleteOne({ _id: cateId });
         resolve();
       } catch (error) {
-        console.log("hiiiii");
+       
 
         console.log(error);
       }

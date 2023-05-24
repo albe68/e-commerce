@@ -19,10 +19,10 @@ module.exports={
       let proId = req.params.id;
       let cartCount = await cartHelpers.getCartCount(user);
 
-      console.log(proId); //proId is sus
+     
 
       productHelpers.getProduct(proId).then((product) => {
-        console.log(product, "PRODUCTS");
+       
         res.render("user/view-product", { product, user, cartCount });
       });
     } catch (error) {
@@ -32,13 +32,13 @@ module.exports={
   filterProduct: async (req, res) => {
     let catName = req.params.id;
     let user = req?.session?.user;
-    console.log(user);
+   
     
     let cartCount = await cartHelpers?.getCartCount(user);
     let category = await productHelpers.getAllProducts();
-    console.log("1234567", category);
+   
     productHelpers.filterCategory(catName).then((filterproducts) => {
-      console.log(filterproducts, "dibu");
+     
       res.render("user/filter", { user, filterproducts, cartCount, category });
     });
   }, 
@@ -50,7 +50,7 @@ module.exports={
     let category = await productHelpers.getAllcategory();
 
     let sortOption=req.body['selectedValue']
-    console.log("really?",sortOption,"really?")
+   
     let viewCategory=await categoryHelpers.viewAddCategory()
     userHelpers.postSort(sortOption).then(response=>{
       if(response){
@@ -65,10 +65,10 @@ module.exports={
 
     let category = await productHelpers.getAllcategory();
 
-    console.log(req.body,"hey it is body")
+   
   const isUser=req.session.user
     let viewCategory=await categoryHelpers.viewAddCategory()
-    console.log("views da",viewCategory,"views da")
+   
     userHelpers.productSearch(req.body).then(response=>{
       if(response){
         res.render('user/shop-search',{

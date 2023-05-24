@@ -10,8 +10,8 @@ module.exports = {
   getAddToCart: async (req, res) => {
     try {
       // req.session.returnUrl = req.originalUrl;
-      // console.log(req.params.id,"===req.params.id")
-      // console.log(req.session.user,"===req.session.user")
+      //
+      //
       cartHelpers
         .addToCart(req.params.id, req.session.user)
         .then(() => {
@@ -19,19 +19,19 @@ module.exports = {
           res.json({ status: true });
         })
         .catch((err) => {
-          console.log("catch error in .then()");
+          console.log("err",err);
         });
     } catch (error) {
-      console.log("error in getADDToCart");
+      console.log("error in getADDToCart",err);
     }
   },
   Cart: async (req, res) => {
     try {
       let user = req.session.user;
       let cartCount = await cartHelpers.getCartCount(user);
-      console.log(cartCount);
+     
       var hi = { user, cartCount };
-      console.log(hi, "45");
+     
       if (cartCount > 0) {
         //if condition for if cart is empty total Price is also empty so error occurs
 
@@ -40,7 +40,7 @@ module.exports = {
           cartHelpers
             .getCartProduct(req.session.user)
             .then((cartItems) => {
-              console.log("kola", cartItems, "kola");
+             
               if (cartCount && user) {
                 res.render("user/cart", {
                   user,
@@ -65,7 +65,7 @@ module.exports = {
       } else {
         res.render("user/emptyCart", { cartCount, user });
       }
-      console.log("USERRRR", user);
+     
     } catch (error) {
       console.log(error, "ERRoR");
     }
@@ -79,7 +79,7 @@ module.exports = {
   },
   changeProductQuantity: async (req, res, next) => {
     try {
-      console.log("req.body", req.body);
+     
       let userId = req.session.user._id;
       cartHelpers
         .changeProductQuantity(req.body, userId)
@@ -95,23 +95,23 @@ module.exports = {
   },
   removeCart: async (req, res) => {
     try {
-      console.log("HEEEEEEEEEREREERERERER");
-      console.log(req.body, req.session.user._id);
+     
+     
       cartHelpers
         .deleteCartProduct(req.body, req.session.user._id)
         .then((response) => {
           res.json(response);
         })
         .catch((err) => {
-          console.log("ERROR IN REMOVE CART");
+          console.log("ERROR IN REMOVE CART",err);
         });
     } catch (error) {
-      console.log("error is remove cart catch");
+      console.log("error is remove cart catch",error);
     }
   },
   checkCartQuantity: (req, res) => {
     try {
-      console.log("kim kim");
+     
       cartHelpers
         .checkCartQuantity(req.session.user._id, req.params.id)
         .then((response) => {
@@ -126,7 +126,7 @@ module.exports = {
   },
   changeProductQuantity: async (req, res, next) => {
     try {
-      console.log("req.body", req.body);
+     
       let userId = req.session.user._id;
       cartHelpers
         .changeProductQuantity(req.body, userId)
@@ -134,7 +134,7 @@ module.exports = {
           res.json({ status: true });
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err;
         });
     } catch (error) {
       console.log(error);

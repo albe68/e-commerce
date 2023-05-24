@@ -3,22 +3,22 @@ const {order}=require("../model/connection")
 
 module.exports={
     doAdminLogin:(adminData)=>{
-        console.log(adminData)
+       
         return new Promise(async(resolve,reject)=>{
         try{
             let admin=await db.admin.findOne({email:adminData.email});
         let response={};
         if(admin){
-            console.log("yessss")
+           
             response.admin=admin;
             response.status=true;
             resolve(response);
         }else{
-            console.log("kikikikikii")
+           
             resolve(response)
         }}
         catch(error){
-            console.log("error")
+           
             console.log(error);
 
         }
@@ -48,7 +48,7 @@ module.exports={
     },
     getSalesRepTotalAmount: ()=>{
         return new Promise(async (resolve, reject) => {
-            console.log("hi")
+           
             await db.order.aggregate([
                 {
                     $unwind: '$orders'
@@ -89,7 +89,7 @@ module.exports={
     getTotalAmount:(date)=>{
         let start=new Date(date.startdate)
         let end=new Date(date.enddate)
-        console.log(start,end)
+       
         return new Promise(async(resolve,reject)=>{
             await db.order.aggregate([
                 {  $unwind:'$orders'
@@ -108,7 +108,7 @@ module.exports={
                 },
                        
 ]).then((total)=>{
-    console.log("total it is",total,"total it is")
+   
     resolve(total[0]?.total)
 })
         })
@@ -138,7 +138,7 @@ module.exports={
                     }
                 ])  .exec()
                 .then(response=>{
-                    console.log(response,"this is reponse in line 141 adminHelpers");
+                   
                     resolve(response)
                 })
             })

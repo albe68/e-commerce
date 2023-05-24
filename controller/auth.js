@@ -3,14 +3,14 @@
 module.exports={
 verifyLogin:async(req,res,next)=>{
    
-    console.log("USER VERIFIED")
+   
     if(req.session.user)
 {
     next()
     
 }
 else{
-    console.log("Login with user")
+   
     res.render("user/login")
 }
 },
@@ -19,7 +19,7 @@ verifyAdmin:(req,res,next)=>{
         next()
     }
     else{
-       console.log("admin not logged in")
+      
         res.render("admin/login",{layout:"adminLayout"})
     }
 },

@@ -4,21 +4,20 @@ const db = require("../model/connection");
 module.exports = {
   //Add To Cart//
 
-  addToCart: (proId, user,totalPrice) => {
+  addToCart: (proId, user) => {
     proObj = {
       item: proId,
-      quantity: 1,
-      totalPrice:totalPrice
+      quantity: 1
     };
     return new Promise(async (resolve, reject) => {
       let userCart = await db.cart.findOne({ user: user._id });
-      console.log("yyyyyyyyyyyyy", userCart);
+     
       if (userCart) {
         let prodExist = userCart.cartProducts.findIndex(
           (cartProducts) => cartProducts.item == proId
         );
         if (prodExist != -1) {
-          console.log(userCart.cartProducts, "Exists");
+         
           db.cart
             .updateOne(
               {
@@ -32,7 +31,7 @@ module.exports = {
               }
             )
             .then(() => {
-              // console.log("CART HAVE BEEN UPDATED ")
+              //
               resolve();
             })
             .catch((err) => reject({ error: "Unauthorized 1" }));
@@ -47,7 +46,7 @@ module.exports = {
               }
             )
             .then(() => {
-              console.log("Product added to Cart for first Time");
+             
               resolve();
             })
             .catch((err) => reject({ error: "Unauthroized 2" }));
@@ -104,7 +103,7 @@ module.exports = {
           },
         ])
         .then((cartItems) => {
-          // console.log("ssdggdfgfgdfgdf", cartItems);
+          //
           resolve(cartItems);
         });
     });
@@ -123,28 +122,18 @@ module.exports = {
           resolve(cartCount);
         }) //write await here// 10:00
         .catch((err) => {
-          console.log("ERROR IN CART COUNT");
+          console.log("ERROR IN CART COUNT",err);
         });
     });
   },
   changeProductQuantity: (details, user) => {
-    console.log("details", details, "user", user);
+   
     const id = details.product;
     const cartId = details.cart;
 
     count = parseInt(details.count);
     quantity = parseInt(details.quantity);
 
-    console.log(
-      "id:::::",
-      id,
-      "cartId:::::",
-      cartId,
-      "count::::::",
-      count,
-      "quantity:::::",
-      quantity
-    );
     return new Promise((resolve, reject) => {
       //when quantity is not 0 and count is decreased
       if (details.count == -1 && details.quantity == 1) {
@@ -187,10 +176,10 @@ module.exports = {
 
   deleteCartProduct: (data, user) => {
     return new Promise((resolve, reject) => {
-      console.log("dataaaaaaaaaaaaaaaa", data, user);
+     
       try {
         const id = data.product;
-        console.log("helper", id);
+       
         db.cart
           .updateOne(
             { user: user },
@@ -201,19 +190,20 @@ module.exports = {
             }
           )
           .then((e) => {
-            console.log("qwertyu");
+           
             resolve({ removeProduct: true });
           })
           .catch((err) => reject({ error: "Unauthorized Action" }));
-        console.log("dfghj");
+       
       } catch (error) {
-        console.log("op");
+       
         reject({ error: "Unauthorized Action" });
       }
     });
   },
 
   getTotal: (userId) => {
+   
     return new Promise(async (resolve, reject) => {
       try {
         db.cart
@@ -266,6 +256,7 @@ module.exports = {
             },
           ])
           .then((total) => {
+           
             totalAmount = total[0].total; //error when cart is deleted asking for this .total value
             resolve(totalAmount);
           });
@@ -305,24 +296,66 @@ module.exports = {
       }
     })
   },
-  applyCoupoun:(couponName)=>{
+  applyCoupoun:(data,user, total)=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+        let couponData = await db.coupon.findOne({ coupon: data });
+        if (couponData) {
+          if (new Date(couponData.validityTill) - new Date() > 0 &&couponData.usageValidity > 0)
+           {
+            let amountValid = couponData.amountValidity.split("-");
+            //if discountType is amount
+            if (couponData.discountType == "Amount") {
+             
+              if (total >= amountValid[0] && total <= amountValid[1]) {
+                let discountAmount = Math.floor(couponData.amount);
+                let finalAmount = Math.floor(total - couponData.amount);
+                resolve({ finalAmount, discountAmount });
+              } 
+              //this is now working ::1st time
+              else {
+                resolve({ couponNotApplicable: true, amountValid });
+              }
+            } 
+                        //if discountType is percentage
 
-    return new Promise((resolve,reject)=>{
-    
-      db.coupon.aggregate(
-        {
-        couponName:couponName.couponId}
-        )
-        .then((response)=>{
-        if(couponName.couponId){
-          resolve(response);
-          
+            else {
+             
+              if (total >= amountValid[0] && total <= amountValid[1]) {
+                let cappedAmount = couponData?.cappedAmount;
+                let discountAmount = await ((total * couponData.percentage) /
+                  100);
+                if (discountAmount > cappedAmount) {
+                  discountAmount = cappedAmount;
+                  let finalAmount = Math.floor(total - discountAmount);
+                 
+                  resolve({ finalAmount, discountAmount });
+                } 
+                
+                else {
+                 
+
+                  let finalAmount = Math.floor(total - discountAmount);
+                  discountAmount = Math.floor(discountAmount);
+                  resolve({ finalAmount, discountAmount });
+                }
+              }
+              //coupon not applicable
+               else {
+               
+                resolve({ couponNotApplicable: true, amountValid });
+              }
+            }
+          }//couponExpired
+           else {
+            resolve({ couponExpired: true });
+          }
         }
-        console.log(response,"121")
-      })
-    })
-    
-    
+      } catch (error) {
+        console.error(error);
+        reject({ error: "Unauthorized Action" });
+      }
+    });
       },
       discountTotal:(userId,proId)=>{
         return new Promise(async(resolve,reject)=>{

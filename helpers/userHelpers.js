@@ -23,17 +23,17 @@ module.exports={
                         response.status=true;
                         response.user=data;
                         resolve(response);
-                        // console.log("ayi:",response)
+                        //
                     }catch(error){
                        
-                        // console.log(error);
+                        console.log(error);
                     }
                      }
                 else{
                   return Promise.reject('Username already in use');
                     response.status=false;
                     resolve(response);
-                    // console.log("ayila:",response)
+                    
 
                     
                 }
@@ -41,28 +41,25 @@ module.exports={
         })
     },
     doLogin: (loginData) => {
-      // console.log("LOGINDATA:",loginData)
         return new Promise(async (resolve, reject) => {
           try {
             let response = {};
             
             let user = await db.user.findOne({ email: loginData.email });
             if (user) {
-              // console.log("hiiiiiiiiiiiiiiii")
               if (user.status) {
-                console.log("jaksjalsjaskajsklajskljskajsklajsklajskajs")
                 bcrypt
                   .compare(loginData.password,user.password)
                   .then((loginTrue) => {
                     
-                    // console.log(loginTrue)
+                   
                     if (loginTrue) {
-                      // console.log("Login Success")
+                    
                       response.status = true;
                       response.user = user;
                       resolve(response);
                     } else {
-                      // console.log("Login Failed")
+                      
                       response.status = false;
                       response.user = user;
                       resolve(response);
@@ -154,7 +151,6 @@ await db.user.updateOne({_id:userId},
     }
   }  
   ).then(data=>{
-    console.log("iiiii",data,"uuuu")
     resolve(data)
   })
    })
@@ -168,12 +164,10 @@ await db.user.updateOne({_id:userId},
   },
   productSearch:(searchData)=>{
     let keyword=searchData.search
-    console.log(keyword)
     return new Promise(async(resolve,reject)=>{
       try{
         const products=await db.products.find({name:{$regex: new RegExp(keyword,'i')}});
         if(products.length>0){
-          console.log(products,"DOOM");
           resolve(products)
         }else{
           reject('no products found')

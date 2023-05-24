@@ -20,10 +20,10 @@ module.exports={
     
         let cartItems = await cartHelpers.getCartProduct(req.session.user);
         let address = await db.address.find({ user: req.session.user._id });
-        console.log(address,"SET")
+       
     
         let totalPrice = await cartHelpers.getTotal(req.session.user._id);
-        console.log("KIKIKIKIKIKI", req.body, "KIKIKIKIKI");
+       
         res.render("user/order", {
           user: req.session.user,
           totalPrice,
@@ -34,7 +34,7 @@ module.exports={
       },
       placeOrder: async (req, res) => {
         try {
-          console.log(req.body);
+         
           req.body.userId = await req.session.user._id;
     
           let total = await cartHelpers.getTotal(req.session.user._id);
@@ -42,16 +42,10 @@ module.exports={
           let totalPrice = total;
           let total1 = total;
           let products = await cartHelpers.getCartProductList(req.session.user._id);
-          console.log(
-            
-            req.body.userId,
-            req.session.user._id,
-            
-          );
+     
           orderHelpers
-            .placeOrder(req.body, total, products, req.session.user._id)
+            .placeOrder(req.body, total, couponPrice, req.session.user._id)
             .then((response) => {
-              couponPrice=0;
               if (req.body.paymentMethod == "COD") {
                 
                 res.json({ statusCod: true });
@@ -59,7 +53,7 @@ module.exports={
                 orderHelpers
                   .generateRazorPay(req.session.user._id, totalPrice)
                   .then((response) => {
-                    console.log(response, "uk");
+                   
                     res.json(response);
                   });
               }
@@ -78,17 +72,17 @@ module.exports={
     
         // let orders = await orderHelpers.getOrders(req.session.user._id);
         let orders = await orderHelpers.getOrders(user); // when db.collection name is called without await the whole schema comes so use await db.orders.find({})
-        console.log("123456", orders);
+       
         res.render("user/order-success", { user, orders,cartCount});
       },
       cancelOrder: async (req, res) => {
-        console.log("AHHAHAHAHAHHAHAHAHA", req.body);
+       
         let user = req.session.user._id; // doubht in user
         try {
           orderHelpers
             .cancelOrder(req.body, req.session.user)
             .then((response) => {
-              console.log(response);
+             
               res.json(response);
             })
             .catch((err) => {
@@ -105,14 +99,14 @@ module.exports={
       },
       verifyCoupon:async(req,res)=>{
         try{
-          console.log(req.query.couponName);
+         
           let code=req.query.couponName;
           let total=await cartHelpers.getTotal(req.session._id);
           couponHelpers.couponValidator(code,req.session._id,total).then(response=>{
             res.json(response);
           });
    
-        console.log(colors.green('vouceherrrr: %s'), hi);
+       
       }
         catch{
 

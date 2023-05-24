@@ -387,6 +387,8 @@ function validation(e) {
 
       //ADD COUNTRY BEFORE POSTCODE AND AFTER TOWN 
   function submit(fName, lName, address, landmark, town, postcode, mobile, email,pmValue) {
+    const couponName = document.getElementById('couponId').value.trim();
+
     console.log(fName,lName)
     $.ajax({
           url: '/order',
@@ -400,8 +402,8 @@ function validation(e) {
               postcode: postcode,
               mobile: mobile,
               email: email,
-              paymentMethod:pmValue
-              
+              paymentMethod:pmValue,
+              couponName:couponName
               
           },
           success: (response) => {
@@ -416,7 +418,7 @@ function validation(e) {
                 window.location.href = '/order-success'
             }
             else{
-                console.log("RAZOR PAY RESPONSE WORKING IN EJS PAGE")
+                console.log(response,"RAZOR PAY RESPONSE WORKING IN EJS PAGE")
                 razorpay(response)
             }
 
@@ -475,7 +477,6 @@ function validation(e) {
         })
         },
         success:(response)=>{
-            console.log("9999999999999",response)
             if(response.status){
                 let timerInterval
                 Swal.fire({
@@ -514,14 +515,82 @@ function validation(e) {
   }
 
   function validateCoupon(){
-    const name = document.getElementById('couponId').value;
+    const couponName = document.getElementById('couponId').value.trim();
     console.log(name)
     $.ajax({
-        url:'/apply_coupon/',
+        url:'/verify_coupon',
         method:'post',
         data:{
-            couponId:name
+            coupon_Name:couponName
         },
+        success: (response) => {
+            console.log("first success")
+        if (response.status == true || response.coupon == true) {
+          $.ajax({
+            url: '/coupun_verified',
+            method: 'post',
+            data: {
+              couponCheck: couponName
+            },
+            success: (response) => {
+              console.log(response,"third success");
+              
+              if (response.purchased == false) {
+                console.log("hi not purchased");
+                $.ajax({
+                  url: '/apply_coupon',
+                  method: 'POST',
+                  data: {
+                    coupon_Name: couponName
+                  },
+                  success: (response) => {
+                    console.log(response,"coupon response");
+
+                    if (response.couponExpired == true) {
+                      let errorCoupon = document.getElementById('errorCoupon')
+                      errorCoupon.innerText = "This coupon is already expired."
+                      errorCoupon.style.color = 'rgb(300,0,0) '
+                      errorCoupon.style.fontSize = 'x-small'
+                    }
+                    console.log(response);
+                    if (response.finalAmount) {
+
+                      document.getElementById('totalCartPrice').innerText = "₹ " + response.finalAmount
+                      let errorCoupon = document.getElementById('errorCoupon')
+                      errorCoupon.innerText = "Coupen applied successfully."
+                      errorCoupon.style.color = 'rgb(53,200,0) '
+                      errorCoupon.style.fontSize = 'x-small'
+                      discPrice.innerText ='Rs  '+ response.discountAmount
+                    } 
+                    
+                    else if (response.couponNotApplicable == true) {
+                      let errorCoupon = document.getElementById('errorCoupon')
+                      errorCoupon.innerText = "This coupon is only valid for products between Rs " + response.amountValid[0] + " and " + response.amountValid[1] + "."
+                      errorCoupon.style.color = 'rgb(300,0,0) '
+                      errorCoupon.style.fontSize = 'x-small'
+                    }
+                  }
+                })
+              }
+               else {
+                let errorCoupon = document.getElementById('errorCoupon')
+                errorCoupon.innerText = "This coupon is already used."
+                errorCoupon.style.color = 'rgb(300,0,0) '
+                errorCoupon.style.fontSize = 'x-small'
+              }
+            }
+          })
+        } 
+        
+        
+        else {
+          let errorCoupon = document.getElementById('errorCoupon')
+          errorCoupon.innerText = "Invalid Coupon !"
+          errorCoupon.style.color = 'rgb(300,0,0) '
+          errorCoupon.style.fontSize = 'x-small'
+        }
+      }
+   
    
 
     })

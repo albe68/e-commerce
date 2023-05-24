@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema({
   blocked:{
     type:Boolean,
     default:false
-  }
+  },
+  coupon: Array,
+
 });
 
 //Products Schema
@@ -133,12 +135,19 @@ const otpSchema = new mongoose.Schema({
 });
 
 const couponSchema=new mongoose.Schema({
-  couponName:{type:String},
-  expiry:{type:Date},
-  minPurchase:{type:Number},
-  description:{type:String},
-  discountPercentage:{type:Number},
-  maxDiscountValue:{type:Number}
+  coupon: String,
+  discountType: String,
+  amount: Number,
+  amountValidity: String,
+  cappedAmount:Number,
+  percentage: Number,
+  description: String,
+  createdAt: {
+      type: Date,
+      default: new Date()
+  },
+  validityTill: Date,
+  usageValidity: Number
 
 
 
