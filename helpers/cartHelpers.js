@@ -92,7 +92,7 @@ module.exports = {
             },
           },
           {
-            //error in this line, now working
+            //error in this below line, now working
             $project: {
               item: 1,
               quantity: 1,
