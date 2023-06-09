@@ -303,7 +303,7 @@ module.exports = {
           if (new Date(couponData.validityTill) - new Date() > 0 &&couponData.usageValidity > 0)
            {
             let amountValid = couponData.amountValidity.split("-");
-            //if discountType is amount
+            //if discountType is Amount
             if (couponData.discountType == "Amount") {
              
               if (total >= amountValid[0] && total <= amountValid[1]) {
