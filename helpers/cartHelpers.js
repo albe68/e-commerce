@@ -66,7 +66,7 @@ module.exports = {
     });
   },
 
-  //get Cart Product//
+  //get-Cart-Product//
   getCartProduct: (user) => {
     return new Promise((resolve, reject) => {
       db.cart
