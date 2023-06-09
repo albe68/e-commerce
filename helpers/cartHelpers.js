@@ -120,7 +120,7 @@ module.exports = {
             }
           }
           resolve(cartCount);
-        }) //write await here// 10:00
+        }) 
         .catch((err) => {
           console.log("ERROR IN CART COUNT",err);
         });
