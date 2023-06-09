@@ -145,7 +145,7 @@ module.exports = {
                 cartProducts: { item: id },
               },
             }
-          ) //changed .then(e) to .then(response)
+          )
           .then((response) => {
             resolve({ removeProduct: true });
           })
