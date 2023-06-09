@@ -316,7 +316,7 @@ module.exports = {
                 resolve({ couponNotApplicable: true, amountValid });
               }
             } 
-                        //if discountType is percentage
+                        //if discountType is percentage (%)
 
             else {
              
