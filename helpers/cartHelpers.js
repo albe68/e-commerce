@@ -2,7 +2,7 @@ const { user } = require("../model/connection");
 const db = require("../model/connection");
 
 module.exports = {
-  //Add To Cart//
+  //add-to-cart
 
   addToCart: (proId, user) => {
     proObj = {
