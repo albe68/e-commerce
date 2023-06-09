@@ -243,7 +243,7 @@ module.exports = {
               $group: {
                 _id: null,
                 total: {
-                  //Products values are coming in strings so convert to numbe using $toDouble
+                  //Products values are coming in strings so convert to number using $toDouble
                   $sum: {
                     $multiply: [
                       { $toDouble: "$Products.price" },
