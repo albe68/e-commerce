@@ -256,7 +256,7 @@ module.exports = {
           ])
           .then((total) => {
            
-            totalAmount = total[0].total; //error when cart is deleted asking for this .total value
+            totalAmount = total[0].total; //error when cart is deleted asking for this .total value resolve this issue
             resolve(totalAmount);
           });
       } catch (error) {
