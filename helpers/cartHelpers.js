@@ -172,7 +172,7 @@ module.exports = {
         });
     });
   },
-  // Delete Cart Product //
+  // Delete-Cart-Product //
 
   deleteCartProduct: (data, user) => {
     return new Promise((resolve, reject) => {
