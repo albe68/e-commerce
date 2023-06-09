@@ -162,7 +162,7 @@ module.exports = {
               "cartProducts.$.quantity": details.count,
             },
           }
-        ) //changed no .then() to .then(response)
+        ) 
         .then((response) => {
           resolve({ status: true });
         })
