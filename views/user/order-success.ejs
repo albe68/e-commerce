@@ -39,7 +39,6 @@
 <%}%>
 
 <% orders?.forEach((element,index )=> { %>
-<%console.log("inside order-success ejs file")%>
 <section class="container mb-5">
   <div class="row">
     <div class="col-md-9 col-12">
@@ -201,7 +200,6 @@
       confirmButtonText: 'Yes, Cancel The Order!'
     }).then((result) => {
       if (result.isConfirmed) {
-    console.log( proId,ordId);
     $.ajax({
       url: "/cancel-order",
       data: {
@@ -210,7 +208,6 @@
       },
       method: "post",
       success: (response) => {
-        console.log("HELLOOO");
         if(response){
           location.reload()
         }
@@ -223,7 +220,6 @@
   }
    
   function viewProduct(proId,orderid){
-      console.log(orderid,"working view product");
    $.ajax({    
      url:'/view-order-details/'+orderid,  
      method:'get',
