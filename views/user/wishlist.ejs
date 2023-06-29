@@ -374,7 +374,6 @@
             },
             method:'delete',
             success:(response)=>{
-                console.log(response,"res")
                 location.reload();
             }
         })
@@ -384,7 +383,6 @@
     }
 
     function addTocart(proId,stock){
-        console.log("kui",proId,stock)
   $.ajax({ 
     
     url:'/check-cart-quantity/'+proId, 
@@ -404,12 +402,10 @@
                                      
         }
         else{
-          console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
        $.ajax({
          url:'/add-to-cart/'+proId,
         method:'get',
         success:(response)=>{
-      console.log(response)
       if(response.status){
         
         let count=$('#cart-count').html();
@@ -431,7 +427,6 @@
     url:'/add-to-cart/'+proId,
     method:'get',
     success:(response)=>{
-      console.log(response)
       if(response.status){
         
         let count=$('#cart-count').html();
