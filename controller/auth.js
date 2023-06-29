@@ -24,7 +24,7 @@ verifyAdmin:(req,res,next)=>{
     }
 },
 userValidation:(req,res,next)=>{
-    
+    //short hand syntax for req.body.username
     body("username").custom(value => {
         return user.find({
             username: value

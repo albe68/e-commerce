@@ -14,6 +14,7 @@ const userHelpers = require("../helpers/userHelpers");
 const adminHelpers = require("../helpers/adminHelpers");
 const orderHelpers = require("../helpers/orderHelpers");
 const couponHelpers=require("../helpers/couponHelpers")
+//UTILS
 var XLSX = require("xlsx");
 const voucher_codes = require('voucher-code-generator');
 
@@ -169,7 +170,8 @@ module.exports = {
   },
 
   postAddProduct: async (req, res) => {
-  
+   
+    console.log(req.files,"multipart 2")
     const { name, description, price,quantity,category } = req.body;
     const image = req.files.map((files) => files.filename);
     try {
@@ -565,7 +567,6 @@ module.exports = {
         charset: "0123456789"
         
     });
-    console.log("good")
    
     res.send({ coupenCode: couponCode })
     } catch (error) {
