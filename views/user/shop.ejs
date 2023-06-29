@@ -921,12 +921,10 @@
                                        
           }
           else{
-            console.log("MONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
          $.ajax({
            url:'/add-to-cart/'+proId,
           method:'get',
           success:(response)=>{
-        console.log(response)
         if(response.status){
           
           let count=$('#cart-count').html();
@@ -948,7 +946,6 @@
       url:'/add-to-cart/'+proId,
       method:'get',
       success:(response)=>{
-        console.log(response)
         if(response.status){
           
           let count=$('#cart-count').html();
@@ -969,12 +966,10 @@
   }
 
   function sortBylow(value){
-    console.log("ajax for shop sort by low",value)
     $.ajax({
       url:'/shop/sortBylow/'+value,
       method:'get',
       success:()=>{
-        console.log("it worked")
       }
     })
 
