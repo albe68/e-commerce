@@ -245,12 +245,10 @@
 <script>
   function  changeQuantity(cartId,proId,count,input){
     
-    console.log("cartId::::::::",cartId,'proId::::::::',proId,'count::::::::',count)
     
 //    let quantity=document.getElementById('input')
    let quantity=parseInt(document.getElementById(proId).innerHTML)
    count=parseInt(count);
-    console.log("INNNNNNNNNN",quantity)
     $.ajax({
         url:"/change-product-quantity",
         data:{
@@ -307,7 +305,6 @@ $('#cart-count').html(number)
     }
 
     function deleteCart(cartId,proId){
-        console.log("HTMLLLLLLLLLLLL REMOVE CART")  
         $.ajax({
             url:'/remove-cart',
             method:"DELETE",
